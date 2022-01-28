@@ -13,6 +13,19 @@ var correo = getCookie('api-correo');
 var telefono = getCookie('api-telefono');
 var novEstudiante = getCookie('api-novEstudiante');
 
+//////pago
+var total = getCookie('api-totalCursos');
+
+
+/////BP
+var novBP = getCookie('api-novBP');
+var nombreBP = getCookie('api-nombreBP');
+var numBP = getCookie('api-numBP');
+var correlativoBP = getCookie('api-correlativoBP');
+var totalBP = getCookie('api-totalBP');
+var fechaBP = getCookie('api-fechaBP');
+var llaveBP = getCookie('api-llaveBP');
+
 
 const cipher = salt => {
 const textToChars = text => text.split('').map(c => c.charCodeAt(0));
