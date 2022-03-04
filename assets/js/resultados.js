@@ -129,7 +129,7 @@ function resultados(nov, carneE) {
 
       }
       else if(data.RESULTADO[i].aprobacion === 2) {
-        tipoAprobacion = "Insatisfactorio"
+        tipoAprobacion = "Insatisfactorio";
       }
 
       //////////////////tipo de Usuario
@@ -192,12 +192,13 @@ $("#descargarConstancia").on('click', function () {
       risa = myCipher(novCarne);
     }
 
+    var fechajs = new Date();
     const tiempoTranscurrido = Date.now();
     const hoy = new Date(tiempoTranscurrido);
     pdf.setFontSize(9).setFont(undefined, 'normal');
-    pdf.text(470,10,hoy.toISOString());
+    pdf.text(490,10,hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
 
-    pdf.text(250,355,risa);
+    pdf.text(20,410,risa);
     pdf.setFontSize(10).setFont(undefined, 'bold');
     pdf.textWithLink('SUNUSAC', 255, 400, {url: 'https://www.facebook.com/SUNUSAC'});
     pdf.textWithLink('sun_usac', 337, 400, {url: 'https://www.instagram.com/sun_usac/'});

@@ -229,16 +229,13 @@ function verificarResultadoAsignacion(){
             pdf.text(40,520,"** IMPORTANTE**");
             pdf.text(160,645,"Instrucciones y Recomendaciones");
 
-
-
-
-
+            var fechajs = new Date();
             const tiempoTranscurrido = Date.now();
             const hoy = new Date(tiempoTranscurrido);
             pdf.setFontSize(9).setFont(undefined, 'normal');
-            pdf.text(524,10,hoy.toISOString());
+            pdf.text(524,10,hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
 
-            pdf.text(250,725,risa);
+            pdf.text(20,780,risa);
             pdf.setFontSize(10).setFont(undefined, 'bold');
             pdf.textWithLink('SUNUSAC', 255, 765, {url: 'https://www.facebook.com/SUNUSAC'});
             pdf.textWithLink('sun_usac', 337, 765, {url: 'https://www.instagram.com/sun_usac/'});
@@ -331,7 +328,7 @@ function verificarResultado(){
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("Debes de seleccionar Facultad");
         }
   });
 

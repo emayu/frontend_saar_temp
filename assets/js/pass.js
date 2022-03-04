@@ -17,7 +17,13 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 $("#aceptar").on('click', function () {
 
 var m = document.getElementById("contrasenia").value;
-var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+//var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+//var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/;
+//var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^ ]|(?=.*[$@$!%*?&])[^ ]{8,}$/;
+
+//var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[A-Za-z\d]|[^ ]){8,}$/;
+
+var expreg = /^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])|(?=.*[a-z])(?=.*[A-Z])(?=.*\d))([A-Za-z\d@$!%*?&]|[^ ]){8,}$/;
 
   if($("#contrasenia").val()==="" || $("#repContrasenia").val()===""){
     alertify.set('notifier','position', 'bottom-center');
@@ -32,7 +38,7 @@ var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     else {
       alertify.set('notifier','position', 'bottom-center');
       alertify.set('notifier','delay', 10);
-      alertify.warning("La Contraseña debe tener mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula y un número.");
+      alertify.warning("La Contraseña debe tener mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula, un número y/o un caracter especial.");
     }
   }
 });

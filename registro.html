@@ -93,12 +93,12 @@
 <div class="divAspirante">
   <div class="form-label-group">
     <input type="number" id="novAspirante" class="form-control" placeholder="Número de Orientación Vocacional" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10">
-    <label for="novAspirante">NOV</label>
+    <label for="novAspirante"></label>
   </div>
 
   <div class="form-label-group">
     <input type="date" id="fechaNacimientoAspirante" class="form-control">
-    <label for="novAspirante">Fecha de nacimiento</label>
+    <label for="novAspirante"></label>
   </div>
 
   <button class="btn btn-lg btn-primary btn-block" type="submit" id="registroAspirante">Registrar</button>
@@ -107,11 +107,11 @@
 <div class="divEstudiante">
   <div class="form-label-group">
     <input type="number" id="carneEstudiante" class="form-control" placeholder="Carné Universitario" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="9">
-    <label for="carneEstudiante">Carné Universitario</label>
+    <label for="carneEstudiante"></label>
   </div>
   <div class="form-label-group">
     <input type="date" id="fechaNacimientoEstudiante" class="form-control">
-    <label for="carneEstudiante">Fecha de nacimiento</label>
+    <label for="carneEstudiante"></label>
   </div>
 
   <button class="btn btn-lg btn-primary btn-block" type="submit" id="registroEstudiante">Registrar</button>
@@ -146,7 +146,7 @@
           <p><b>Número de Carné:</b> <div id="carne"></div></p>
         </div>
         <p><b>Nombre:</b> <div id="nombres"></div></p>
-        <p><b>Fecha de Nacimiento:</b></p><p><input type="date" id="fechaNacimiento"></p>
+        <p><b>Fecha de Nacimiento:</b></p><p><input type="date" id="fechaNacimiento" readonly></p>
         <p><b>Correo:</b></p><p><input type="email" id="correo"></p>
       </div>
       <div class="modal-footer">

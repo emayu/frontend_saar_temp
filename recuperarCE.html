@@ -17,7 +17,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=PT+Mono&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
 <!-- Default theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
@@ -25,7 +24,6 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
 <!-- Bootstrap theme -->
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
-
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
@@ -60,7 +58,7 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="registro.html">Crear Cuenta</a></li>
-          <li><a href="#">Iniciar Sesión</a></li>
+          <li><a href="login.html">Iniciar Sesión</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -75,75 +73,56 @@
     <section id="features" class="features">
       <div class="container">
 
+
         <div class="form-signin">
 <div class="text-center mb-4" data-aos="fade-up">
   <img class="mb-4" src="assets/img/Logo USAC SUNcolor.png" alt="" width="100%" height="auto">
 
           <div class="section-title">
-            <h2>Inicio de Sesión</h2>
+            <h2>Recupera tu contraseña</h2>
+            <label for="pass">Debes crear una contraseña, la cual
+             te servirá para ingresar al Sistema de Asignación,
+              Aplicación y Entrega de Resultados de Pruebas de Conocimientos Básicos.
+              <p><b>Recuerda anotarla en un lugar seguro.</b></p>
+           </label>
           </div>
-  <h5 class="mb-3 font-weight-normal">Seleccione tipo de cuenta</h5>
-  <div class="">
-    <button type="button" name="button" id="aspirante" class="botonCambio"><img class="mb-4" src="assets/img/aspirante.png" alt="" width="115" height="115"> <br>Aspirante</button>
-    <button type="button" name="button" id="estudiante" class="botonCambio"><img class="mb-4" src="assets/img/estudiante.png" alt="" width="115" height="115"> <br>Estudiante</button>
-  </div>
-</div>
-<div class="divAspirante">
-  <div class="form-label-group">
-    <input type="number" id="novAspirante" class="form-control" placeholder="Número de Orientación Vocacional" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10">
-    <label for="novAspirante"></label>
-  </div>
+          <div class="" id="datos">
+            <div class="form-label-group">
+              <input type="number" id="carneEstudiante" class="form-control" placeholder="Carné Universitario" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="9">
+              <label for="carneEstudiante"></label>
+            </div>
+          </div>
 
+
+</div>
+<div class="">
   <div class="input-group">
-    <input type="password" id="passAspirante" class="form-control" placeholder="Contraseña" required>
+    <input type="password" id="contrasenia" class="form-control" placeholder="Ingresa tu Contraseña" required>
     <div class="input-group-append">
-          <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPasswordAspirante()"> <span class="bx bxs-low-vision icon"></span> </button>
+          <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPassword()"> <span class="bx bxs-low-vision iconP"></span> </button>
         </div>
-
   </div>
-
     <label for="novAspirante"></label>
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginAspirante">Iniciar Sesión</button>
-
-  <p class="form-label-group">
-    <br>
-    <a href="recuperarCA.html">Recuperar contraseña</a>
-  </p>
-
-</div>
-
-<div class="divEstudiante">
-  <div class="form-label-group">
-    <input type="number" id="carneEstudiante" class="form-control" placeholder="Carné Universitario" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="9">
-    <label for="carneEstudiante"></label>
-  </div>
-
   <div class="input-group">
-    <input type="password" id="passEstudiante" class="form-control" placeholder="Contraseña" required>
+
+    <input type="password" id="repContrasenia" class="form-control" placeholder="Ingresa de Nuevo tu Contraseña" required>
     <div class="input-group-append">
-          <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPasswordEstudiante()"> <span class="bx bxs-low-vision iconE"></span> </button>
+          <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPassword2()"> <span class="bx bxs-low-vision iconR"></span> </button>
         </div>
-
   </div>
-<label for="passEstudiante"></label>
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id="loginEstudiante">Iniciar Sesión</button>
-
-  <p class="form-label-group">
-    <br>
-    <a href="recuperarCE.html">Recuperar contraseña</a>
-  </p>
+  <label for="novAspirante"></label>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" id="aceptar">Aceptar</button>
 </div>
 
-      </div>
+
       </div>
     </section><!-- End App Features Section -->
 
 
-
-
-
-
   </main><!-- End #main -->
+
+
+
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
@@ -207,9 +186,10 @@
   <!-- Template Main JS File -->
   <script src="assets/js/cookie.js"></script>
   <script src="assets/js/base.js"></script>
-  <script src="assets/js/login.js"></script>
+  <script src="assets/js/recuperarCE.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
 
 </body>
 
