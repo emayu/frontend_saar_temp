@@ -1,7 +1,8 @@
 
-var dominio = 'http://localhost:4000/';
+//var dominio = 'http://localhost:4000/';
 //var dominio = 'http://192.168.1.23:4000/';
 //var dominio = 'http://10.50.40.66:4000/';
+var dominio = 'http://144.91.108.234:4000/';
 
 //var profesorId = getCookie('api-idUsuario');
 
