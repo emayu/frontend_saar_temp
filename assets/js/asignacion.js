@@ -312,7 +312,7 @@ function verificarResultado(){
 
  $.ajax({
       type: 'GET',
-      url:  dominio + "buscarFechaExamen/" + idFacultad,
+      url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro,
       contentType: "application/json",
       dataType: 'json',
       async: false,

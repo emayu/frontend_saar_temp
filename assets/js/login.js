@@ -35,6 +35,7 @@ function login(cuenta) {
                 var fechaNacimiento = info.datos.fecha_nacimiento;
                 var correo = info.datos.correo;
                 var telefono = info.datos.telefono;
+                var nombreCompleto = info.datos.nombre_completo;
 
                 setCookie('api-nombre', nombres, 1);
                 setCookie('api-apellido', apellidos, 1);
@@ -44,6 +45,8 @@ function login(cuenta) {
                 setCookie('api-correo', correo, 1);
                 setCookie('api-telefono', telefono, 1);
                 setCookie('api-novEstudiante', novEstudiante, 1);
+                setCookie('api-nombreCompleto', nombreCompleto, 1);
+
                 window.location.href = "principal.html";
               }
               else if (info.message === 'errorpass') {
@@ -93,6 +96,7 @@ else if(cuenta==1){
               var fechaNacimiento = info.datos.fecha_nacimiento;
               var correo = info.datos.correo;
               var telefono = info.datos.telefono;
+
 
               setCookie('api-nombre', nombres, 1);
               setCookie('api-apellido', apellidos, 1);

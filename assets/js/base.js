@@ -14,6 +14,7 @@ var fechaNacimiento = getCookie('api-fechaNacimiento');
 var correo = getCookie('api-correo');
 var telefono = getCookie('api-telefono');
 var novEstudiante = getCookie('api-novEstudiante');
+var nombreCompleto = getCookie('apr-nombreCompleto');
 
 //////pago
 var total = getCookie('api-totalCursos');
