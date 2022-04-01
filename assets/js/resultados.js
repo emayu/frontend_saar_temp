@@ -49,12 +49,11 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
   document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a>';
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a>';
 
 
   //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
-  '<br><b>Carné: '+novCarne+'</b></a>';
+  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
 
   ///////////recibir los resultados
   resultados(novEstudiante, novCarne);
@@ -178,16 +177,17 @@ $("#descargarConstancia").on('click', function () {
     for (var i = 1; i <= pageCount; i++) {
     pdf.addImage(imgUsac, 'jpeg', 0, 6, 605, 415);
     pdf.setFontSize(13).setFont(undefined, 'bold');
-    pdf.text(250, 75, "Form.SUN.xx.xx");
+    pdf.text(250, 75, "Form.SUN.09.02");
     pdf.text(50, 90, "CONSTANCIA DE RESULTADOS DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
     pdf.setFontSize(12).setFont(undefined, 'normal');
-    pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
 
     if(novCarne.length === 10){
+      pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
       pdf.text(40,140,"NOV: " + novCarne );
       risa = myCipher(novCarne);
     }
     else if(novCarne.length >= 1 && novCarne.length <= 9){
+      pdf.text(40,125,"Nombre: " + nombreCompleto);
       pdf.text(40,140,"Carné: " + novCarne );
       risa = myCipher(novCarne);
     }

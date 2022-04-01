@@ -61,15 +61,14 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
   document.getElementById("datosGenerales").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres +' ' + apellidos+'</a>'+
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a>'+
   '<a class="nav-link" style="color: black;"><strong> Fecha Nacimiento: </strong>'+ fechaVistaPrincipal + '</a>'+
   '<a class="nav-link" style="color: black;"><strong>CUI: </strong>'+cui+'</a>'+
   '<a class="nav-link" style="color: black;"><strong>Correo: </strong>'+correo+'</a>' + tel;
 
 
   //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
-  '<br><b>Carné: '+novCarne+'</b></a>';
+  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
 }
 
 
