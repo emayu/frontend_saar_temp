@@ -80,7 +80,6 @@ function resultados(nov, carneE) {
       dataType: 'json',
       async: false,
       success: function (data) {
-        console.log(data);
 
     $("#Table").append('<tr><th>Materia</th>'+
     '<th>Fecha de calificación</th>' +
