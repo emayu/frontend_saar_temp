@@ -67,11 +67,12 @@ function registro(cuenta) {
           var fechaNacimiento = data.USAC_ESTUDIANTE[0].fecha_nacimiento;
           var correo = data.USAC_ESTUDIANTE[0].correo;
           var carne = data.USAC_ESTUDIANTE[0].carnet;
+          var nombreCompletoRegistro = data.USAC_ESTUDIANTE[0].nombre_completo;
 
           $("#modalNov").hide();
           $("#modalCarne").show();
 
-         document.getElementById('nombres').textContent = nombres + " " + apellidos;
+         document.getElementById('nombres').textContent = nombreCompletoRegistro;
          document.getElementById("fechaNacimiento").value = fechaNacimiento;
          document.getElementById("correo").value = correo;
          document.getElementById('carne').textContent = carne;
@@ -81,13 +82,14 @@ function registro(cuenta) {
             setCookie('api-nombre', nombres, 1);
             setCookie('api-apellido', apellidos, 1);
             setCookie('api-novCarne', carne, 1);
+            setCookie('api-nombreCompleto', nombreCompletoRegistro, 1);
 
 
         }
       },
       error: function (response) {
         alertify.set('notifier','position', 'bottom-center');
-        alertify.error("Usuario o Contraseña Incorrecto!");
+        alertify.error("Error de conexión");
           }
     });
 }

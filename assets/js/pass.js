@@ -9,7 +9,7 @@ else if (novCarne == 'null') {
 }
 else if(novCarne.length >= 1 && novCarne.length <= 9){
   document.getElementById("datos").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: '+novCarne+ '</strong></a>' +
-  '<a class="nav-link" style="color: black;"><strong>'+nombres+ ', '+apellidos+'.</strong></a>';
+  '<a class="nav-link" style="color: black;"><strong>'+ nombreCompleto + '.</strong></a>';
 }
 });
 

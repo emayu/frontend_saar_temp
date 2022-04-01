@@ -51,12 +51,11 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
   document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a>';
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a>';
 
 
   //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
-  '<br><b>Carné: '+novCarne+'</b></a>';
+  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
 
 }
 
@@ -191,16 +190,17 @@ function verificarResultadoAsignacion(){
             pdf.addImage(imgSun, 'jpeg', 535, 470, 0, 0);
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
-            pdf.text(250, 75, "Form.SUN.xx.xx");
+            pdf.text(250, 75, "Form.SUN.09.01");
             pdf.text(50, 90, "CONSTANCIA DE ASIGNACIÓN DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
             pdf.setFontSize(12).setFont(undefined, 'normal');
-            pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
 
             if(novCarne.length === 10){
+              pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
               pdf.text(40,145,"NOV: " + novCarne );
               risa = myCipher(novCarne);
             }
             else if(novCarne.length >= 1 && novCarne.length <= 9){
+              pdf.text(40,125,"Nombre: " + nombreCompleto);
               pdf.text(40,145,"Carné: " + novCarne );
               risa = myCipher(novCarne);
             }
