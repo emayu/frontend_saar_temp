@@ -166,9 +166,6 @@ function verificarResultadoAsignacion(){
         facultadConstancia = data.asignaciones[0].facultad;
         centroConstancia = data.asignaciones[0].centro;
 
-        console.log(facultadConstancia);
-        console.log(centroConstancia);
-
         /////////////crear pdf
 
 
