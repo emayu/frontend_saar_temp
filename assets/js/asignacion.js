@@ -300,6 +300,7 @@ function verificarResultadoAsignacion(){
 
 }
 
+cupoAsignacion = [];
 /////////buscar resultados
 function verificarResultado(){
 
@@ -365,7 +366,6 @@ function buscarAsignacion(fechaExamen, idMateria, idDetalleSalon, cupo, idSalon)
 
 //////////////buscar cupo en salon por asignacion
 
-
 function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
 
  $.ajax({
@@ -378,27 +378,18 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
     //    console.log(idDetalleSalon);
     //  console.log(data.contador[0].count);
 
-      if(data.contador[0].count <= cupo){
-        ////////insertar en la tabla asignacion
+      if(novCarne.length === 10){
+        console.log("!acanov");
+        cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
+        console.log(cupo);
+      }
+      else if(novCarne.length >= 1 && novCarne.length <= 9){
+        console.log("cacacarne");
 
-        if(novCarne.length === 10){
-        //  console.log("soy nuevo");
-          //novResultado = novCarne;
-          buscarResultado(idMateria, idDetalleSalon, novCarne, 0, data.contador[0].count, fechaExamen);
-        }
-        else if(novCarne.length >= 1 && novCarne.length <= 9){
-        //  novResultado = novEstudiante;
-      //  console.log("soy estudiante");
-        buscarResultado(idMateria, idDetalleSalon, novCarne, novEstudiante, data.contador[0].count, fechaExamen);
-
-        }
+      cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
+        console.log(cupo);
 
       }
-      else{
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
-      }
-
 
 
     },
@@ -410,18 +401,42 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
 
 }
 
+function verificarCupo(){
+
+contadorCUpo = 0;
+//console.log(cupoAsignacion);
+
+for(i = 0; i < cupoAsignacion.length; i++) {
+
+  if(cupoAsignacion[i][4] >= cupoAsignacion[i][5]){
+     contadorCUpo += 1;
+  }
+  else {
+
+  //  console.log("no");
+  }
+
+}
+
+if(contadorCUpo > 0){
+  alertify.set('notifier','position', 'bottom-center');
+  alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
+}
+else {
+  console.log("te puedes Asignar");
+  for(i = 0; i < cupoAsignacion.length; i++) {
+
+    buscarResultado(cupoAsignacion[i][0], cupoAsignacion[i][1], cupoAsignacion[i][2], cupoAsignacion[i][3], cupoAsignacion[i][4], cupoAsignacion[i][6]);
+
+  }
+}
+
+}
+
 //////////////////////buscar en la tabla de resultados
 
 function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, contadorAsignado, fechaExamen){
-/*
-novResultado = 0;
-if(novCarne.length === 10){
-  novResultado = novCarne;
-}
-else if(novCarne.length >= 1 && novCarne.length <= 9){
-  novResultado = novEstudiante;
-}
-*/
+
  $.ajax({
       type: 'GET',
       url:  dominio + "resultadoPorAsignacionNC/" + novOCarne + "/" + novEstudiante + "/" + idMateria + "/1",
@@ -433,12 +448,13 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
      if(data.RESULTADO.length === 0){
         ////////insertar en la tabla asignacion
-        agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen);
+        numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaExamen);
+        //agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen);
 
       }
       else{
         alertify.set('notifier','position', 'bottom-center');
-        alertify.warning("Ya has ganado los requisitos, ve al menú de Resultados para descargar tu constancia.");
+        alertify.warning("Ya has ganado los requisitos, ve al menú de Resultados para descargar la constancia.");
       }
 
 
@@ -447,15 +463,46 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("Error de conexión!");
         }
   });
 
 }
 
-function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen){
+function numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaExamen){
+  $.ajax({
+       type: 'GET',
+       url:  dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen,
+       contentType: "application/json",
+       dataType: 'json',
+       async: false,
+       success: function (data) {
+
+        if(data.ultimo_asingado.length === 0) {
+          agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 1);
+        }
+        else {
+
+         if(contadorAsignado  < data.ultimo_asingado[0].asignacion){
+           agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 2);
+         }
+         else {
+           agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 1);
+         }
+        }
+     },
+     error: function (response) {
+       alertify.set('notifier','position', 'bottom-center');
+       alertify.error("Error de conexión!");
+         }
+   });
+
+}
+
+function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, sumadorContador){
+
   //console.log(contadorAsignado);
-  sumadorAsignados = parseInt(contadorAsignado) + 1;
+  sumadorAsignados = parseInt(contadorAsignado) + sumadorContador;
 
   data = '{"id_detalle_salon":'+idDetalleSalon+', "nov":'+novCarne+', "asignacion": "'+sumadorAsignados+'", "fecha_examen": "'+fechaExamen+'"}';
 
@@ -470,8 +517,8 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
        success: function (response) {
 
          //JSON.stringify(response);
-        // console.log(response);
-          location.reload();
+         //console.log(response);
+        location.reload();
 
        },
        error: function (response) {
@@ -479,11 +526,7 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
        }
    });
 
-
-
 }
-
-
 
 //////////////////////////////////////////////////7
 
@@ -491,6 +534,7 @@ $(document).ready(function () {
 
 $("#botonAsignar").on('click', function () {
 verificarResultado();
+verificarCupo();
 
 });
 
