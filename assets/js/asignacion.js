@@ -216,7 +216,7 @@ function verificarResultadoAsignacion(){
             pdf.text(40,490,"En las fechas y horarios establecidos en esta constancia de inscripción.");
 
             pdf.setFontSize(13).setFont(undefined, 'normal');
-            pdf.text(40,545,"Tres dias antes de tu(s) prueba(s) se habilitará el acceso a la plataforma de aplicación, \n para que verifques lo siguiente: \n - Que tu explorador de Internet sea compatible y esté actualizado \n - Que puedas iniciar sesión (debes utilizar el número de orientación vocacional o carnet \n universitario y la fecha de nacimiento registrada en esta constancia de inscripción) \n - Las materias y horarios asignados");
+            pdf.text(40,545,"Tres días antes de tu(s) prueba(s) se habilitará el acceso a la plataforma de aplicación, \n para que verifques lo siguiente: \n - Que tu explorador de Internet sea compatible y esté actualizado \n - Que puedas iniciar sesión (debes utilizar el número de orientación vocacional o carnet \n universitario y la fecha de nacimiento registrada en esta constancia de inscripción) \n - Las materias y horarios asignados");
 
             pdf.text(40,665,"Para la aplicación de Pruebas de Conocimientos Básicos");
 
