@@ -316,7 +316,7 @@ function verificarResultado(){
       async: false,
       success: function (data) {
       //console.log(data.DETALLEFACULTAD);
-
+      cupoAsignacion.length = 0;
       for (i = 0; i < data.DETALLEFACULTAD.length; i++){
         //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
           buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
