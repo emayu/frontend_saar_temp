@@ -501,10 +501,19 @@ function numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaE
 
 function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, sumadorContador){
 
+  var fechajs = new Date();
+  const tiempoTranscurrido = Date.now();
+  const hoy = new Date(tiempoTranscurrido);
+
+  var fechaNa =  hoy.toLocaleDateString().split("/");
+  var fechaFormato = fechaNa[2] +"-"+ fechaNa[1]+"-"+ fechaNa[0];
+
+
+
   //console.log(contadorAsignado);
   sumadorAsignados = parseInt(contadorAsignado) + sumadorContador;
 
-  data = '{"id_detalle_salon":'+idDetalleSalon+', "nov":'+novCarne+', "asignacion": "'+sumadorAsignados+'", "fecha_examen": "'+fechaExamen+'"}';
+  data = '{"id_detalle_salon":'+idDetalleSalon+', "nov":'+novCarne+', "asignacion": "'+sumadorAsignados+'", "fecha_examen": "'+fechaExamen+'", "asignado_por": "", "fecha_asignacion": "'+ fechaFormato +'"}';
 
   $.ajax({
        type: 'POST',
