@@ -81,82 +81,89 @@ function resultados(nov, carneE) {
       async: false,
       success: function (data) {
 
-    $("#Table").append('<tr><th>Materia</th>'+
-    '<th>Fecha de calificación</th>' +
-    '<th>Resultado</th>'+
-    '<th>Identificador</th>');
 
-    for (i = 0; i < data.RESULTADO.length; i++){
+        if(data.RESULTADO.length > 0){
 
-      fechaEvaluacion = data.RESULTADO[i].fecha_evaluacion.split("-");
-      fechaResultado = fechaEvaluacion[2] +"/"+ fechaEvaluacion[1]+"/"+ fechaEvaluacion[0];
+              $("#Table").append('<tr><th>Materia</th>'+
+              '<th>Fecha de calificación</th>' +
+              '<th>Resultado</th>'+
+              '<th>Identificador</th>');
+
+              for (i = 0; i < data.RESULTADO.length; i++){
+
+                fechaEvaluacion = data.RESULTADO[i].fecha_evaluacion.split("-");
+                fechaResultado = fechaEvaluacion[2] +"/"+ fechaEvaluacion[1]+"/"+ fechaEvaluacion[0];
 
 
-      if(data.RESULTADO[i].id_materia === 1) {
-        materia = "Biología"
-      }
-      else if(data.RESULTADO[i].id_materia === 2) {
-        materia = "Física"
-      }
-      else if(data.RESULTADO[i].id_materia === 3) {
-        materia = "Lenguaje"
-      }
-      else if(data.RESULTADO[i].id_materia === 4) {
-        materia = "Matemática"
-      }
-      else if(data.RESULTADO[i].id_materia ===5) {
-        materia = "Química"
-      }
+                if(data.RESULTADO[i].id_materia === 1) {
+                  materia = "Biología"
+                }
+                else if(data.RESULTADO[i].id_materia === 2) {
+                  materia = "Física"
+                }
+                else if(data.RESULTADO[i].id_materia === 3) {
+                  materia = "Lenguaje"
+                }
+                else if(data.RESULTADO[i].id_materia === 4) {
+                  materia = "Matemática"
+                }
+                else if(data.RESULTADO[i].id_materia ===5) {
+                  materia = "Química"
+                }
 
-      ////////////tipo aprobo o // no
+                ////////////tipo aprobo o // no
 
-      if(data.RESULTADO[i].aprobacion === 1) {
-        tipoAprobacion = "Satisfactorio"
-        contadorSatisfactorio += 1;
+                if(data.RESULTADO[i].aprobacion === 1) {
+                  tipoAprobacion = "Satisfactorio"
+                  contadorSatisfactorio += 1;
 
-        if(data.RESULTADO[i].ingreso === 1) {
+                  if(data.RESULTADO[i].ingreso === 1) {
 
-          datos.push([materia, fechaResultado, data.RESULTADO[i].nota, tipoAprobacion, data.RESULTADO[i].nov]);
+                    datos.push([materia, fechaResultado, data.RESULTADO[i].nota, tipoAprobacion, data.RESULTADO[i].nov]);
+                  }
+                  else if(data.RESULTADO[i].ingreso === 2) {
+
+                    datos.push([materia, fechaResultado, data.RESULTADO[i].nota, tipoAprobacion, novCarne]);
+                  }
+
+
+
+                }
+                else if(data.RESULTADO[i].aprobacion === 2) {
+                  tipoAprobacion = "Insatisfactorio";
+                }
+
+                //////////////////tipo de Usuario
+
+                if(data.RESULTADO[i].ingreso === 1) {
+                  ingreso = '<td align="center" style="dislay: none;">' + data.RESULTADO[i].nov + '</td>';
+                }
+                else if(data.RESULTADO[i].ingreso === 2) {
+                  ingreso = '<td align="center" style="dislay: none;">' + novCarne + '</td>';
+                }
+
+           $("#Table").append('<tr>' +
+              '<td align="center" style="dislay: none;">' + materia + '</td>'+
+              '<td align="center" style="dislay: none;">' + fechaResultado + '</td>'+
+              '<td align="center" style="dislay: none;">' + tipoAprobacion + '</td>'+ ingreso +'</tr>');
+              }
+
+
+                  if(contadorSatisfactorio >= 1){
+
+                    document.getElementById("constancia").innerHTML = '<button class="btn btn-primary btn-lg" type="submit" id="descargarConstancia">Descargar Constancia</button>';
+
+                  }
         }
-        else if(data.RESULTADO[i].ingreso === 2) {
-
-          datos.push([materia, fechaResultado, data.RESULTADO[i].nota, tipoAprobacion, novCarne]);
+        else {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("No cuentas con resultados de PCB.");
         }
-
-
-
-      }
-      else if(data.RESULTADO[i].aprobacion === 2) {
-        tipoAprobacion = "Insatisfactorio";
-      }
-
-      //////////////////tipo de Usuario
-
-      if(data.RESULTADO[i].ingreso === 1) {
-        ingreso = '<td align="center" style="dislay: none;">' + data.RESULTADO[i].nov + '</td>';
-      }
-      else if(data.RESULTADO[i].ingreso === 2) {
-        ingreso = '<td align="center" style="dislay: none;">' + novCarne + '</td>';
-      }
-
- $("#Table").append('<tr>' +
-    '<td align="center" style="dislay: none;">' + materia + '</td>'+
-    '<td align="center" style="dislay: none;">' + fechaResultado + '</td>'+
-    '<td align="center" style="dislay: none;">' + tipoAprobacion + '</td>'+ ingreso +'</tr>');
-    }
-
-
-        if(contadorSatisfactorio >= 1){
-
-          document.getElementById("constancia").innerHTML = '<button class="btn btn-primary btn-lg" type="submit" id="descargarConstancia">Descargar Constancia</button>';
-
-        }
-
 
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("Error de conexión");
         }
   });
 
