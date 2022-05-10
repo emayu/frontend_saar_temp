@@ -12,7 +12,7 @@ if(novCarne.length === 10){
     tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
   }
   document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novCarne+ '</a>' +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a>';
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a> <p> <label for="">Los resultados estarán disponibles a partir de la fecha de 20 de mayo del 2022 </label> </p>';
 
 
   //////header
@@ -21,7 +21,7 @@ if(novCarne.length === 10){
 
 /////////////recibir los resultados
 
-resultados(novCarne, 0);
+//resultados(novCarne, 0);
 
 }
 else if (novCarne == 'null') {
@@ -49,14 +49,14 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
   document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a>';
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a> <p> <label for="">Los resultados estarán disponibles a partir de la fecha de 20 de mayo del 2022 </label> </p>';
 
 
   //////header
   document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
 
   ///////////recibir los resultados
-  resultados(novEstudiante, novCarne);
+  //resultados(novEstudiante, novCarne);
 }
 
 
