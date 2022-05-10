@@ -286,7 +286,7 @@ function verificarResultadoAsignacion(){
       $("#selFacultades").show();
         $("#visorPDF").hide();
 
-      document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg" type="submit" id="botonAsignar">Asignar</button>';
+      document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
     }
 
@@ -294,7 +294,7 @@ function verificarResultadoAsignacion(){
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("Error de conexión");
         }
   });
 
@@ -302,7 +302,63 @@ function verificarResultadoAsignacion(){
 
 cupoAsignacion = [];
 /////////buscar resultados
+
 function verificarResultado(){
+
+
+  idCentro = $("#selbox").val();
+  idFacultad = $("#selFacultad").val();
+
+
+  $.ajax({
+    type: 'GET',
+    url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro,
+    contentType: "application/json",
+    dataType: 'json',
+    async: false,
+        beforeSend: function() {
+            $('#btnAsignar').html("<img src='assets/img/cargando.gif' />"); // Muestro el Spinner (Animación)
+        },
+    })
+
+    .done(function(data) {
+
+      cupoAsignacion.length = 0;
+
+      if(data.DETALLEFACULTAD.length > 0) {
+
+        for (i = 0; i < data.DETALLEFACULTAD.length; i++){
+          //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
+            buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
+        }
+
+      }
+      else
+      {
+        alertify.set('notifier','position', 'bottom-center');
+        alertify.warning("La unidad académica seleccionada no cuenta con salón, comunicate a nuestras redes sociales para verificar");
+        document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+
+        $(".botonAsignar").on('click', function () {
+        verificarResultado();
+        verificarCupo();
+
+        });
+      }
+
+
+})
+
+// Este método es para manejar algún error al obtener los datos
+.fail(function(data) {
+  alertify.set('notifier','position', 'bottom-center');
+  alertify.error("Error de conexión");
+    //
+});
+
+
+}
+/*function verificarResultado(){
 
 
   idCentro = $("#selbox").val();
@@ -330,7 +386,7 @@ function verificarResultado(){
         }
   });
 
-}
+}*/
 
 ////////////////7buscarAsignacion/////////////////
 /*
@@ -379,15 +435,13 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
     //  console.log(data.contador[0].count);
 
       if(novCarne.length === 10){
-        console.log("!acanov");
+
         cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
-        console.log(cupo);
+
       }
       else if(novCarne.length >= 1 && novCarne.length <= 9){
-        console.log("cacacarne");
 
       cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
-        console.log(cupo);
 
       }
 
@@ -395,7 +449,7 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("Error de conexión");
         }
   });
 
@@ -421,9 +475,10 @@ for(i = 0; i < cupoAsignacion.length; i++) {
 if(contadorCUpo > 0){
   alertify.set('notifier','position', 'bottom-center');
   alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
+  $('#btnAsignar').html("");
 }
 else {
-  console.log("te puedes Asignar");
+
   for(i = 0; i < cupoAsignacion.length; i++) {
 
     buscarResultado(cupoAsignacion[i][0], cupoAsignacion[i][1], cupoAsignacion[i][2], cupoAsignacion[i][3], cupoAsignacion[i][4], cupoAsignacion[i][6]);
@@ -455,9 +510,15 @@ function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, co
       else{
         alertify.set('notifier','position', 'bottom-center');
         alertify.warning("Ya has ganado los requisitos, ve al menú de Resultados para descargar la constancia.");
+        document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+
+        $(".botonAsignar").on('click', function () {
+        verificarResultado();
+        verificarCupo();
+
+        });
+
       }
-
-
 
 
     },
@@ -541,7 +602,7 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
 
 $(document).ready(function () {
 
-$("#botonAsignar").on('click', function () {
+$(".botonAsignar").on('click', function () {
 verificarResultado();
 verificarCupo();
 
