@@ -48,7 +48,7 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
   document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a> <p> <a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Los resultados estarán disponibles a partir del 20 de mayo del 2022.</strong></a></p>'';
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a> <p> <a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Los resultados estarán disponibles a partir del 20 de mayo del 2022.</strong></a></p>';
 
 
   //////header
