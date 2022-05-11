@@ -12,7 +12,7 @@ if(novCarne.length === 10){
     tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
   }
   document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novCarne+ '</a>' +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a> <p> <a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Los resultados estarán disponibles a partir del 20 de mayo del 2022</strong></a></p>';
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a> <p> <a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Los resultados estarán disponibles a partir del 20 de mayo del 2022.</strong></a></p>';
 
   //////header
   document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
