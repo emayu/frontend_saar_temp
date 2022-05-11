@@ -49,11 +49,50 @@ function registro(cuenta) {
         dataType: 'json',
         async: false,
         success: function (data) {
-        // console.log(data);
-          //var acceso = data.paciente;
 
-        //console.log(acceso);
-        if(data.USAC_ESTUDIANTE.length === 0){
+          if (data.message === 'carnet no existe') {
+            alertify.set('notifier','position', 'bottom-center');
+            alertify.warning("El Carné ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+
+          }
+          else if (data.message === 'fecha de nacimiento incorrecta') {
+            alertify.set('notifier','position', 'bottom-center');
+            alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+
+          }
+          else {
+            //console.log(data.OV_ASPIRANTE.nombres);
+            if (data.USAC_ESTUDIANTE.registrado === 1) {
+                alertify.set('notifier','position', 'bottom-center');
+                alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
+              }
+              else{
+                var nombres = data.USAC_ESTUDIANTE.nombre;
+                var apellidos = data.USAC_ESTUDIANTE.apellido;
+                var fechaNacimiento = data.USAC_ESTUDIANTE.fecha_nacimiento;
+                var correo = data.USAC_ESTUDIANTE.correo;
+                var carne = data.USAC_ESTUDIANTE.carnet;
+                var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
+
+                $("#modalNov").hide();
+                $("#modalCarne").show();
+
+               document.getElementById('nombres').textContent = nombreCompletoRegistro;
+               document.getElementById("fechaNacimiento").value = fechaNacimiento;
+               document.getElementById("correo").value = correo;
+               document.getElementById('carne').textContent = carne;
+
+                  modal.style.display = "block";
+
+                  setCookie('api-nombre', nombres, 1);
+                  setCookie('api-apellido', apellidos, 1);
+                  setCookie('api-novCarne', carne, 1);
+                  setCookie('api-nombreCompleto', nombreCompletoRegistro, 1);
+                }
+
+          }
+
+        /*if(data.USAC_ESTUDIANTE.length === 0){
           alertify.set('notifier','position', 'bottom-center');
           alertify.warning("Número de Carné o la fecha de nacimiento son incorrectos");
 
@@ -85,7 +124,7 @@ function registro(cuenta) {
             setCookie('api-nombreCompleto', nombreCompletoRegistro, 1);
 
 
-        }
+        }*/
       },
       error: function (response) {
         alertify.set('notifier','position', 'bottom-center');
@@ -107,41 +146,50 @@ else if(cuenta==1){
       async: false,
       success: function (data) {
 
-      if(data.OV_ASPIRANTE.length === 0){
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.warning("Número de Orientación Vocacional o la fecha de nacimiento son incorrectos");
+        if (data.message === 'nov no existe') {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
-      } else if (data.OV_ASPIRANTE[0].registrado === 1) {
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
-      }
-      else{
-        var nombres = data.OV_ASPIRANTE[0].nombres;
-        var apellidos = data.OV_ASPIRANTE[0].apellidos;
-        var fechaNacimiento = data.OV_ASPIRANTE[0].fecha_nacimiento;
-        var correo = data.OV_ASPIRANTE[0].correo;
-        var nov = data.OV_ASPIRANTE[0].nov;
+        }
+        else if (data.message === 'fecha de nacimiento incorrecta') {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
-        $("#modalNov").show();
-        $("#modalCarne").hide();
+        }
+        else {
+          //console.log(data.OV_ASPIRANTE.nombres);
+          if (data.OV_ASPIRANTE.registrado === 1) {
+              alertify.set('notifier','position', 'bottom-center');
+              alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
+            }
+            else{
+              var nombres = data.OV_ASPIRANTE.nombres;
+              var apellidos = data.OV_ASPIRANTE.apellidos;
+              var fechaNacimiento = data.OV_ASPIRANTE.fecha_nacimiento;
+              var correo = data.OV_ASPIRANTE.correo;
+              var nov = data.OV_ASPIRANTE.nov;
 
-       document.getElementById('nombres').textContent = nombres + " " + apellidos;
-       document.getElementById("fechaNacimiento").value = fechaNacimiento;
-       document.getElementById("correo").value = correo;
-       document.getElementById('nov').textContent = nov;
+              $("#modalNov").show();
+              $("#modalCarne").hide();
 
-          modal.style.display = "block";
+             document.getElementById('nombres').textContent = nombres + " " + apellidos;
+             document.getElementById("fechaNacimiento").value = fechaNacimiento;
+             document.getElementById("correo").value = correo;
+             document.getElementById('nov').textContent = nov;
 
-          setCookie('api-nombre', nombres, 1);
-          setCookie('api-apellido', apellidos, 1);
-          setCookie('api-novCarne', nov, 1);
+                modal.style.display = "block";
 
+                setCookie('api-nombre', nombres, 1);
+                setCookie('api-apellido', apellidos, 1);
+                setCookie('api-novCarne', nov, 1);
+              }
 
-      }
+        }
+
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("error en la conexión");
         }
   });
 }
@@ -221,7 +269,7 @@ $("#aspirante").on('click', function () {
         $(".divAspirante").show();
         $(".divEstudiante").hide();
         alertify.set('notifier','position', 'bottom-center');
-        alertify.notify('Este tipo de cuenta es para aspirantes de primer ingreso.', 'custom', 4, function(){});
+        alertify.notify('Este tipo de cuenta es para aspirantes de primer ingreso con número de orientación vocacional.', 'custom', 4, function(){});
       //  alertify.notify("Este tipo de cuenta es para aspirantes de primer ingreso");
 });
 
