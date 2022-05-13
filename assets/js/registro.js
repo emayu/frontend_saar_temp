@@ -57,7 +57,7 @@ function registro(cuenta) {
           }
           else if (data.message === 'fecha de nacimiento incorrecta') {
             alertify.set('notifier','position', 'bottom-center');
-            alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+            alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
           }
           else {
@@ -153,7 +153,7 @@ else if(cuenta==1){
         }
         else if (data.message === 'fecha de nacimiento incorrecta') {
           alertify.set('notifier','position', 'bottom-center');
-          alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+          alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
         }
         else {
@@ -268,6 +268,7 @@ $("#aspirante").on('click', function () {
         tipoCuenta = 1;
         $(".divAspirante").show();
         $(".divEstudiante").hide();
+        scrollToElement('#botonesTipo');
         alertify.set('notifier','position', 'bottom-center');
         alertify.notify('Este tipo de cuenta es para aspirantes de primer ingreso con número de orientación vocacional.', 'custom', 4, function(){});
       //  alertify.notify("Este tipo de cuenta es para aspirantes de primer ingreso");
@@ -298,7 +299,7 @@ $("#estudiante").on('click', function () {
         tipoCuenta = 2;
         $(".divEstudiante").show();
         $(".divAspirante").hide();
-
+        scrollToElement('#botonesTipo');
         alertify.set('notifier','position', 'bottom-center');
         alertify.notify('Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.', 'custom', 8, function(){});
         //alertify.notify("Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.");
@@ -325,11 +326,12 @@ $("#registroEstudiante").on('click', function () {
   }
 });
 
-
-
-/*
-$('body').keyup(function (e) {
-    if (e.keyCode == 13) {
-          login(tipoCuenta);
-    }
-});*/
+function scrollToElement(selector, callback){
+    var animation = {scrollTop: $(selector).offset().top};
+    $('html,body').animate(animation, 'slow', 'swing', function() {
+        if (typeof callback == 'function') {
+            callback();
+        }
+        callback = null;
+    });
+}

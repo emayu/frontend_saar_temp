@@ -137,6 +137,7 @@ $("#aspirante").on('click', function () {
         $("#estudiante").attr('style',  'background-color:#FFFFFF');
         tipoCuenta = 1;
         $(".divAspirante").show();
+        scrollToElement('#botonesTipo');
         $(".divEstudiante").hide();
 });
 
@@ -167,6 +168,7 @@ $("#estudiante").on('click', function () {
         $("#aspirante").attr('style',  'background-color:#FFFFFF');
         tipoCuenta = 2;
         $(".divEstudiante").show();
+        scrollToElement('#botonesTipo');
         $(".divAspirante").hide();
 });
 
@@ -248,3 +250,15 @@ $('#passEstudiante').keypress(function(e) {
         alertify.warning('Bloq Mayus está activado.');
     }
 });
+
+
+
+function scrollToElement(selector, callback){
+    var animation = {scrollTop: $(selector).offset().top};
+    $('html,body').animate(animation, 'slow', 'swing', function() {
+        if (typeof callback == 'function') {
+            callback();
+        }
+        callback = null;
+    });
+}
