@@ -83,12 +83,12 @@
             <h2>Inicio de Sesión</h2>
           </div>
   <h5 class="mb-3 font-weight-normal">Seleccione tipo de cuenta</h5>
-  <div class="">
+  <div class="" id="botonesTipo">
     <button type="button" name="button" id="aspirante" class="botonCambio"><img class="mb-4" src="assets/img/aspirante.png" alt="" width="115" height="115"> <br>Aspirante</button>
     <button type="button" name="button" id="estudiante" class="botonCambio"><img class="mb-4" src="assets/img/estudiante.png" alt="" width="115" height="115"> <br>Estudiante USAC</button>
   </div>
 </div>
-<div class="divAspirante">
+<div class="divAspirante" id ="idDivAspirante">
   <div class="form-label-group">
     <input type="number" id="novAspirante" class="form-control" placeholder="Número de Orientación Vocacional" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10">
     <label for="novAspirante"></label>
