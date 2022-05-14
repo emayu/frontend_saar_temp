@@ -80,7 +80,7 @@
 
           <div class="section-title">
             <h2>Recupera tu contraseña</h2>
-            <label for="pass">Debes crear una contraseña, la cual
+            <label for="pass">Debes ingresar tu número de carné universitario y fecha de nacimiento para crear una contraseña, la cual
              te servirá para ingresar al Sistema de Asignación,
               Aplicación y Entrega de Resultados de Pruebas de Conocimientos Básicos.
               <p><b>Recuerda anotarla en un lugar seguro.</b></p>
@@ -91,11 +91,19 @@
               <input type="number" id="carneEstudiante" class="form-control" placeholder="Carné Universitario" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="9">
               <label for="carneEstudiante"></label>
             </div>
+            <div class="form-label-group">
+              <input placeholder="Ingresa tu fecha de nacimiento" class="form-control" type="text" onfocus="(this.type='date')" id="fechaNacimientoEstudiante">
+              <label for="novAspirante"></label>
+            </div>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" id="buscar">Buscar</button>
           </div>
 
 
 </div>
-<div class="">
+<div class="" id="recPassword">
+  <div class="" id="nombreBusqueda">
+
+  </div>
   <div class="input-group">
     <input type="password" id="contrasenia" class="form-control" placeholder="Ingresa tu Contraseña" required>
     <div class="input-group-append">
@@ -112,6 +120,7 @@
   </div>
   <label for="novAspirante"></label>
   <button class="btn btn-lg btn-primary btn-block" type="submit" id="aceptar">Aceptar</button>
+  <button class="btn btn-lg btn-danger btn-block" type="submit" id="cancelar">Cancelar</button>
 </div>
 
 

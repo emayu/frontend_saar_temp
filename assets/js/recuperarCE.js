@@ -1,21 +1,28 @@
 $(document).ready(function () {
+    $("#recPassword").hide();
+
+});
+
+$("#buscar").on('click', function () {
+
+  if($("#carneEstudiante").val() === ""){
+      alertify.set('notifier','position', 'bottom-center');
+      alertify.error("El campo Carné esta vacio");
+    }
+    else if ($("#fechaNacimientoEstudiante").val() === "") {
+      alertify.set('notifier','position', 'bottom-center');
+      alertify.error("El campo Fecha de nacimiento esta vacio");
+    }
+    else {
+      estudianteCarne();
+    }
 
 });
 
 
 $("#aceptar").on('click', function () {
 
-  if($("#novAspirante").val()===""){
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("El campo Número de Orientación Vocacional esta vacio");
-    }
-    else {
       var m = document.getElementById("contrasenia").value;
-      //var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-      //var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,}$/;
-      //var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^ ]|(?=.*[$@$!%*?&])[^ ]{8,}$/;
-
-      //var expreg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[A-Za-z\d]|[^ ]){8,}$/;
 
       var expreg = /^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])|(?=.*[a-z])(?=.*[A-Z])(?=.*\d))([A-Za-z\d@$!%*?&]|[^ ]){8,}$/;
 
@@ -27,7 +34,7 @@ $("#aceptar").on('click', function () {
             alertify.set('notifier','position', 'bottom-center');
             alertify.error("La Contraseña no coincide");
           } else if (expreg.test(m)) {
-              estudianteCarne();
+              actualizarDatos();
           }
           else {
             alertify.set('notifier','position', 'bottom-center');
@@ -36,45 +43,63 @@ $("#aceptar").on('click', function () {
           }
         }
 
-    }
-
 });
 
+$("#cancelar").on('click', function () {
+  window.location.reload();
+});
 
 ///////buscar estudiante carne
 function estudianteCarne() {
 carne = $("#carneEstudiante").val();
+fechaNE = $("#fechaNacimientoEstudiante").val();
 
-    $.ajax({
-        type: 'GET',
-        url: dominio + 'buscarEstudianteCarne/' + carne,
-        contentType: "application/json",
-        dataType: 'json',
-        crossDomain: true,
-        async: false,
-        success: function (response) {
-          //console.log(response.USAC_ESTUDIANTE.length);
+$.ajax({
+    type: 'GET',
+    url:  dominio + "buscarEstudiante/" + carne + '/' + fechaNE,
+    contentType: "application/json",
+    dataType: 'json',
+    async: false,
+    success: function (data) {
 
-          if (response.USAC_ESTUDIANTE[0].registrado === 1) {
-            actualizarDatos();
+      if (data.message === 'carnet no existe') {
+        alertify.set('notifier','position', 'bottom-center');
+        alertify.warning("El Carné ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
-          } else {
-            alertify.set('notifier','position', 'bottom-center');
-            alertify.error("El estudiante no esta registrado, ve al menú Crear Cuenta para registrar tu usuario.");
-          }
+      }
+      else if (data.message === 'fecha de nacimiento incorrecta') {
+        alertify.set('notifier','position', 'bottom-center');
+        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
-        },
-        error: function (response) {
-         window.location.href = "index.html";
-        }
-    });
+      }
+      else {
+
+            var carne = data.USAC_ESTUDIANTE.carnet;
+            var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
+
+            $("#recPassword").show();
+            $("#datos").hide();
+
+            document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: '+ carne + '</strong></a>' +
+            '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombreCompletoRegistro + '.</strong></a>'
+
+
+
+      }
+
+  },
+  error: function (response) {
+    alertify.set('notifier','position', 'bottom-center');
+    alertify.error("Error de conexión");
+      }
+});
 }
 
 ////////////ingresar contraseña
 function actualizarDatos() {
 
   password = $("#contrasenia").val();
-  novCarne = $("#carneEstudiante").val()
+  novCarne = $("#carneEstudiante").val();
 
   data = '{"contrasena": "'+myCipher(password)+'"}';
 
