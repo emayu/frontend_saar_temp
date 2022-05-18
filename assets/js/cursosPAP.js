@@ -80,7 +80,7 @@ $("#generarBoletaCursos").on('click', function () {
 
 if(costoTotal == 0){
   alertify.set('notifier','position', 'bottom-center');
-  alertify.warning("Debes seleccionar al menso un curso para poder genera la boleta de pago.");
+  alertify.warning("Debes seleccionar al menos un curso para poder genera la boleta de pago.");
 } else {
 
   $.each($("input[name='cursoCheck']:checked"), function(){
@@ -88,6 +88,8 @@ if(costoTotal == 0){
         insertarPreasignacion($(this).val());
 
   });
+
+  //crearBoletaPago();
 
 }
 
@@ -123,7 +125,7 @@ function insertarPreasignacion(curso){
 }
 
 
-/////////////////////////////////verificar estado de pago
+/////////////////////////////////verificar estado de pago crearBoletaPago
 
 function verificarEstadoPago(){
   $.ajax({
@@ -133,28 +135,32 @@ function verificarEstadoPago(){
        dataType: 'json',
        async: false,
        success: function (data) {
-       //console.log(data.boleta[0].estado);
+       console.log(data.boleta);
 
+       if(data.boleta != null){
+         if(data.boleta.estado === 0){
+            ////////
+            setCookie('api-novBP', data.boleta.nov, 1);
+            setCookie('api-nombreBP', data.boleta.nombre, 1);
+            setCookie('api-numBP', data.boleta.num_boleta, 1);
+            setCookie('api-correlativoBP', data.boleta.correlativo, 1);
+            setCookie('api-totalBP', data.boleta.total, 1);
+            setCookie('api-fechaBP', data.boleta.fecha_emision, 1);
+            setCookie('api-llaveBP', data.boleta.llave, 1);
 
-      if(data.boleta[0].estado === 0){
-         ////////
-         setCookie('api-novBP', data.boleta[0].nov, 1);
-         setCookie('api-nombreBP', data.boleta[0].nombre, 1);
-         setCookie('api-numBP', data.boleta[0].num_boleta, 1);
-         setCookie('api-correlativoBP', data.boleta[0].correlativo, 1);
-         setCookie('api-totalBP', data.boleta[0].total, 1);
-         setCookie('api-fechaBP', data.boleta[0].fecha_emision, 1);
-         setCookie('api-llaveBP', data.boleta[0].llave, 1);
+            window.location.href = "boletaPago.html";
+          }
+          else if (data.boleta[0].estado === 1) {
+            window.location.href = "asignacionPAP.html";
+          }
+          else {
+            //console.log("elimino la boleta y asignacion o no se a preasignado");
+          }
 
-         window.location.href = "boletaPago.html";
-       }
-       else if (data.boleta[0].estado === 1) {
-         window.location.href = "asignacionPAP.html";
        }
        else {
-         //console.log("elimino la boleta y asignacion o no se a preasignado");
+         console.log("entrealelse");
        }
-
 
 
 

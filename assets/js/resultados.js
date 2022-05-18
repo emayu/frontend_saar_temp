@@ -3,6 +3,28 @@ $(document).ready(function () {
 $("#menuAE").load("menu.html");
 
 if(novCarne.length === 10){
+
+
+if(novCarne === '2022000000'){
+  //////////body
+  var tel = "";
+  if(telefono == 'null'){
+    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+  }
+  else {
+    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
+  }
+  document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novCarne+ '</a>' +
+  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a>';
+
+  //////header
+  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
+  '<br><b>NOV: '+novCarne+'</b></a>';
+
+  /////////////recibir los resultados
+  resultados(novCarne, 0);
+}
+else {
   //////////body
   var tel = "";
   if(telefono == 'null'){
@@ -18,9 +40,11 @@ if(novCarne.length === 10){
   document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
   '<br><b>NOV: '+novCarne+'</b></a>';
 
-/////////////recibir los resultados
+  /////////////recibir los resultados
+  //resultados(novCarne, 0);
+}
 
-//resultados(novCarne, 0);
+
 
 }
 else if (novCarne == 'null') {
@@ -29,33 +53,66 @@ else if (novCarne == 'null') {
 }
 else if(novCarne.length >= 1 && novCarne.length <= 9){
 
-  //////////body
-  var tel = "";
-  var novE = "";
-  if(telefono == 'null'){
-    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+
+  if(novCarne === '202100000'){
+    //////////body
+    var tel = "";
+    var novE = "";
+    if(telefono == 'null'){
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+    }
+    else {
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
+    }
+
+    if( novEstudiante == 'null'){
+      novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong> No esta Registrado</a>';
+    }
+    else {
+      novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novEstudiante+ '</a>';
+    }
+
+
+    document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
+    '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a>';
+
+
+    //////header
+    document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
+
+    ///////////recibir los resultados
+    resultados(novEstudiante, novCarne);
   }
   else {
-    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
+    //////////body
+    var tel = "";
+    var novE = "";
+    if(telefono == 'null'){
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+    }
+    else {
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
+    }
+
+    if( novEstudiante == 'null'){
+      novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong> No esta Registrado</a>';
+    }
+    else {
+      novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novEstudiante+ '</a>';
+    }
+
+
+    document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
+    '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a> <p> <a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Los resultados estarán disponibles a partir del 20 de mayo del 2022.</strong></a></p>';
+
+
+    //////header
+    document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
+
+    ///////////recibir los resultados
+    //resultados(novEstudiante, novCarne);
   }
 
-  if( novEstudiante == 'null'){
-    novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong> No esta Registrado</a>';
-  }
-  else {
-    novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novEstudiante+ '</a>';
-  }
-
-
-  document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a> <p> <a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Los resultados estarán disponibles a partir del 20 de mayo del 2022.</strong></a></p>';
-
-
-  //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
-
-  ///////////recibir los resultados
-  //resultados(novEstudiante, novCarne);
 }
 
 

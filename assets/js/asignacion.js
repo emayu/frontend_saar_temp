@@ -81,7 +81,7 @@ function adAsignacion() {
       success: function (data) {
       //console.log(data.examen[0].activo);
 
-      if(data.examen[0].activo === 1)
+      if(data.examen[0].activo === 1 || novCarne === '202100000' || novCarne === '2022000000')
       {
         verificarResultadoAsignacion();
       }
