@@ -36,6 +36,7 @@ window.onclick = function(event) {
 
 function registro(cuenta) {
 
+
   if(cuenta==2){
     carne = $("#carneEstudiante").val();
     fechaNE = $("#fechaNacimientoEstudiante").val();
@@ -92,39 +93,6 @@ function registro(cuenta) {
 
           }
 
-        /*if(data.USAC_ESTUDIANTE.length === 0){
-          alertify.set('notifier','position', 'bottom-center');
-          alertify.warning("Número de Carné o la fecha de nacimiento son incorrectos");
-
-        } else if (data.USAC_ESTUDIANTE[0].registrado === 1) {
-          alertify.set('notifier','position', 'bottom-center');
-          alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
-        }
-        else{
-          var nombres = data.USAC_ESTUDIANTE[0].nombre;
-          var apellidos = data.USAC_ESTUDIANTE[0].apellido;
-          var fechaNacimiento = data.USAC_ESTUDIANTE[0].fecha_nacimiento;
-          var correo = data.USAC_ESTUDIANTE[0].correo;
-          var carne = data.USAC_ESTUDIANTE[0].carnet;
-          var nombreCompletoRegistro = data.USAC_ESTUDIANTE[0].nombre_completo;
-
-          $("#modalNov").hide();
-          $("#modalCarne").show();
-
-         document.getElementById('nombres').textContent = nombreCompletoRegistro;
-         document.getElementById("fechaNacimiento").value = fechaNacimiento;
-         document.getElementById("correo").value = correo;
-         document.getElementById('carne').textContent = carne;
-
-            modal.style.display = "block";
-
-            setCookie('api-nombre', nombres, 1);
-            setCookie('api-apellido', apellidos, 1);
-            setCookie('api-novCarne', carne, 1);
-            setCookie('api-nombreCompleto', nombreCompletoRegistro, 1);
-
-
-        }*/
       },
       error: function (response) {
         alertify.set('notifier','position', 'bottom-center');
@@ -136,62 +104,82 @@ else if(cuenta==1){
   nov = $("#novAspirante").val();
   fechaNA = $("#fechaNacimientoAspirante").val();
 
-  //console.log(nov.length);
-
-  $.ajax({
-      type: 'GET',
-      url:  dominio + "buscarAspirante/" + nov + '/' + fechaNA,
-      contentType: "application/json",
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-
-        if (data.message === 'nov no existe') {
-          alertify.set('notifier','position', 'bottom-center');
-          alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
-
-        }
-        else if (data.message === 'fecha de nacimiento incorrecta') {
-          alertify.set('notifier','position', 'bottom-center');
-          alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
-
-        }
-        else {
-          //console.log(data.OV_ASPIRANTE.nombres);
-          if (data.OV_ASPIRANTE.registrado === 1) {
+      $.ajax({
+          type: 'GET',
+          url: dominio + 'buscarEstudianteNOV/' + nov,
+          contentType: "application/json",
+          dataType: 'json',
+          crossDomain: true,
+          async: false,
+          success: function (response) {
+            console.log(response.USAC_ESTUDIANTE.length);
+            if (response.USAC_ESTUDIANTE.length > 0) {
               alertify.set('notifier','position', 'bottom-center');
-              alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
+              alertify.error("Como estudiante no puedes crear perfil de aspirante, debes crear tu perfil de estudiante, si ya lo tienes creado debes iniciar sesión.");
+            } else {
+              $.ajax({
+                   type: 'GET',
+                   url:  dominio + "buscarAspirante/" + nov + '/' + fechaNA,
+                   contentType: "application/json",
+                   dataType: 'json',
+                   async: false,
+                   success: function (data) {
+
+                     if (data.message === 'nov no existe') {
+                       alertify.set('notifier','position', 'bottom-center');
+                       alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+
+                     }
+                     else if (data.message === 'fecha de nacimiento incorrecta') {
+                       alertify.set('notifier','position', 'bottom-center');
+                       alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+
+                     }
+                     else {
+                       //console.log(data.OV_ASPIRANTE.nombres);
+                       if (data.OV_ASPIRANTE.registrado === 1) {
+                           alertify.set('notifier','position', 'bottom-center');
+                           alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
+                         }
+                         else{
+                           var nombres = data.OV_ASPIRANTE.nombres;
+                           var apellidos = data.OV_ASPIRANTE.apellidos;
+                           var fechaNacimiento = data.OV_ASPIRANTE.fecha_nacimiento;
+                           var correo = data.OV_ASPIRANTE.correo;
+                           var nov = data.OV_ASPIRANTE.nov;
+
+                           $("#modalNov").show();
+                           $("#modalCarne").hide();
+
+                          document.getElementById('nombres').textContent = nombres + " " + apellidos;
+                          document.getElementById("fechaNacimiento").value = fechaNacimiento;
+                          document.getElementById("correo").value = correo;
+                          document.getElementById('nov').textContent = nov;
+
+                             modal.style.display = "block";
+
+                             setCookie('api-nombre', nombres, 1);
+                             setCookie('api-apellido', apellidos, 1);
+                             setCookie('api-novCarne', nov, 1);
+                           }
+
+                     }
+
+                 },
+                 error: function (response) {
+                   alertify.set('notifier','position', 'bottom-center');
+                   alertify.error("error en la conexión");
+                     }
+               });
             }
-            else{
-              var nombres = data.OV_ASPIRANTE.nombres;
-              var apellidos = data.OV_ASPIRANTE.apellidos;
-              var fechaNacimiento = data.OV_ASPIRANTE.fecha_nacimiento;
-              var correo = data.OV_ASPIRANTE.correo;
-              var nov = data.OV_ASPIRANTE.nov;
+          },
+          error: function (response) {
+           window.location.href = "index.html";
+          }
+      });
 
-              $("#modalNov").show();
-              $("#modalCarne").hide();
 
-             document.getElementById('nombres').textContent = nombres + " " + apellidos;
-             document.getElementById("fechaNacimiento").value = fechaNacimiento;
-             document.getElementById("correo").value = correo;
-             document.getElementById('nov').textContent = nov;
 
-                modal.style.display = "block";
-
-                setCookie('api-nombre', nombres, 1);
-                setCookie('api-apellido', apellidos, 1);
-                setCookie('api-novCarne', nov, 1);
-              }
-
-        }
-
-    },
-    error: function (response) {
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("error en la conexión");
-        }
-  });
 }
 
 }
