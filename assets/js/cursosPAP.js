@@ -114,7 +114,7 @@ $("#generarBoletaCursos").on('click', function () {
 
 if(costoTotal == 0){
   alertify.set('notifier','position', 'bottom-center');
-  alertify.warning("Debes seleccionar al menos un curso para poder genera la boleta de pago.");
+  alertify.warning("Debes seleccionar al menso un curso para poder genera la boleta de pago.");
 } else {
 
   $.each($("input[name='cursoCheck']:checked"), function(){
@@ -123,11 +123,7 @@ if(costoTotal == 0){
 
   });
 
-<<<<<<< HEAD
-  //crearBoletaPago();
-=======
   generarBoleta();
->>>>>>> test
 
 }
 
@@ -211,7 +207,7 @@ function insertarPreasignacion(curso){
 }
 
 
-/////////////////////////////////verificar estado de pago crearBoletaPago
+/////////////////////////////////verificar estado de pago
 
 function verificarEstadoPago(){
   $.ajax({
@@ -223,35 +219,6 @@ function verificarEstadoPago(){
        success: function (data) {
        console.log(data.boleta);
 
-<<<<<<< HEAD
-       if(data.boleta != null){
-         if(data.boleta.estado === 0){
-            ////////
-            setCookie('api-novBP', data.boleta.nov, 1);
-            setCookie('api-nombreBP', data.boleta.nombre, 1);
-            setCookie('api-numBP', data.boleta.num_boleta, 1);
-            setCookie('api-correlativoBP', data.boleta.correlativo, 1);
-            setCookie('api-totalBP', data.boleta.total, 1);
-            setCookie('api-fechaBP', data.boleta.fecha_emision, 1);
-            setCookie('api-llaveBP', data.boleta.llave, 1);
-
-            window.location.href = "boletaPago.html";
-          }
-          else if (data.boleta[0].estado === 1) {
-            window.location.href = "asignacionPAP.html";
-          }
-          else {
-            //console.log("elimino la boleta y asignacion o no se a preasignado");
-          }
-
-       }
-       else {
-         console.log("entrealelse");
-       }
-
-
-
-=======
 
        if(data.boleta != null){
 
@@ -301,7 +268,6 @@ function verificarEstadoPago(){
        }
 
 
->>>>>>> test
      },
      error: function (response) {
        alertify.set('notifier','position', 'bottom-center');
