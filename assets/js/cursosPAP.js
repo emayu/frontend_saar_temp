@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
 $("#menuAE").load("menu.html");
 costoTotal = 0;
 /*
@@ -43,11 +44,10 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
   //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
-  '<br><b>Carné: '+novCarne+'</b></a>';
+  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
 }
 
-verificarEstadoPago();
+adAsignacion();
 
 });
 /*
@@ -56,6 +56,40 @@ $(document).ready(function () {
 alert($(":checkbox:checked").length);
 
 });*/
+
+//////////asignacion activa o desactivada
+function adAsignacion() {
+  let date = new Date();
+let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+
+
+ $.ajax({
+      type: 'GET',
+      url:  dominio + "AllFechaBoleta/",
+      contentType: "application/json",
+      dataType: 'json',
+      async: false,
+      success: function (data) {
+    //  console.log(data.fecha[0].fecha);
+
+      if(data.fecha[0].fecha >= fechaActual)
+      {
+        verificarEstadoPago();
+      }
+      else {
+        document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+        $("#seleccionCursos").hide();
+        $("#generarBoletaCursos").hide();
+      }
+
+
+    },
+    error: function (response) {
+      alertify.set('notifier','position', 'bottom-center');
+      alertify.error("Usuario o Contraseña Incorrecto!");
+        }
+  });
+}
 
 
 $('input[type=checkbox]').on('change', function() {
@@ -89,9 +123,61 @@ if(costoTotal == 0){
 
   });
 
+<<<<<<< HEAD
   //crearBoletaPago();
+=======
+  generarBoleta();
+>>>>>>> test
 
 }
+
+function generarBoleta() {
+
+  var nombre = "";
+
+  var currentTime = new Date();
+  var year = currentTime.getFullYear()
+
+  if(novCarne.length === 10){
+    nombre = nombres +' ' + apellidos;
+  }
+  else if(novCarne.length >= 1 && novCarne.length <= 9){
+    nombre = nombreCompleto;
+  }
+
+  data = JSON.stringify({
+  carnet: novCarne,
+  unidad: 29,
+  extension: 0,
+  carrera: 0,
+  nombre: nombre,
+  monto: costoTotal,
+  anio_temporada: year,
+  id_rubro: '8',
+  id_variante_rubro: '1',
+  subotal: costoTotal,
+})
+
+  $.ajax({
+       type: 'POST',
+       url: dominio + 'generarBoleta',
+       contentType: "application/json",
+       dataType: 'json',
+       crossDomain: true,
+       async: false,
+       data: data,
+       success: function (response) {
+
+          location.reload();
+
+       },
+       error: function (response) {
+         //  window.location.href = "index.html";
+       }
+   });
+
+}
+
 
 });
 
@@ -137,6 +223,7 @@ function verificarEstadoPago(){
        success: function (data) {
        console.log(data.boleta);
 
+<<<<<<< HEAD
        if(data.boleta != null){
          if(data.boleta.estado === 0){
             ////////
@@ -164,10 +251,61 @@ function verificarEstadoPago(){
 
 
 
+=======
+
+       if(data.boleta != null){
+
+         var novBoleta = data.boleta.nov;
+         var nombreBoleta = data.boleta.nombre;
+         var numeroBoleta = data.boleta.num_boleta;
+         var correlativo = data.boleta.correlativo;
+         var totalBoleta = data.boleta.total;
+         var fechaEmision = data.boleta.fecha_emision;
+         var llave = data.boleta.llave;
+
+         $.ajax({
+              type: 'GET',
+              url:  dominio + "boleta/" + novCarne + "/" + numeroBoleta,
+              contentType: "application/json",
+              dataType: 'json',
+              async: false,
+              success: function (data) {
+              console.log(data.message);
+
+              if(data.message === 'no ha pagado'){
+               setCookie('api-novBP', novBoleta, 1);
+               setCookie('api-nombreBP', nombreBoleta, 1);
+               setCookie('api-numBP', numeroBoleta, 1);
+               setCookie('api-correlativoBP', correlativo, 1);
+               setCookie('api-totalBP', totalBoleta, 1);
+               setCookie('api-fechaBP', fechaEmision, 1);
+               setCookie('api-llaveBP', llave, 1);
+
+                window.location.href = "boletaPago.html";
+
+              }
+              else{
+
+                window.location.href = "asignacionPAP.html";
+
+              }
+            },
+            error: function (response) {
+              alertify.set('notifier','position', 'bottom-center');
+              alertify.error("error de conexión");
+                }
+          });
+       }
+       else {
+         //console.log("else");
+       }
+
+
+>>>>>>> test
      },
      error: function (response) {
        alertify.set('notifier','position', 'bottom-center');
-       alertify.error("Usuario o Contraseña Incorrecto!");
+       alertify.error("error de conexión");
          }
    });
 }
