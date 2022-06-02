@@ -336,7 +336,7 @@ function verificarResultado(){
       else
       {
         alertify.set('notifier','position', 'bottom-center');
-        alertify.warning("La unidad académica seleccionada no cuenta con salón, comunicate a nuestras redes sociales para verificar");
+        alertify.warning("La unidad académica seleccionada no cuenta con salón,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte"");
         document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
         $(".botonAsignar").on('click', function () {
