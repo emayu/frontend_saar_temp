@@ -65,14 +65,14 @@ let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStar
 
  $.ajax({
       type: 'GET',
-      url:  dominio + "AllFechaBoleta/",
+      url:  dominio + "fechaId/1",
       contentType: "application/json",
       dataType: 'json',
       async: false,
       success: function (data) {
-    //  console.log(data.fecha[0].fecha);
+      //console.log(data.fecha.fecha);
 
-      if(data.fecha[0].fecha >= fechaActual)
+      if(data.fecha.fecha >= fechaActual)
       {
         verificarEstadoPago();
       }
@@ -246,7 +246,7 @@ function verificarEstadoPago(){
        dataType: 'json',
        async: false,
        success: function (data) {
-       console.log(data.boleta);
+       //console.log(data.boleta);
 
 
        if(data.boleta != null){
@@ -259,38 +259,44 @@ function verificarEstadoPago(){
          var fechaEmision = data.boleta.fecha_emision;
          var llave = data.boleta.llave;
 
-         $.ajax({
-              type: 'GET',
-              url:  dominio + "boleta/" + novCarne + "/" + numeroBoleta,
-              contentType: "application/json",
-              dataType: 'json',
-              async: false,
-              success: function (data) {
-              console.log(data.message);
+         if(data.boleta.estado === 1){
+           window.location.href = "asignacionPAP.html";
+         }
+         else {
+           $.ajax({
+                   type: 'GET',
+                   url:  dominio + "boleta/" + novCarne + "/" + numeroBoleta,
+                   contentType: "application/json",
+                   dataType: 'json',
+                   async: false,
+                   success: function (data) {
+                  // console.log(data.message);
 
-              if(data.message === 'no ha pagado'){
-               setCookie('api-novBP', novBoleta, 1);
-               setCookie('api-nombreBP', nombreBoleta, 1);
-               setCookie('api-numBP', numeroBoleta, 1);
-               setCookie('api-correlativoBP', correlativo, 1);
-               setCookie('api-totalBP', totalBoleta, 1);
-               setCookie('api-fechaBP', fechaEmision, 1);
-               setCookie('api-llaveBP', llave, 1);
+                   if(data.message === 'no ha pagado'){
+                    setCookie('api-novBP', novBoleta, 1);
+                    setCookie('api-nombreBP', nombreBoleta, 1);
+                    setCookie('api-numBP', numeroBoleta, 1);
+                    setCookie('api-correlativoBP', correlativo, 1);
+                    setCookie('api-totalBP', totalBoleta, 1);
+                    setCookie('api-fechaBP', fechaEmision, 1);
+                    setCookie('api-llaveBP', llave, 1);
 
-                window.location.href = "boletaPago.html";
+                     window.location.href = "boletaPago.html";
 
-              }
-              else{
+                   }
+                   else{
 
-                window.location.href = "asignacionPAP.html";
+                     window.location.href = "asignacionPAP.html";
 
-              }
-            },
-            error: function (response) {
-              alertify.set('notifier','position', 'bottom-center');
-              alertify.error("error de conexión");
-                }
-          });
+                   }
+                 },
+                 error: function (response) {
+                   alertify.set('notifier','position', 'bottom-center');
+                   alertify.error("error de conexión al Siif");
+                     }
+               });
+         }
+
        }
        else {
          //console.log("else");
