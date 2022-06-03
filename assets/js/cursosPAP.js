@@ -178,7 +178,7 @@ function generarBoleta() {
   nombre: nombre,
   monto: costoTotal,
   anio_temporada: year,
-  id_rubro: '8',
+  id_rubro: '14',
   id_variante_rubro: '1',
   subotal: costoTotal,
 })
