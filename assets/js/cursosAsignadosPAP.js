@@ -58,7 +58,7 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 }
 
 
-verificarAsignacion();
+adAsignacion();
 //buscarCursosPagados();
 
 });
@@ -68,6 +68,44 @@ var datosAsignacion = [];
 //////////hacer consulta de Resultados
 
 //////////////buscar resultados si ya esta asignado
+
+function adAsignacion() {
+  let date = new Date();
+let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+
+
+ $.ajax({
+      type: 'GET',
+      url:  dominio + "fechaId/2",
+      contentType: "application/json",
+      dataType: 'json',
+      async: false,
+      success: function (data) {
+      //console.log(data.fecha.fecha);
+
+      if(data.fecha.fecha >= fechaActual){
+        verificarAsignacion();
+      }
+      else {
+
+        fechaLimiteConstancia = data.fecha.fecha.split("-");
+        diasMas = parseInt(fechaLimiteConstancia[2]) + 10;
+        fechaVistaConstancia = diasMas +"/"+ fechaLimiteConstancia[1]+"/"+ fechaLimiteConstancia[0];
+
+         document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+         //document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> La constancia estará disponible a partir de '+ fechaVistaConstancia +'</strong></a>';
+
+      }
+
+
+    },
+    error: function (response) {
+      alertify.set('notifier','position', 'bottom-center');
+      alertify.error("error en la conexión");
+        }
+  });
+}
+
 
 function verificarAsignacion(){
 
