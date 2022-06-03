@@ -43,14 +43,14 @@ document.getElementById("llave").innerHTML = llaveBP;
 function fechaExpiracion(){
   $.ajax({
        type: 'GET',
-       url:  dominio + "AllFechaBoleta" ,
+       url:  dominio + "fechaId/1",
        contentType: "application/json",
        dataType: 'json',
        async: false,
        success: function (data) {
       //console.log(data.fecha[0].fecha);
 
-        fechaBoletaExpiracion = data.fecha[0].fecha.split("-");
+        fechaBoletaExpiracion = data.fecha.fecha.split("-");
         fechaBoletaVistaExpiracion = fechaBoletaExpiracion[2] +"/"+ fechaBoletaExpiracion[1]+"/"+ fechaBoletaExpiracion[0];
         document.getElementById("limite").innerHTML = '** El documento es válido para su pago únicamente hasta el día ' +fechaBoletaVistaExpiracion+ '.**';
      },
@@ -114,7 +114,7 @@ function printBoleta() {
   const original  = document.body.innerHTML;
   document.body.innerHTML = printContenido;*/
 
-    console.log('hola mundo');
+  //  console.log('hola mundo');
     window.print();
     //document.body.innerHTML = original;
 
