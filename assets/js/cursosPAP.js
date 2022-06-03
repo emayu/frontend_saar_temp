@@ -292,7 +292,7 @@ function verificarEstadoPago(){
                  },
                  error: function (response) {
                    alertify.set('notifier','position', 'bottom-center');
-                   alertify.error("error de conexión al Siif");
+                   alertify.error("error de conexión al sistema de generación de boleta de pagos, intenta más tarde.");
                      }
                });
          }
