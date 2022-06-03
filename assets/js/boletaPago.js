@@ -1,8 +1,15 @@
 $(document).ready(function () {
 
+//14335456
 $("#menuAE").load("menu.html");
-
+alertify.set('notifier','position', 'bottom-center');
+var duration = 15;
+var msg = alertify.warning('La boleta aún no ha sido reportada como pagada, debes esperar un estimado de una hora para poder continuar con tu asignación. ', 15, function(){ clearInterval(interval);});
+var interval = setInterval(function(){
+        msg.setContent('La boleta aún no ha sido reportada como pagada, debes esperar un estimado de una hora para poder continuar con tu asignación. ');
+      },1000);
 fechaExpiracion();
+buscarCursosPAP();
 
 //////////7llenar bp
 document.getElementById("no").innerHTML = numBP;
@@ -49,7 +56,55 @@ function fechaExpiracion(){
      },
      error: function (response) {
        alertify.set('notifier','position', 'bottom-center');
-       alertify.error("Usuario o Contraseña Incorrecto!");
+       alertify.error("error de conexión");
+         }
+   });
+}
+
+var materias = [];
+
+function buscarCursosPAP(){
+  $.ajax({
+       type: 'GET',
+       url:  dominio + "papPreasignacionNov/" + novCarne,
+       contentType: "application/json",
+       dataType: 'json',
+       async: false,
+       success: function (data) {
+
+        // console.log(data.PAPPREASIGNACION[0].id_materia);
+
+         for(i=0; i<data.PAPPREASIGNACION.length; i++){
+
+           if(data.PAPPREASIGNACION[i].id_materia === 1){
+            // console.log("BIOLOGÍA");
+             materias.push (" BIOLOGÍA");
+           }
+           else if(data.PAPPREASIGNACION[i].id_materia === 2){
+            // console.log("FÍSICA");
+             materias.push (" FÍSICA");
+           }
+           else if(data.PAPPREASIGNACION[i].id_materia === 3){
+          //   console.log("LENGUAJE");
+             materias.push (" LENGUAJE");
+           }
+           else if(data.PAPPREASIGNACION[i].id_materia === 4){
+            // console.log("MATEMÁTICA");
+             materias.push (" MATEMÁTICA");
+           }
+           else if(data.PAPPREASIGNACION[i].id_materia === 5){
+          //   console.log("QUÍMICA");
+             materias.push (" QUÍMICA");
+           }
+         }
+
+         //console.log(materias);
+         document.getElementById("materias").innerHTML = '4. Boleta generada para los cursos del PAP de Conocimientos Básicos: ' + materias;
+
+  },
+     error: function (response) {
+       alertify.set('notifier','position', 'bottom-center');
+       alertify.error("error de conexión");
          }
    });
 }
