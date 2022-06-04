@@ -112,7 +112,7 @@ else if(cuenta==1){
           crossDomain: true,
           async: false,
           success: function (response) {
-            console.log(response.USAC_ESTUDIANTE.length);
+          
             if (response.USAC_ESTUDIANTE.length > 0) {
               alertify.set('notifier','position', 'bottom-center');
               alertify.error("Como estudiante no puedes crear perfil de aspirante, debes crear tu perfil de estudiante, si ya lo tienes creado debes iniciar sesión.");
