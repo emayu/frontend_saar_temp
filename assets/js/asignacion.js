@@ -322,30 +322,71 @@ function verificarResultado(){
     })
 
     .done(function(data) {
+      var cantidadMaterias = 0;
+      $.ajax({
+           type: 'GET',
+           url:  dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
+           contentType: "application/json",
+           dataType: 'json',
+           async: false,
+           success: function (data) {
+            // console.log(data.materias.length);
+         //  console.log(data.contador[0].count);
+            cantidadMaterias = data.materias.length;
 
-      cupoAsignacion.length = 0;
 
-      if(data.DETALLEFACULTAD.length > 0) {
+         },
+         error: function (response) {
+           alertify.set('notifier','position', 'bottom-center');
+           alertify.error("Error de conexión");
+             }
+       });
+       ///console.log(cantidadMaterias);
+       ///console.log(data.DETALLEFACULTAD.length);
 
-        for (i = 0; i < data.DETALLEFACULTAD.length; i++){
-          //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
-            buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
-        }
+       if(cantidadMaterias === data.DETALLEFACULTAD.length){
+         cupoAsignacion.length = 0;
 
-      }
-      else
-      {
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.warning("La unidad académica seleccionada no cuenta con salón,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte");
-        document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+         if(data.DETALLEFACULTAD.length > 0) {
 
-        $(".botonAsignar").on('click', function () {
-        verificarResultado();
-        verificarCupo();
+           for (i = 0; i < data.DETALLEFACULTAD.length; i++){
+             //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
+               buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
+           }
 
-        });
-      }
+         }
+         else
+         {
+           alertify.set('notifier','position', 'bottom-center');
+           var duration = 15;
+           var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
+           var interval = setInterval(function(){
+                   msg.setContent('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
+                 },1000);
+           document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
+           $(".botonAsignar").on('click', function () {
+           verificarResultado();
+           verificarCupo();
+
+           });
+         }
+       }
+       else {
+         alertify.set('notifier','position', 'bottom-center');
+         var duration = 15;
+         var msg = alertify.warning('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
+         var interval = setInterval(function(){
+                 msg.setContent('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
+               },1000);
+         document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+
+         $(".botonAsignar").on('click', function () {
+         verificarResultado();
+         verificarCupo();
+
+         });
+       }
 
 })
 
@@ -474,7 +515,7 @@ for(i = 0; i < cupoAsignacion.length; i++) {
 
 if(contadorCUpo > 0){
   alertify.set('notifier','position', 'bottom-center');
-  alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
+  alertify.error("No se puede asignar en este momento, espacio no disponible en esta unidad académica. Comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
   $('#btnAsignar').html("");
 }
 else {
