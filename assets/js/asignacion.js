@@ -349,7 +349,11 @@ function verificarResultado(){
           }
           else
           {
+<<<<<<< HEAD
           /*  alertify.set('notifier','position', 'bottom-center');
+=======
+            /*alertify.set('notifier','position', 'bottom-center');
+>>>>>>> test
             var duration = 15;
             var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
             var interval = setInterval(function(){
