@@ -58,7 +58,66 @@ alert($(":checkbox:checked").length);
 });*/
 
 //////////asignacion activa o desactivada
-function adAsignacion() {
+function adAsignacion(){
+
+  $.ajax({
+       type: 'GET',
+       url:  dominio + "examenLimite/2",
+       contentType: "application/json",
+       dataType: 'json',
+       async: false,
+       success: function (data) {
+       //console.log(data.fecha.fecha);
+
+
+       if(data.examen.activo === 1){
+         verificarEstadoPago();
+       }
+       else {
+         $.ajax({
+              type: 'GET',
+              url:  dominio + "boletaPagada/" + novCarne,
+              contentType: "application/json",
+              dataType: 'json',
+              async: false,
+              success: function (data) {
+            //  console.log(data.fecha[0].fecha);
+
+              if(data.boleta != null){
+               if(data.boleta.estado === 1){
+                 window.location.href = "asignacionPAP.html";
+               }
+               else {
+                 document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+                 $("#seleccionCursos").hide();
+                 $("#generarBoletaCursos").hide();
+               }
+              }
+              else {
+                document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+                $("#seleccionCursos").hide();
+                $("#generarBoletaCursos").hide();
+              }
+
+            },
+            error: function (response) {
+              alertify.set('notifier','position', 'bottom-center');
+              alertify.error("error en la conexión");
+                }
+          });
+
+       }
+
+
+     },
+     error: function (response) {
+       alertify.set('notifier','position', 'bottom-center');
+       alertify.error("error en la conexión");
+         }
+   });
+
+}
+/*function adAsignacion() {
   let date = new Date();
 let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
 
@@ -118,7 +177,8 @@ let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStar
       alertify.error("error en la conexión");
         }
   });
-}
+}*/
+
 
 
 $('input[type=checkbox]').on('change', function() {
