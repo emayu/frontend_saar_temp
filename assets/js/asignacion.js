@@ -304,6 +304,94 @@ cupoAsignacion = [];
 /////////buscar resultados
 
 function verificarResultado(){
+  idCentro = $("#selbox").val();
+  idFacultad = $("#selFacultad").val();
+  $.ajax({
+       type: 'GET',
+       url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro,
+       contentType: "application/json",
+       dataType: 'json',
+       async: false,
+       success: function (data) {
+       //console.log(data.DETALLEFACULTAD);
+       var cantidadMaterias = 0;
+       $.ajax({
+            type: 'GET',
+            url:  dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
+            contentType: "application/json",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+             // console.log(data.materias.length);
+          //  console.log(data.contador[0].count);
+             cantidadMaterias = data.materias.length;
+
+
+          },
+          error: function (response) {
+            alertify.set('notifier','position', 'bottom-center');
+            alertify.error("Error de conexión");
+              }
+        });
+        ///console.log(cantidadMaterias);
+        ///console.log(data.DETALLEFACULTAD.length);
+
+        if(cantidadMaterias === data.DETALLEFACULTAD.length){
+          cupoAsignacion.length = 0;
+
+          if(data.DETALLEFACULTAD.length > 0) {
+
+            for (i = 0; i < data.DETALLEFACULTAD.length; i++){
+              //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
+                buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
+            }
+
+          }
+          else
+          {
+            alertify.set('notifier','position', 'bottom-center');
+            var duration = 15;
+            var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
+            var interval = setInterval(function(){
+                    msg.setContent('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
+                  },1000);
+            document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+
+            $(".botonAsignar").on('click', function () {
+            verificarResultado();
+            verificarCupo();
+
+            });
+          }
+        }
+        else {
+          alertify.set('notifier','position', 'bottom-center');
+          var duration = 15;
+          var msg = alertify.warning('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
+          var interval = setInterval(function(){
+                  msg.setContent('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
+                },1000);
+          document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+
+          $(".botonAsignar").on('click', function () {
+          verificarResultado();
+          verificarCupo();
+
+          });
+        }
+
+
+     },
+     error: function (response) {
+       alertify.set('notifier','position', 'bottom-center');
+       alertify.error("Debes de seleccionar Facultad");
+         }
+   });
+
+
+}
+/*
+function verificarResultado(){
 
 
   idCentro = $("#selbox").val();
@@ -398,7 +486,7 @@ function verificarResultado(){
 });
 
 
-}
+}*/
 /*function verificarResultado(){
 
 
