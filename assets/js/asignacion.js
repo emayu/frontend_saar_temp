@@ -74,19 +74,19 @@ function adAsignacion() {
 
  $.ajax({
       type: 'GET',
-      url:  dominio + "examen/",
+      url:  dominio + "examenLimite/1",
       contentType: "application/json",
       dataType: 'json',
       async: false,
       success: function (data) {
       //console.log(data.examen[0].activo);
 
-      if(data.examen[0].activo === 1)
+      if(data.examen.activo === 1)
       {
         verificarResultadoAsignacion();
       }
       else {
-        document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> '+ data.examen[0].mensaje +'</strong></a>';
+        document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> '+ data.examen.mensaje +'</strong></a>';
 
       }
 
