@@ -632,7 +632,7 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
           },1000);*/
           $("#selCentros").hide();
           $("#selFacultades").hide();
-          $('#btnAsignar').html("<p>cargando...</p><img src='assets/img/cargando.gif' />");
+          $('#btnAsignar').html("<p>Espera un momento, se está generando tu constancia de asignación a PCB.</p><p>cargando...</p><img src='assets/img/cargando.gif' />");
 
        },
        error: function (response) {
