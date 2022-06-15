@@ -542,13 +542,8 @@ $.ajax({
 
         }
 
-        document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+        document.getElementById("btnAsignar").innerHTML = '';
 
-        $(".botonAsignar").on('click', function () {
-        verificarResultado();
-        verificarCupo();
-
-        });
       }
 
 
