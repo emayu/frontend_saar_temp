@@ -437,7 +437,7 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
         alertify.set('notifier','position', 'bottom-center');
         alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
       }*/
-cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
+cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
 
 
     },
