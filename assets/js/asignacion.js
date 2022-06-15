@@ -437,13 +437,22 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
         alertify.set('notifier','position', 'bottom-center');
         alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
       }*/
-cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
+      if(novCarne.length === 10){
+
+        cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
+
+      }
+      else if(novCarne.length >= 1 && novCarne.length <= 9){
+
+      cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
+
+      }
 
 
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("error de conexión");
         }
   });
 
@@ -479,9 +488,15 @@ else {
     buscarResultado(cupoAsignacion[i][0], cupoAsignacion[i][1], cupoAsignacion[i][2], cupoAsignacion[i][3], cupoAsignacion[i][4], cupoAsignacion[i][6]);
 
   }
-  location.reload();
+
+  //location.reload();
+  setTimeout(recargar, 10000);
 }
 
+}
+
+function recargar(){
+  location.reload();
 }
 
 function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, contadorAsignado, fechaExamen){
@@ -502,8 +517,31 @@ $.ajax({
 
       }
       else{
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.warning("Ya has ganado los requisitos, ve al menú de Resultados para descargar la constancia.");
+        if(idMateria === 1){
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Ya has ganado el requisito BIOLOGÍA, ve al menú de Resultados para descargar la constancia.");
+        }
+        else if (idMateria === 2) {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Ya has ganado el requisito FÍSICA, ve al menú de Resultados para descargar la constancia.");
+
+        }
+        else if (idMateria === 3) {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Ya has ganado el requisito LENGUAJE, ve al menú de Resultados para descargar la constancia.");
+
+        }
+        else if (idMateria === 4) {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Ya has ganado el requisito MATEMÁTICA, ve al menú de Resultados para descargar la constancia.");
+
+        }
+        else if (idMateria === 5) {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Ya has ganado el requisito QUÍMICA, ve al menú de Resultados para descargar la constancia.");
+
+        }
+
         document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
         $(".botonAsignar").on('click', function () {
@@ -587,13 +625,14 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
           alertify.set('notifier','position', 'bottom-center');
           //alertify.success("El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia.", 'custom', 18, function(){});
 
-          var duration = 15;
+        /*  var duration = 15;
           var msg = alertify.success('El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia. ', 15, function(){ clearInterval(interval);});
           var interval = setInterval(function(){
              msg.setContent('El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia. ');
-          },1000);
+          },1000);*/
           $("#selCentros").hide();
           $("#selFacultades").hide();
+          $('#btnAsignar').html("<p>cargando...</p><img src='assets/img/cargando.gif' />");
 
        },
        error: function (response) {
