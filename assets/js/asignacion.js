@@ -490,7 +490,7 @@ else {
   }
 
   //location.reload();
-  setTimeout(recargar, 10000);
+  setTimeout(recargar, 7000);
 }
 
 }
