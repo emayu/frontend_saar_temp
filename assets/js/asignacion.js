@@ -81,7 +81,7 @@ function adAsignacion() {
       success: function (data) {
       //console.log(data.examen[0].activo);
 
-      if(data.examen.activo === 1 || novCarne === '202100000' || novCarne === '2022000000')
+      if(data.examen.activo === 1)
       {
         verificarResultadoAsignacion();
       }
@@ -140,8 +140,8 @@ function facultades() {
 
 //////////////buscar resultados si ya esta asignado
 
-function verificarResultadoAsignacion(){
 
+function verificarResultadoAsignacion(){
 
  $.ajax({
       type: 'GET',
@@ -153,6 +153,11 @@ function verificarResultadoAsignacion(){
     //console.log(data);
 
     if(data.asignaciones.length > 0){
+
+      $("#selCentros").hide();
+      $("#selFacultades").hide();
+      $("#visorPDF").show();
+
 
       for (i = 0; i < data.asignaciones.length; i++){
 
@@ -191,19 +196,20 @@ function verificarResultadoAsignacion(){
             pdf.text(50, 90, "CONSTANCIA DE ASIGNACIÓN DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
-            if(novCarne.length === 10){
+
+            if(novCarne.toString().length === 10){
               pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
-              pdf.text(40,145,"NOV: " + novCarne );
-              risa = myCipher(novCarne);
+              pdf.text(40,145,"NOV: " + novCarne.toString() );
+              risa = myCipher(novCarne.toString());
             }
-            else if(novCarne.length >= 1 && novCarne.length <= 9){
+            else if(novCarne.toString().length >= 1 && novCarne.toString().length <= 9){
               pdf.text(40,125,"Nombre: " + nombreCompleto);
-              pdf.text(40,145,"Carné: " + novCarne );
-              risa = myCipher(novCarne);
+              pdf.text(40,145,"Carné: " + novCarne.toString() );
+              risa = myCipher(novCarne.toString());
             }
 
-            fechaNa =  fechaNacimiento.split("-");
-            fechaNac = fechaNa[2] +"/"+ fechaNa[1]+"/"+ fechaNa[0];
+            var fechaNa =  fechaNacimiento.split("-");
+            var fechaNac = fechaNa[2] +"/"+ fechaNa[1]+"/"+ fechaNa[0];
 
             pdf.text(40,165,"Fecha de Nacimiento: " + fechaNac);
             pdf.text(40,185,"Estudiará en: " + centroConstancia);
@@ -226,9 +232,11 @@ function verificarResultadoAsignacion(){
             pdf.text(40,520,"** IMPORTANTE**");
             pdf.text(160,645,"Instrucciones y Recomendaciones");
 
+
             var fechajs = new Date();
             const tiempoTranscurrido = Date.now();
             const hoy = new Date(tiempoTranscurrido);
+            console.log(hoy.toLocaleDateString());
             pdf.setFontSize(9).setFont(undefined, 'normal');
             pdf.text(524,10,hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
 
@@ -268,25 +276,27 @@ function verificarResultadoAsignacion(){
 
         /////////////////////////////////////////////////
 
-        //pdf.save(novCarne + '.pdf');
+        //pdf.save(carneEmpleado + '.pdf');
         var out = pdf.output();
         //  console.log(out);
           var url = 'data:application/pdf;base64,' + btoa(out);
-
-        PDFObject.embed('data:application/pdf;base64,' + btoa(out), '#visorPDF');
+          //console.log(url);
+      //  PDFObject.embed('data:application/pdf;base64,' + btoa(out), '#visorPDF');
 
         //console.log(datosAsignacion);
       //  $('#pPDf').attr('src', url)
-    // document.getElementById("visorPDF").innerHTML ='<iframe src="' +url+ ' #view=fitH" width= "70%" height="100%"></iframe>';
+    document.getElementById("visorPDF").innerHTML ='<iframe src="' +url+ ' #view=fitH" width= "70%" height="100%"></iframe>';
     document.getElementById("visorPDF").innerHTML ='<object data="' +url+ '" type="application/pdf" width= "100%" height="100%"> <p> El navegador web de tu Teléfono Móvil no soporta visualizar el pdf de tu constancia de asignación, pero la puedes <a href="'+url+'"> Descargar aquí</a></p> </object>';
 
 
     } else {
-      $("#selCentros").show();
-      $("#selFacultades").show();
-        $("#visorPDF").hide();
 
-      document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+       alertify.set('notifier','position', 'bottom-center');
+       $("#selCentros").show();
+       $("#selFacultades").show();
+       $("#visorPDF").hide();
+       document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+
 
     }
 
@@ -294,103 +304,19 @@ function verificarResultadoAsignacion(){
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Error de conexión");
+      alertify.error("Usuario o Contraseña Incorrecto!");
         }
   });
 
 }
 
+
+//////////////////////////
+
+
+////////////////////////verificar resultado y cupo para Asignar
 cupoAsignacion = [];
 /////////buscar resultados
-
-function verificarResultado(){
-  idCentro = $("#selbox").val();
-  idFacultad = $("#selFacultad").val();
-  $.ajax({
-       type: 'GET',
-       url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro,
-       contentType: "application/json",
-       dataType: 'json',
-       async: false,
-       success: function (data) {
-       //console.log(data.DETALLEFACULTAD);
-       var cantidadMaterias = 0;
-       $.ajax({
-            type: 'GET',
-            url:  dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
-            contentType: "application/json",
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-             // console.log(data.materias.length);
-          //  console.log(data.contador[0].count);
-             cantidadMaterias = data.materias.length;
-
-
-          },
-          error: function (response) {
-            alertify.set('notifier','position', 'bottom-center');
-            alertify.error("Error de conexión");
-              }
-        });
-        ///console.log(cantidadMaterias);
-        ///console.log(data.DETALLEFACULTAD.length);
-
-        if(cantidadMaterias === data.DETALLEFACULTAD.length){
-          cupoAsignacion.length = 0;
-
-          if(data.DETALLEFACULTAD.length > 0) {
-
-            for (i = 0; i < data.DETALLEFACULTAD.length; i++){
-              //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
-                buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
-            }
-
-          }
-          else
-          {
-          /*  alertify.set('notifier','position', 'bottom-center');
-            var duration = 15;
-            var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
-            var interval = setInterval(function(){
-                    msg.setContent('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
-                  },1000);
-            document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
-
-            $(".botonAsignar").on('click', function () {
-            verificarResultado();
-            verificarCupo();
-
-          });*/
-          }
-        }
-        else {
-        /*  alertify.set('notifier','position', 'bottom-center');
-          var duration = 15;
-          var msg = alertify.warning('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
-          var interval = setInterval(function(){
-                  msg.setContent('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
-                },1000);
-          document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
-
-          $(".botonAsignar").on('click', function () {
-          verificarResultado();
-          verificarCupo();
-
-        });*/
-        }
-
-
-     },
-     error: function (response) {
-       alertify.set('notifier','position', 'bottom-center');
-       alertify.error("Debes de seleccionar Facultad");
-         }
-   });
-
-
-}
-/*
 function verificarResultado(){
 
 
@@ -485,72 +411,9 @@ function verificarResultado(){
     //
 });
 
+}
 
-}*/
-/*function verificarResultado(){
-
-
-  idCentro = $("#selbox").val();
-  idFacultad = $("#selFacultad").val();
-
- $.ajax({
-      type: 'GET',
-      url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro,
-      contentType: "application/json",
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-      //console.log(data.DETALLEFACULTAD);
-      cupoAsignacion.length = 0;
-      for (i = 0; i < data.DETALLEFACULTAD.length; i++){
-        //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
-          buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
-      }
-
-
-    },
-    error: function (response) {
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Debes de seleccionar Facultad");
-        }
-  });
-
-}*/
-
-////////////////7buscarAsignacion/////////////////
-/*
-function buscarAsignacion(fechaExamen, idMateria, idDetalleSalon, cupo, idSalon){
-
- $.ajax({
-      type: 'GET',
-      url:  dominio + "asignacion/" + novCarne + "/" + fechaExamen,
-      contentType: "application/json",
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-      //console.log(data);
-
-      if(data.asignado.length === 0){
-        ////////buscar en la tabla de resultados si ya gano o no la materia
-        buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria);
-      }
-      else{
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.warning("Ya te has asingado.");
-      }
-
-
-    },
-    error: function (response) {
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
-        }
-  });
-
-}*/
-
-//////////////buscar cupo en salon por asignacion
-
+///////////buscar cupo en los salones que se quiere asignar
 function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
 
  $.ajax({
@@ -563,26 +426,29 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
     //    console.log(idDetalleSalon);
     //  console.log(data.contador[0].count);
 
-      if(novCarne.length === 10){
+    /*  if(data.contador[0].count <= cupo){
+        ////////insertar en la tabla asignacion
 
-        cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
-
-      }
-      else if(novCarne.length >= 1 && novCarne.length <= 9){
-
-      cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
+          //buscarResultado(idMateria, idDetalleSalon, novCarne, 0, data.contador[0].count, fechaExamen);
+          cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
 
       }
+      else{
+        alertify.set('notifier','position', 'bottom-center');
+        alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
+      }*/
+cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
 
 
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Error de conexión");
+      alertify.error("Usuario o Contraseña Incorrecto!");
         }
   });
 
 }
+
 
 function verificarCupo(){
 
@@ -613,15 +479,14 @@ else {
     buscarResultado(cupoAsignacion[i][0], cupoAsignacion[i][1], cupoAsignacion[i][2], cupoAsignacion[i][3], cupoAsignacion[i][4], cupoAsignacion[i][6]);
 
   }
+  location.reload();
 }
 
 }
-
-//////////////////////buscar en la tabla de resultados
 
 function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, contadorAsignado, fechaExamen){
 
- $.ajax({
+$.ajax({
       type: 'GET',
       url:  dominio + "resultadoPorAsignacionNC/" + novOCarne + "/" + novEstudiante + "/" + idMateria + "/1",
       contentType: "application/json",
@@ -646,8 +511,9 @@ function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, co
         verificarCupo();
 
         });
-
       }
+
+
 
 
     },
@@ -703,7 +569,7 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
   //console.log(contadorAsignado);
   sumadorAsignados = parseInt(contadorAsignado) + sumadorContador;
 
-  data = '{"id_detalle_salon":'+idDetalleSalon+', "nov":'+novCarne+', "asignacion": "'+sumadorAsignados+'", "fecha_examen": "'+fechaExamen+'", "asignado_por": "", "fecha_asignacion": "'+ fechaFormato +'"}';
+  data = '{"id_detalle_salon":'+idDetalleSalon+', "nov":'+novCarne+', "asignacion": "'+sumadorAsignados+'", "fecha_examen": "'+fechaExamen+'", "asignado_por": "'+ nombres + ' ' + apellidos + '", "fecha_asignacion": "'+ fechaFormato +'"}';
 
   $.ajax({
        type: 'POST',
@@ -717,7 +583,17 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
 
          //JSON.stringify(response);
          //console.log(response);
-        location.reload();
+          //location.reload();
+          alertify.set('notifier','position', 'bottom-center');
+          //alertify.success("El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia.", 'custom', 18, function(){});
+
+          var duration = 15;
+          var msg = alertify.success('El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia. ', 15, function(){ clearInterval(interval);});
+          var interval = setInterval(function(){
+             msg.setContent('El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia. ');
+          },1000);
+          $("#selCentros").hide();
+          $("#selFacultades").hide();
 
        },
        error: function (response) {
@@ -727,7 +603,13 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
 
 }
 
-//////////////////////////////////////////////////7
+////////////////////////////////////
+
+////////////////////
+
+
+////////////parte asignar botonAsignar
+
 
 $(document).ready(function () {
 
@@ -738,6 +620,7 @@ verificarCupo();
 });
 
 });
+
 
 $("#cerrarSesion").on('click', function () {
   setCookie('api-nombre', null, 1);

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  $("#seleccionCursos").hide();
+  $("#generarBoletaCursos").hide();
 
 
 $("#menuAE").load("menu.html");
@@ -360,6 +362,8 @@ function verificarEstadoPago(){
        }
        else {
          //console.log("else");
+         $("#seleccionCursos").show();
+         $("#generarBoletaCursos").show();
        }
 
 
