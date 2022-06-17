@@ -75,7 +75,7 @@ function resultados(nov, carneE) {
 
   $.ajax({
       type: 'GET',
-      url:  dominio + "buscarResultadoNC/" + nov + "/" + carneE,
+      url:  dominio + "buscarResultadoActivo/" + nov + "/" + carneE + "/1",
       contentType: "application/json",
       dataType: 'json',
       async: false,
