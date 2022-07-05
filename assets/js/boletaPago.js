@@ -52,7 +52,7 @@ function fechaExpiracion(){
 
         fechaBoletaExpiracion = data.fecha.fecha.split("-");
         fechaBoletaVistaExpiracion = fechaBoletaExpiracion[2] +"/"+ fechaBoletaExpiracion[1]+"/"+ fechaBoletaExpiracion[0];
-        document.getElementById("limite").innerHTML = '** El documento es válido para su pago únicamente hasta el día ' +fechaBoletaVistaExpiracion+ '.**';
+        document.getElementById("limite").innerHTML = '** El documento es válido para su pago únicamente durante 7 días después de la fecha de emisión. **';
      },
      error: function (response) {
        alertify.set('notifier','position', 'bottom-center');

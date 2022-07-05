@@ -63,6 +63,7 @@ $.ajax({
     async: false,
     success: function (data) {
 
+
       if (data.message === 'nov no existe') {
         alertify.set('notifier','position', 'bottom-center');
         alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
@@ -75,16 +76,24 @@ $.ajax({
       }
       else {
 
+        if(data.OV_ASPIRANTE.registrado === 1){
 
-        var nombres = data.OV_ASPIRANTE.nombres;
-        var apellidos = data.OV_ASPIRANTE.apellidos;
-        var nov = data.OV_ASPIRANTE.nov;
+          var nombres = data.OV_ASPIRANTE.nombres;
+          var apellidos = data.OV_ASPIRANTE.apellidos;
+          var nov = data.OV_ASPIRANTE.nov;
 
-        $("#recPassword").show();
-        $("#datos").hide();
+          $("#recPassword").show();
+          $("#datos").hide();
 
-        document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: '+nov+ '</strong></a>' +
-        '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombres + ' ' + apellidos + '.</strong></a>'
+          document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: '+nov+ '</strong></a>' +
+          '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombres + ' ' + apellidos + '.</strong></a>'
+
+        }
+        else {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Debes de crear tu cuenta en el menú Crear Cuenta.");
+        }
+
 
 
       }

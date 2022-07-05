@@ -74,16 +74,22 @@ $.ajax({
       }
       else {
 
-            var carne = data.USAC_ESTUDIANTE.carnet;
-            var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
+        if (data.USAC_ESTUDIANTE.registrado === 1) {
 
-            $("#recPassword").show();
-            $("#datos").hide();
+          var carne = data.USAC_ESTUDIANTE.carnet;
+          var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
 
-            document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: '+ carne + '</strong></a>' +
-            '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombreCompletoRegistro + '.</strong></a>'
+          $("#recPassword").show();
+          $("#datos").hide();
 
+          document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: '+ carne + '</strong></a>' +
+          '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombreCompletoRegistro + '.</strong></a>'
 
+        }
+        else {
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.warning("Debes de crear tu cuenta en el menú Crear Cuenta.");
+        }
 
       }
 
