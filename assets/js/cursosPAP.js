@@ -5,6 +5,8 @@ $(document).ready(function () {
 
 $("#menuAE").load("menu.html");
 costoTotal = 0;
+cursosSeleccionados = [];
+materiasTexto = [];
 /*
 $("#footerDiv").load("footer.html");*/
 
@@ -208,17 +210,54 @@ if(costoTotal == 0){
   alertify.warning("Debes seleccionar al menos un curso para poder genera la boleta de pago.");
 } else {
 
+cursosSeleccionados.length = 0;
   $.each($("input[name='cursoCheck']:checked"), function(){
 
-        insertarPreasignacion($(this).val());
+        cursosSeleccionados.push($(this).val());
+        //insertarPreasignacion($(this).val());
 
   });
 
-  generarBoleta();
+  //console.log(cursosSeleccionados);
+  materiasTexto.length = 0;
+  for (var i = 0; i < cursosSeleccionados.length; i++) {
+    if(cursosSeleccionados[i] === '1'){
+      //console.log("BIOLOGÍA");
+      materiasTexto.push (" BIOLOGÍA");
+    }
+    else if(cursosSeleccionados[i] === '2'){
+    //  console.log("FÍSICA");
+      materiasTexto.push (" FÍSICA");
+    }
+    else if(cursosSeleccionados[i] === '3'){
+     //console.log("LENGUAJE");
+      materiasTexto.push (" LENGUAJE");
+    }
+    else if(cursosSeleccionados[i] === '4'){
+      //console.log("MATEMÁTICA");
+      materiasTexto.push (" MATEMÁTICA");
+    }
+    else if(cursosSeleccionados[i] === '5'){
+      //console.log("QUÍMICA");
+      materiasTexto.push (" QUÍMICA");
+    }
+  }
+
+  alertify.confirm('Asignación', '¿Deseas Asignarte a los cursos: ' + materiasTexto + '?', function(){generarBoleta(); }
+             , function(){ alertify.warning('Recuerda elegir los cursos correctos que deseas asignarte!')});
+
+  //generarBoleta();
 
 }
 
+
+});
+
 function generarBoleta() {
+  for (var i = 0; i < cursosSeleccionados.length; i++) {
+    insertarPreasignacion(cursosSeleccionados[i]);
+
+  }
 
   var nombre = "";
 
@@ -240,7 +279,7 @@ function generarBoleta() {
   nombre: nombre,
   monto: costoTotal,
   anio_temporada: year,
-  id_rubro: '8',
+  id_rubro: '17',
   id_variante_rubro: '1',
   subotal: costoTotal,
 })
@@ -265,8 +304,6 @@ function generarBoleta() {
 
 }
 
-
-});
 
 function insertarPreasignacion(curso){
 
