@@ -141,7 +141,7 @@ function verificarAsignacion(){
             pdf.text(40,390,"IMPORTANTE:");
 
             pdf.setFontSize(15).setFont(undefined, 'normal');
-            pdf.text(40,410,"Para finalizar tu inscripción ingresa a al siguente formularo:");
+            pdf.text(40,410,"Para finalizar tu inscripción ingresa a al siguente formulario:");
 
             pdf.text(40,475,"llena tus datos y envia tu papelería. \n Se te solicitará: \n - Esta constancia de inscripción. \n - Fotografía de DPI (parte frontal) o partida de nacimiento. \n - Fotografía de tu tarjeta, resultado en pdf de orientación vocacional o \n carné universitario. \n - Fotografía tamaño cédula (Los archivos en formato pdf ó jpg deben tener \n un máximo de 1MB).");
 
@@ -154,7 +154,7 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,680,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,680,"11 de julio de 2022 (sujeto a cambios).");
+            pdf.text(150,680,"14 de julio de 2022 (sujeto a cambios).");
 
             pdf.setFontSize(17).setFont(undefined, 'bold');
             pdf.textWithLink('https://forms.gle/qugTybbVj8FLJm6n6', 145, 435, {url: 'https://forms.gle/qugTybbVj8FLJm6n6'});
@@ -235,6 +235,7 @@ cursosPreasignacion = [];
 /////////buscar resultados
 
 function obtenerPreasignacion() {
+  document.getElementById("botonAs").innerHTML= '<button type="button" class="btn btn-primary" onclick="CheckDropdowns()" id="btAsignar">Asignar</button>';
 
 
   $.ajax({
@@ -408,15 +409,33 @@ function buscarCursosPagados(idMateria, idSalonPap, cupoPap, horaEntrada, horaSa
 
 
 function CheckDropdowns() {
+
             datoseSelect = [];
             //Grab all dropdown objects in array
             var drpArray = document.getElementsByTagName('select');
+
             //Loop through the array
             for (i = 0; i < drpArray.length; i++) {
+              if(drpArray.length === 1){
+                if(drpArray[i].options[drpArray[i].selectedIndex].value === '0'){
+                  alertify.set('notifier','position', 'bottom-center');
+                  alertify.error("debes de seleccionar un horario para la materia");
+                  return false;
+                }
+                else {
+                      //alertify.set('notifier','position', 'bottom-center');
+                      //alertify.error("si asignar " + drpArray[i].options[drpArray[i].selectedIndex].value + ".");
+                      datoseSelect.push(drpArray[i].options[drpArray[i].selectedIndex].value);
+
+                  }
+              }
+              else {
                 //Loop through the array again
-                for (j = 0; j < drpArray.length; j++)
+                for (j = 0; j < drpArray.length; j++){
+
                 // Checking to ensure that we are not comparing same drop downlist
                     if (drpArray[i].id != drpArray[j].id) {
+
                     // compare values between dropdownlists
                     if(drpArray[i].options[drpArray[i].selectedIndex].value === '0'){
                       alertify.set('notifier','position', 'bottom-center');
@@ -442,7 +461,9 @@ function CheckDropdowns() {
                         }
                       }
                     }
-                }
+                  }
+              }
+            }
 
                 let result = datoseSelect.filter((item,index)=>{
                   return datoseSelect.indexOf(item) === index;
@@ -452,6 +473,7 @@ function CheckDropdowns() {
             }
 
 function conteoAsignadosPAP(result) {
+    document.getElementById("botonAs").innerHTML= "<p>Espera un momento, se está generando tu constancia de inscripción al programa académico preparatorio PAP, no cierres esta ventana.</p><p>cargando...</p><img src='assets/img/cargando.gif' />";
 
 
     for(i=0; i<result.length; i++){

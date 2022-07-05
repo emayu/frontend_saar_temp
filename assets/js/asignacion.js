@@ -115,6 +115,8 @@ function adAsignacion() {
                  }
                  facultadConstancia = data.asignaciones[0].facultad;
                  centroConstancia = data.asignaciones[0].centro;
+                 fechaAsignacionConstancia =  data.asignaciones[0].fecha_asignacion.split("-");
+                 fechaAsignacionVista = fechaAsignacionConstancia[2] +"/"+ fechaAsignacionConstancia[1]+"/"+ fechaAsignacionConstancia[0];
 
                  /////////////crear pdf
 
@@ -182,8 +184,9 @@ function adAsignacion() {
                      const tiempoTranscurrido = Date.now();
                      const hoy = new Date(tiempoTranscurrido);
                     // console.log(hoy.toLocaleDateString());
-                     pdf.setFontSize(9).setFont(undefined, 'normal');
-                     pdf.text(524,10,hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
+                    pdf.setFontSize(9).setFont(undefined, 'bold');
+                    pdf.text(440,10,"Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
+                    pdf.text(440,25, "Fecha de asignación: " + fechaAsignacionVista);
 
                      pdf.text(20,780,risa);
                      pdf.setFontSize(10).setFont(undefined, 'bold');
@@ -329,6 +332,8 @@ function verificarResultadoAsignacion(){
         }
         facultadConstancia = data.asignaciones[0].facultad;
         centroConstancia = data.asignaciones[0].centro;
+        fechaAsignacionConstancia =  data.asignaciones[0].fecha_asignacion.split("-");
+        fechaAsignacionVista = fechaAsignacionConstancia[2] +"/"+ fechaAsignacionConstancia[1]+"/"+ fechaAsignacionConstancia[0];
 
         /////////////crear pdf
 
@@ -374,6 +379,7 @@ function verificarResultadoAsignacion(){
             pdf.text(40,185,"Estudiará en: " + centroConstancia);
             pdf.text(40,205,"Unidad académica: " + facultadConstancia);
 
+
             pdf.setFontSize(15).setFont(undefined, 'normal');
 
             pdf.text(40,390,"Tus Pruebas de Conocimientos Básicos se llevarán a cabo en línea. \n Podrás ingresar dando clic en el siguiente enlace:");
@@ -396,8 +402,9 @@ function verificarResultadoAsignacion(){
             const tiempoTranscurrido = Date.now();
             const hoy = new Date(tiempoTranscurrido);
           //  console.log(hoy.toLocaleDateString());
-            pdf.setFontSize(9).setFont(undefined, 'normal');
-            pdf.text(524,10,hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
+            pdf.setFontSize(9).setFont(undefined, 'bold');
+            pdf.text(440,10,"Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
+            pdf.text(440,25, "Fecha de asignación: " + fechaAsignacionVista);
 
             pdf.text(20,780,risa);
             pdf.setFontSize(10).setFont(undefined, 'bold');
@@ -485,7 +492,7 @@ function verificarResultado(){
 
   $.ajax({
     type: 'GET',
-    url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro,
+    url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro + "/1",
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -539,8 +546,14 @@ function verificarResultado(){
            document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
            $(".botonAsignar").on('click', function () {
-           verificarResultado();
-           verificarCupo();
+             var selCentro = document.getElementById("selbox");
+             var centroSelect= selCentro.options[selCentro.selectedIndex].text;
+
+             var selUnidad = document.getElementById("selFacultad");
+             var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+
+             alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+                        , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
 
            });
          }
@@ -555,8 +568,14 @@ function verificarResultado(){
          document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
          $(".botonAsignar").on('click', function () {
-         verificarResultado();
-         verificarCupo();
+           var selCentro = document.getElementById("selbox");
+           var centroSelect= selCentro.options[selCentro.selectedIndex].text;
+
+           var selUnidad = document.getElementById("selFacultad");
+           var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+
+           alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+                      , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
 
          });
        }
@@ -808,8 +827,16 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
 $(document).ready(function () {
 
 $(".botonAsignar").on('click', function () {
-verificarResultado();
-verificarCupo();
+  var selCentro = document.getElementById("selbox");
+  var centroSelect= selCentro.options[selCentro.selectedIndex].text;
+
+  var selUnidad = document.getElementById("selFacultad");
+  var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+
+  alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+             , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+//verificarResultado();
+//verificarCupo();
 
 });
 
