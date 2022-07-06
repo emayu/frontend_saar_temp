@@ -154,7 +154,7 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,680,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,680,"14 de julio de 2022 (sujeto a cambios).");
+            pdf.text(150,680,"25 de julio de 2022 (sujeto a cambios).");
 
             pdf.setFontSize(17).setFont(undefined, 'bold');
             pdf.textWithLink('https://forms.gle/qugTybbVj8FLJm6n6', 145, 435, {url: 'https://forms.gle/qugTybbVj8FLJm6n6'});
