@@ -89,11 +89,12 @@ let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStar
       else {
 
         fechaLimiteConstancia = data.fecha.fecha.split("-");
-        diasMas = parseInt(fechaLimiteConstancia[2]) + 10;
-        fechaVistaConstancia = diasMas +"/"+ fechaLimiteConstancia[1]+"/"+ fechaLimiteConstancia[0];
 
-         document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
-         //document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> La constancia estará disponible a partir de '+ fechaVistaConstancia +'</strong></a>';
+
+        var tmpDate = new Date(fechaLimiteConstancia[0] , fechaLimiteConstancia[1] - 1, fechaLimiteConstancia[2]); // Augest 20, 2020
+
+         //document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+         document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> La constancia estará disponible a partir de '+ addDaysToDate(tmpDate, 30) +'</strong></a>';
 
       }
 
@@ -106,6 +107,12 @@ let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStar
   });
 }
 
+function addDaysToDate(date, days){
+    var res = new Date(date);
+    res.setDate(res.getDate() + days);
+    var res2 = res.toLocaleString();
+    return res2.substring(0,10);
+}
 
 function verificarAsignacion(){
 
@@ -184,7 +191,7 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,495,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,495,"14 de julio de 2022 (sujeto a cambios).");
+            pdf.text(150,495,"25 de julio de 2022 (sujeto a cambios).");
 
 
 
