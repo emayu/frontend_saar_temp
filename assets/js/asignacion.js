@@ -668,7 +668,7 @@ else {
   }
 
   //location.reload();
-  $('#btnAsignar').html("<p>Espera un momento, se está generando tu constancia de asignación a PCB.</p><p>cargando...</p><img src='assets/img/cargando.gif' />");
+  $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
   setTimeout(recargar, 7000);
 }
 
