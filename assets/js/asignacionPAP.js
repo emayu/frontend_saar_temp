@@ -473,7 +473,7 @@ function CheckDropdowns() {
             }
 
 function conteoAsignadosPAP(result) {
-    document.getElementById("botonAs").innerHTML= "<p>Espera un momento, se está generando tu constancia de inscripción al programa académico preparatorio PAP, no cierres esta ventana.</p><p>cargando...</p><img src='assets/img/cargando.gif' />";
+    document.getElementById("botonAs").innerHTML= '<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción al programa académico preparatorio PAP, no cierres esta ventana ni refresques el navegador.</strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />';
 
 
     for(i=0; i<result.length; i++){
