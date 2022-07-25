@@ -191,7 +191,7 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,495,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,495,"27 de julio de 2022 (sujeto a cambios).");
+            pdf.text(150,495,"03 de agosto de 2022 (sujeto a cambios).");
 
 
 
