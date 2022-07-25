@@ -552,8 +552,16 @@ function verificarResultado(){
              var selUnidad = document.getElementById("selFacultad");
              var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
 
+             if(unidadSelect === 'Asignación Unidad Académica'){
+               alertify.set('notifier','position', 'bottom-center');
+               alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+             }
+             else {
+
              alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
                         , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+                 }
 
            });
          }
@@ -574,8 +582,16 @@ function verificarResultado(){
            var selUnidad = document.getElementById("selFacultad");
            var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
 
+           if(unidadSelect === 'Asignación Unidad Académica'){
+             alertify.set('notifier','position', 'bottom-center');
+             alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+           }
+           else {
+
            alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
                       , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+               }
 
          });
        }
@@ -833,8 +849,16 @@ $(".botonAsignar").on('click', function () {
   var selUnidad = document.getElementById("selFacultad");
   var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
 
+  if(unidadSelect === 'Asignación Unidad Académica'){
+    alertify.set('notifier','position', 'bottom-center');
+    alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+  }
+  else {
+
   alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
              , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+      }
 //verificarResultado();
 //verificarCupo();
 
