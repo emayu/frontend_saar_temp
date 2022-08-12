@@ -843,22 +843,55 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
 $(document).ready(function () {
 
 $(".botonAsignar").on('click', function () {
-  var selCentro = document.getElementById("selbox");
-  var centroSelect= selCentro.options[selCentro.selectedIndex].text;
 
-  var selUnidad = document.getElementById("selFacultad");
-  var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+  $.ajax({
+ type: 'GET',
+ url:  dominio + "examenLimite/1",
+ contentType: "application/json",
+ dataType: 'json',
+ async: false,
+ success: function (data) {
+ //console.log(data.examen[0].activo);
+ mensajeMostrar = data.examen.mensaje;
 
-  if(unidadSelect === 'Asignación Unidad Académica'){
-    alertify.set('notifier','position', 'bottom-center');
-    alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+ if(data.examen.activo === 1)
+ {
 
-  }
-  else {
+   var selCentro = document.getElementById("selbox");
+   var centroSelect= selCentro.options[selCentro.selectedIndex].text;
 
-  alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
-             , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-      }
+   var selUnidad = document.getElementById("selFacultad");
+   var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+
+   if(unidadSelect === 'Asignación Unidad Académica'){
+     alertify.set('notifier','position', 'bottom-center');
+     alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+   }
+   else {
+
+   alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+              , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+       }
+
+ }
+ else {
+
+   alertify.set('notifier','position', 'bottom-center');
+   alertify.warning("La fecha de asignación está cerrada.");
+   location.reload();
+
+ }
+
+
+
+},
+error: function (response) {
+ alertify.set('notifier','position', 'bottom-center');
+ alertify.error("Usuario o Contraseña Incorrecto!");
+   }
+});
+
 //verificarResultado();
 //verificarCupo();
 
