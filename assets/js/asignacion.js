@@ -61,6 +61,8 @@ else if(novCarne.length >= 1 && novCarne.length <= 9){
 
 
 adAsignacion();
+
+
 });
 
 var datosAsignacion = [];
@@ -295,7 +297,7 @@ function facultades() {
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("error de conexión");
         }
   });
 }
@@ -684,7 +686,7 @@ else {
   }
 
   //location.reload();
-  $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
+  $('#btnAsignar').html('<p>cargando...</p><img src="assets/img/cargando.gif" />');
   setTimeout(recargar, 7000);
 }
 
@@ -783,6 +785,9 @@ function numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaE
 
 }
 
+
+var asignacionJson = [];
+
 function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, sumadorContador){
 
   var fechajs = new Date();
@@ -797,39 +802,41 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
   //console.log(contadorAsignado);
   sumadorAsignados = parseInt(contadorAsignado) + sumadorContador;
 
-  data = '{"id_detalle_salon":'+idDetalleSalon+', "nov":'+novCarne+', "asignacion": "'+sumadorAsignados+'", "fecha_examen": "'+fechaExamen+'", "asignado_por": "'+ nombres + ' ' + apellidos + '", "fecha_asignacion": "'+ fechaFormato +'"}';
+  data = JSON.stringify({
+  id_detalle_salon: idDetalleSalon,
+  nov: novCarne,
+  asignacion: sumadorAsignados,
+  fecha_examen: fechaExamen,
+  asignado_por: nombres + ' ' + apellidos,
+  fecha_asignacion: fechaFormato
+})
 
-  $.ajax({
-       type: 'POST',
-       url: dominio + 'insertarAsignacion',
-       contentType: "application/json",
-       dataType: 'json',
-       crossDomain: true,
-       async: false,
-       data: data,
-       success: function (response) {
+asignacionJson.push(data);
+}
 
-         //JSON.stringify(response);
-         //console.log(response);
-          //location.reload();
-          alertify.set('notifier','position', 'bottom-center');
-          //alertify.success("El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia.", 'custom', 18, function(){});
+function generarAsignacion() {
 
-        /*  var duration = 15;
-          var msg = alertify.success('El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia. ', 15, function(){ clearInterval(interval);});
-          var interval = setInterval(function(){
-             msg.setContent('El estudiante ya fue asignado, debes darle clic en el botón buscar de nuevo para generar la constancia. ');
-          },1000);*/
-          $("#selCentros").hide();
-          $("#selFacultades").hide();
-          $('#btnAsignar').html("<img src='assets/img/cargando.gif' />");
+data = JSON.stringify(asignacionJson);
 
-       },
-       error: function (response) {
-         //  window.location.href = "index.html";
-       }
-   });
+$.ajax({
+     type: 'POST',
+     url: dominio + 'insertarAsignacion',
+     contentType: "application/json",
+     dataType: 'json',
+     crossDomain: true,
+     async: false,
+     data: data,
+     success: function (response) {
 
+        $("#selCentros").hide();
+        $("#selFacultades").hide();
+        $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
+
+     },
+     error: function (response) {
+       //  window.location.href = "index.html";
+     }
+ });
 }
 
 ////////////////////////////////////
@@ -870,7 +877,7 @@ $(".botonAsignar").on('click', function () {
    }
    else {
 
-   alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+   alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo(); if(asignacionJson.length > 0){generarAsignacion()};; }
               , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
        }
 
