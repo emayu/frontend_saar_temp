@@ -258,7 +258,7 @@ function adAsignacion() {
     },
     error: function (response) {
       alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Usuario o Contraseña Incorrecto!");
+      alertify.error("error de conexión");
         }
   });
 }
@@ -815,6 +815,7 @@ asignacionJson.push(data);
 }
 
 function generarAsignacion() {
+  console.log(JSON.stringify(asignacionJson));
 
 data = JSON.stringify(asignacionJson);
 
