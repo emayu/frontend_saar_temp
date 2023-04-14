@@ -1,11 +1,5 @@
 $(document).ready(function () {
-  /*
-  contadorrrrr = 0;
-  setInterval(function(){
-   contadorrrrr +=1;
-   document.getElementById("cargandoWS").innerHTML = 'hola' + contadorrrrr;
-}, 5000)
-*/
+
   $("#preguntasRespuetas").hide();
 buscarResultado();
 $("#menuAE").load("menu.html");

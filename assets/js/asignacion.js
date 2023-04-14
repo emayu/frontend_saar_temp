@@ -490,8 +490,6 @@ function verificarResultado(){
 
   idCentro = $("#selbox").val();
   idFacultad = $("#selFacultad").val();
-
-
   $.ajax({
     type: 'GET',
     url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro + "/1",
@@ -506,6 +504,7 @@ function verificarResultado(){
     .done(function(data) {
       var cantidadMaterias = 0;
       $.ajax({
+
            type: 'GET',
            url:  dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
            contentType: "application/json",
@@ -539,6 +538,7 @@ function verificarResultado(){
          }
          else
          {
+             $('#btnAsignar').html('<p>cargando...</p><img src="assets/img/cargando.gif" />');
            alertify.set('notifier','position', 'bottom-center');
            var duration = 15;
            var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
@@ -561,7 +561,7 @@ function verificarResultado(){
              }
              else {
 
-             alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+             alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
                         , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
                  }
 
@@ -591,7 +591,7 @@ function verificarResultado(){
            }
            else {
 
-           alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();; }
+           alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
                       , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
                }
 
@@ -611,7 +611,6 @@ function verificarResultado(){
 
 ///////////buscar cupo en los salones que se quiere asignar
 function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
-
  $.ajax({
       type: 'GET',
       url:  dominio + "asignadosPorSalon/" + idDetalleSalon + "/" + fechaExamen,
@@ -619,20 +618,7 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
       dataType: 'json',
       async: false,
       success: function (data) {
-    //    console.log(idDetalleSalon);
-    //  console.log(data.contador[0].count);
 
-    /*  if(data.contador[0].count <= cupo){
-        ////////insertar en la tabla asignacion
-
-          //buscarResultado(idMateria, idDetalleSalon, novCarne, 0, data.contador[0].count, fechaExamen);
-          cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
-
-      }
-      else{
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.error("Ya no se puede asignar a este salón, escribenos a nuestras redes sociales con el siguenge codigo xxxxx.");
-      }*/
       if(novCarne.length === 10){
 
         cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
@@ -685,16 +671,10 @@ else {
 
   }
 
-  //location.reload();
-  $('#btnAsignar').html('<p>cargando...</p><img src="assets/img/cargando.gif" />');
-  setTimeout(recargar, 7000);
 }
 
 }
 
-function recargar(){
-  location.reload();
-}
 
 function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, contadorAsignado, fechaExamen){
 
@@ -742,8 +722,6 @@ $.ajax({
         document.getElementById("btnAsignar").innerHTML = '';
 
       }
-
-
 
 
     },
@@ -815,7 +793,6 @@ asignacionJson.push(data);
 }
 
 function generarAsignacion() {
-  console.log(JSON.stringify(asignacionJson));
 
 data = JSON.stringify(asignacionJson);
 
@@ -832,7 +809,7 @@ $.ajax({
         $("#selCentros").hide();
         $("#selFacultades").hide();
         $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
-
+        location.reload();
      },
      error: function (response) {
        //  window.location.href = "index.html";
