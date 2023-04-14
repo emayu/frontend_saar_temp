@@ -188,7 +188,7 @@ function verificarAsignacion(){
 
             pdf.setFontSize(14).setFont(undefined, 'normal');
             pdf.text(40,505,"- Debes ingresar al enlace iniciando sesión con el correo que registraste en el \n formulario, para evitar problemas de asistencia y entrega de tareas. Los \n listados oficiales tendrán el correo electrónico que registraste en la plataforma.");
-            pdf.text(40,565,"-El enlace de invitación a la clase es de uso personal y por ningún motivo podrás \n compartirlo.");
+            pdf.text(40,565,"-El enlace de invitación a la clase es de uso personal y por ningún motivo podrás \n compartirlo.");
             pdf.text(40,605,"-Si no estás seguro como usar un código de Google Classroom consulta la \n documentación en línea:");
 
             pdf.setFontSize(14).setFont(undefined, 'bold');
