@@ -119,7 +119,7 @@ function verificarAsignacion(){
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(100, 75, "CONSTANCIA DE INSCRIPCIÓN PAP DE CONOCIMIENTOS BÁSICOS");
-            pdf.text(240, 90, "2022 (Segundo Semestre)");
+            pdf.text(240, 90, "2023 (Primer Semestre)");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
             if(novCarne.length === 10){
@@ -154,10 +154,10 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,680,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,680,"03 de agosto de 2022 (sujeto a cambios).");
+            pdf.text(150,680,"\n Plan Diario 01/02/2023, Plan Sabatino 04/02/2023");
 
             pdf.setFontSize(17).setFont(undefined, 'bold');
-            pdf.textWithLink('https://forms.gle/qugTybbVj8FLJm6n6', 145, 435, {url: 'https://forms.gle/qugTybbVj8FLJm6n6'});
+            pdf.textWithLink('https://forms.gle/kKRkzAoRWUAxozrS8', 145, 435, {url: 'https://forms.gle/kKRkzAoRWUAxozrS8'});
 
 
             var fechajs = new Date();

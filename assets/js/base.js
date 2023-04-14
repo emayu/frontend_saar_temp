@@ -2,6 +2,7 @@
 //var dominio = 'http://localhost:4000/';
 //var dominio = 'http://192.168.1.23:4000/';
 //var dominio = 'http://10.50.40.66:4000/';
+//var dominio = 'http://144.91.108.234:4001/';
 var dominio = 'https://sunenlineaapi.usac.edu.gt/';
 
 //var profesorId = getCookie('api-idUsuario');
@@ -28,6 +29,11 @@ var correlativoBP = getCookie('api-correlativoBP');
 var totalBP = getCookie('api-totalBP');
 var fechaBP = getCookie('api-fechaBP');
 var llaveBP = getCookie('api-llaveBP');
+
+//////simulador
+
+var nombreMateria = getCookie('api-nombreMateria');
+var idTemario = getCookie('api-idTemario');
 
 
 const cipher = salt => {

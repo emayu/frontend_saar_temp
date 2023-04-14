@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=PT+Mono&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+      <!-- Default theme -->
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+      <!-- Semantic UI theme -->
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+      <!-- Bootstrap theme -->
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+        <!-- Vendor CSS Files -->
+        <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+        <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+        <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+        <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+        <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+        <!--========== BOX ICONS ==========-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- Favicons -->
+        <link href="assets/img/favicon.png" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+        <title>Principal</title>
+    </head>
+    <body>
+        <!--========== HEADER ==========-->
+        <header class="header">
+                   <div class="header__container">
+                     <a class="header__logo">  <img src="assets/img/Logo USAC SUNcolor.png" alt="" class="header__img2"></a>
+
+                     <div class="header__img" id="datosHeader">
+
+                     </div>
+
+
+                       <div class="header__toggle">
+                           <i class='bx bx-menu' id="header-toggle"></i>
+                       </div>
+                   </div>
+               </header>
+
+        <!--========== NAV ==========-->
+        <div class="nav" id="navbar">
+            <nav class="nav__container">
+                <div>
+                  <a href="#" class="header__logo__inverso">  <img src="assets/img/Logo USAC SUNcolor.png" alt="" class="header__img2"><br><br> </a>
+
+                  <div class="nav__list" id="menuAE">
+
+                  </div>
+                </div>
+
+                <a href="index.html" class="nav__link nav__logout" id="cerrarSesion">
+                    <i class='bx bx-log-out nav__icon' ></i>
+                    <span class="nav__name">Cerrar Sesión</span>
+                </a>
+            </nav>
+        </div>
+
+        <!--========== CONTENTS ==========-->
+        <main class="contenedor">
+          <section id="features" class="featres">
+            <div class="container">
+
+        <div class="text-center mb-4" data-aos="fade-up">
+
+
+                <div class="section-title">
+                  <div class="" id="nombreSimulador">
+
+                  </div>
+
+                </div>
+                <div class="" id="datosResultados">
+
+                </div>
+                <br>
+                <div class="" id="instrucciones">
+                </div>
+                <div class="" id="activo">
+                </div>
+
+                <div class="" >
+                  <h4 class="text-right" id="count-down-timer"></h4>
+                  <div class="text-left" id="documentosTemario">
+                  </div>
+<br>
+  <div class="row">
+    <div class="col-sm-6 text-left">
+      <h5 class="text-left">Preguntas</h5>
+      <div class="text-left border rounded p-2" id="cuerpoSimulador">
+      </div>
+      <br>
+      <p>
+      <button class="btn btn-secondary btn" type="button" id="limpRespuesta">Limpiar mi respuesta</button>
+      </p>
+    </div>
+
+
+    <div class="col-sm-6 text-left">
+      <h5 class="text-left">Selecciona la respuesta correcta:</h5>
+
+      <div class="d-flex flex-row">
+        <div class="border rounded p-2" id="op1"></div>
+        <div class="p-2">
+          <div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="op1O">
+  </div>
+</div>
+      </div>
+
+<br>
+      <div class="d-flex flex-row">
+        <div class="border rounded p-2" id="op2"></div>
+        <div class="p-2">
+          <div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="op2O">
+  </div>
+</div>
+      </div>
+
+      <br>
+
+      <div class="d-flex flex-row">
+        <div class="border rounded p-2" id="op3"></div>
+        <div class="p-2">
+          <div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="op3O">
+  </div>
+</div>
+      </div>
+      <br>
+
+      <div class="d-flex flex-row">
+        <div class="border rounded p-2" id="op4"> </div>
+        <div class="p-2">
+          <div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="op4O">
+  </div>
+</div>
+      </div>
+      <br>
+      <button class="btn btn-success btn" type="button" data-toggle="modal" data-target=".bd-example-modal-sm" id="btnGuardar">Guardar y continuar</button>
+      </p>
+    </div>
+
+  </div>
+
+                </div>
+
+        </div>
+
+        <div class="modal bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="false">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                 <h5 class="modal-title" id="tituloDocTemario"></h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+                 </button>
+              </div>
+
+              <div style="height:700px" id="pdfVisor"></div>
+
+              <div class="modal-footer">
+                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+            </div>
+
+
+            <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" data-backdrop="false">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="tituloTemario">Respuesta</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                     </button>
+                  </div>
+                  <div class="modal-body">
+                     <div class="form-group">
+                               <label for="tipo">¿Estas seguro de la respuesta seleccionada?</label>
+         							</div>
+        				 </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-success next" data-dismiss="modal" id="btnAcpetar">Aceptar</button>
+                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section><!-- End App Features Section -->
+
+          <!-- modales pdf -->
+
+
+
+        </main>
+
+
+        <!--========== MAIN JS ==========-->
+        <script src="assets/vendor/jquery/jquery.min.js"></script>
+        <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+        <script src="assets/vendor/php-email-form/validate.js"></script>
+        <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+        <script src="assets/vendor/venobox/venobox.min.js"></script>
+        <script src="assets/vendor/aos/aos.js"></script>
+        <script  charset="utf8" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+        <script src="//cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+
+
+        <script src="assets/js/cookie.js"></script>
+        <script src="assets/js/base.js"></script>
+        <script src="assets/js/simuladorRes.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    </body>
+</html>
