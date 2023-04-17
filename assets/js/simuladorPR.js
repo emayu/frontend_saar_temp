@@ -75,14 +75,14 @@ function buscarResultado() {
        dataType: 'json',
        async: false,
        success: function (data) {
-       console.log(data);
+       //console.log(data);
        var html = '';
        var cPregunta = 0;
        var criterioVacio = '';
        var sumarNota = 0;
        if(data.resultados.length > 0){
          //window.location.href = "simuladorRes.html";
-         //console.log("if datos");
+         ////console.log("if datos");
          for (var i = 0; i < data.resultados.length; i++) {
 
            if(data.resultados[i].criterio === ''){
@@ -104,12 +104,12 @@ function buscarResultado() {
 
          html += '<p style="font-size: 1.6rem;"><label><strong>NOTA: '+ sumarNota.toFixed(2)+ '</strong></label></p>'
          html += '<p><strong>Recuerda: </strong>Los resultados que se obtengan no comprometen al Sistema de Ubicación y Nivelación –SUN– en la admisión para ingreso a las Pruebas Especificas en las unidades académicas, ni están asociados con los futuros desempeños en las pruebas reales.</p>'
-         //console.log(sumarNota);
+         ////console.log(sumarNota);
          document.getElementById("notas").innerHTML = html;
 
          $("#preguntasRespuetas").hide();
          if(idTemario == 2 || idTemario == 3 || idTemario == 4){
-           console.log("entre if matriculado");
+           //console.log("entre if matriculado");
            matricularCurso();
          }
          else  {
@@ -118,11 +118,11 @@ function buscarResultado() {
          }
        }
        else{
-        // console.log("else datos");
+        // //console.log("else datos");
          $("#preguntasRespuetas").show();
          buscarTemario();
        }
-       //console.log(data.temarios[0].nombre_archivo2);
+       ////console.log(data.temarios[0].nombre_archivo2);
 
      },
      error: function (response) {
@@ -146,11 +146,11 @@ function buscarTemario(){
        dataType: 'json',
        async: false,
        success: function (data) {
-       //console.log(data);
-       //console.log(data.temarios[0].nombre_archivo2);
+       ////console.log(data);
+       ////console.log(data.temarios[0].nombre_archivo2);
 
        if(data.temarios[0].nombre_archivo1 != '' && data.temarios[0].nombre_archivo2 != ''){
-         console.log("si tengo 2 archivo");
+         //console.log("si tengo 2 archivo");
          document.getElementById("documentosTemario").innerHTML = '<h5>Documentos disponibles:</h5><button type="button" class="btn btn-info" data-toggle="modal" id="boton-doc1" data-target=".bd-example-modal-lg">'+ data.temarios[0].nombre_archivo1 + '</button>&nbsp;'+
          '<button type="button" class="btn btn-info" data-toggle="modal" id="boton-doc2" data-target=".bd-example-modal-lg">'+ data.temarios[0].nombre_archivo2 + '</button>';
 
@@ -158,21 +158,21 @@ function buscarTemario(){
          doc2 = data.temarios[0].archivo2;
        }
        else if (data.temarios[0].nombre_archivo1 != '') {
-         console.log("si tengo primer archivo");
+         //console.log("si tengo primer archivo");
          document.getElementById("documentosTemario").innerHTML = '<h5>Documentos disponibles:</h5><button type="button" class="btn btn-info" data-toggle="modal" id="boton-doc1" data-target=".bd-example-modal-lg">'+ data.temarios[0].nombre_archivo1 + '</button>';
 
          doc1 = data.temarios[0].archivo1;
 
        }
        else if (data.temarios[0].nombre_archivo2 != '') {
-         console.log("si tengo segundo archivo");
+         //console.log("si tengo segundo archivo");
          document.getElementById("documentosTemario").innerHTML = '<h5>Documentos disponibles:</h5><button type="button" class="btn btn-info" data-toggle="modal" id="boton-doc2" data-target=".bd-example-modal-lg">'+ data.temarios[0].nombre_archivo2 + '</button>';
 
          doc2 = data.temarios[0].archivo2;
 
        }
        else {
-         console.log("no tiene documentos");
+         //console.log("no tiene documentos");
          document.getElementById("documentosTemario").innerHTML = '';
        }
       // document.getElementById("documentosTemario").innerHTML
@@ -199,9 +199,9 @@ function preguntas(idT) {
        dataType: 'json',
        async: false,
        success: function (data) {
-       //console.log(data);
-       //console.log(data.temarios[0].nombre_archivo2);
-      // console.log(JSON.parse(data.preguntas));
+       ////console.log(data);
+       ////console.log(data.temarios[0].nombre_archivo2);
+      // //console.log(JSON.parse(data.preguntas));
 
        Questions = JSON.parse(data.preguntas);
        document.getElementById("cargandoWS").innerHTML = '';
@@ -222,7 +222,7 @@ var preguntaActual = "";
 var selected = "";
 var start = true;
 function iterate(id) {
-console.log(id);
+//console.log(id);
 contadorPregunta = parseInt(id) + 1;
 document.getElementById("noPregunta").innerHTML = 'Pregunta ' + contadorPregunta;
 	// Getting the question
@@ -245,7 +245,7 @@ document.getElementById("noPregunta").innerHTML = 'Pregunta ' + contadorPregunta
 
   const btAcptar = document.getElementById('btnGuardar');
 
-  console.log(Questions[id]);
+  //console.log(Questions[id]);
 
 	// Providing option text
 	op1.innerText = Questions[id].a[0].text;
@@ -303,19 +303,19 @@ document.getElementById("noPregunta").innerHTML = 'Pregunta ' + contadorPregunta
   contador = 0;
   next.addEventListener("click", () => {
   	start = false;
-    console.log(cantPreguntas);
+    //console.log(cantPreguntas);
   	if (id < cantPreguntas) {
   		id++;
   		iterate(id);
-  		console.log(id);
+  		//console.log(id);
   	}
     contador++;
-    //console.log("contador: " + contador);
+    ////console.log("contador: " + contador);
 
     if (selected == "correcta") {
 			funCorrecta(1);
 		} else {
-			console.log("se guarda el criterio");
+			//console.log("se guarda el criterio");
       funCorrecta(0);
 		}
 
@@ -348,7 +348,7 @@ function funCorrecta(tipoRespuesta){
   nota = 0;
 
   if(tipoRespuesta == 1){
-    console.log("correcta");
+    //console.log("correcta");
     if(idTemario == 1 || idTemario == 3 || idTemario == 5){
       nota = 100/20;
     }
@@ -358,7 +358,7 @@ function funCorrecta(tipoRespuesta){
 
   }
   else {
-    console.log("incorrecta");
+    //console.log("incorrecta");
     nota = 0;
   }
 
@@ -416,7 +416,7 @@ function matricularCurso(){
   apellido: apellido,
   id_materia: idTemario
 });
-console.log(data);
+//console.log(data);
 
   $.ajax({
        type: 'POST',
@@ -441,7 +441,7 @@ console.log(data);
 
 ///////redirigir al curso virtual matriculado
 function cursoVirtual() {
-console.log(token);
+//console.log(token);
 window.location.href = "https://virtual.usac.edu.gt/aspirantes/servicio/home/login/" + token;
 }
 
