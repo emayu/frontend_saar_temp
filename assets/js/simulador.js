@@ -75,7 +75,7 @@ function verificarAsignacion(){
        dataType: 'json',
        async: false,
        success: function (data) {
-       //console.log(data.examen[0].activo);
+       ////console.log(data.examen[0].activo);
        mensajeMostrar = data.examen.mensaje;
 
        if(data.examen.activo === 1){
@@ -86,10 +86,10 @@ function verificarAsignacion(){
               dataType: 'json',
               async: false,
               success: function (data) {
-              //console.log(data.asignaciones.length);
+              ////console.log(data.asignaciones.length);
               html = '';
               if(data.asignaciones.length > 0){
-                console.log("si tiene materias asignadas");
+              //  //console.log("si tiene materias asignadas");
 
                 for (i = 0; i < data.asignaciones.length; i++){
                   html += '<a id="'+data.asignaciones[i].materia+'"><img src="assets/img/img-'+data.asignaciones[i].materia+'.png" class="text-center col-lg-4 shadow  order-1 order-lg-2 hero-img img-fluid" data-aos="fade-up" alt=""></a>'
@@ -101,7 +101,7 @@ function verificarAsignacion(){
                   jsonHtml += '}';
 
 
-                  //console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
+                  ////console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
 
                   $("#activo").html(html);
                     document.getElementById("instrucciones").innerHTML = `<a class="nav-link" style="color: black; font-size: 17px;"><strong>Instrucciones:</strong> <p class="text-left">1. Solo puedes realizar las pruebas de los requisitos
@@ -115,7 +115,7 @@ function verificarAsignacion(){
 
               }
               else {
-                console.log("no tiene materias asignadas");
+                ////console.log("no tiene materias asignadas");
                 document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong> Debes estar asignado a las pruebas de conocimiento básico PCB para poder realizar el simulador.</strong></a>';
               }
 
@@ -145,16 +145,16 @@ function verificarAsignacion(){
 
 function simBiologia(){
 
-  console.log("soy sim simBiologia");
-  //console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
-  //console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
+  //console.log("soy sim simBiologia");
+  ////console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
+  ////console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
   idDetalleSalonBiologia = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['BIOLOGÍA'];
-  console.log(idDetalleSalonBiologia);
+  //console.log(idDetalleSalonBiologia);
 
   data = JSON.stringify({
     estado_simulador: 1
   })
-  console.log(data);
+  //console.log(data);
 
   $.ajax({
       type: 'PUT',
@@ -165,7 +165,7 @@ function simBiologia(){
       async: false,
       data: data,
       success: function (data) {
-          console.log(data);
+          //console.log(data);
           setCookie('api-nombreMateria', 'BIOLOGÍA', 1);
           setCookie('api-idTemario', 1, 1);
           window.location.href = "simuladorPR.html";
@@ -176,16 +176,16 @@ function simBiologia(){
 }
 
 function simFisica(){
-  console.log("soy sim fisica");
+  //console.log("soy sim fisica");
 
 
   idDetalleSalonFisica = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['FÍSICA'];
-  console.log(idDetalleSalonFisica);
+  //console.log(idDetalleSalonFisica);
 
   data = JSON.stringify({
     estado_simulador: 1
   })
-  console.log(data);
+  //console.log(data);
 
   $.ajax({
       type: 'PUT',
@@ -196,7 +196,7 @@ function simFisica(){
       async: false,
       data: data,
       success: function (data) {
-          console.log(data);
+          //console.log(data);
           setCookie('api-nombreMateria', 'FÍSICA', 1);
           setCookie('api-idTemario', 2, 1);
           window.location.href = "simuladorPR.html";
@@ -207,16 +207,16 @@ function simFisica(){
 
 function simLenguaje(){
 
-  console.log("soy sim Lenguaje");
-  //console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
-  //console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
+  //console.log("soy sim Lenguaje");
+  ////console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
+  ////console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
   idDetalleSalonLenguaje = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE'];
-  console.log(idDetalleSalonLenguaje);
+  //console.log(idDetalleSalonLenguaje);
 
   data = JSON.stringify({
     estado_simulador: 1
   })
-  console.log(data);
+  //console.log(data);
 
   $.ajax({
       type: 'PUT',
@@ -227,7 +227,7 @@ function simLenguaje(){
       async: false,
       data: data,
       success: function (data) {
-          console.log(data);
+          //console.log(data);
           setCookie('api-nombreMateria', 'LENGUAJE', 1);
           setCookie('api-idTemario', 3, 1);
           window.location.href = "simuladorPR.html";
@@ -239,16 +239,16 @@ function simLenguaje(){
 
 function simMatematica(){
 
-  console.log("soy sim simMatematica");
-  //console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
-  //console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
+  //console.log("soy sim simMatematica");
+  ////console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
+  ////console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
   idDetalleSalonMate = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['MATEMÁTICA'];
-  console.log(idDetalleSalonMate);
+  //console.log(idDetalleSalonMate);
 
   data = JSON.stringify({
     estado_simulador: 1
   })
-  console.log(data);
+  //console.log(data);
 
   $.ajax({
       type: 'PUT',
@@ -259,7 +259,7 @@ function simMatematica(){
       async: false,
       data: data,
       success: function (data) {
-          console.log(data);
+          //console.log(data);
           setCookie('api-nombreMateria', 'MATEMÁTICA', 1);
           setCookie('api-idTemario', 4, 1);
           window.location.href = "simuladorPR.html";
@@ -271,16 +271,16 @@ function simMatematica(){
 
 function simQuimica(){
 
-  console.log("soy simQuimica");
-  //console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
-  //console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
+  //console.log("soy simQuimica");
+  ////console.log(jsonHtml.substring(0, jsonHtml.length -2) + '}');
+  ////console.log(JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE']);
   idDetalleSalonQuimica = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['QUÍMICA'];
-  console.log(idDetalleSalonQuimica);
+  //console.log(idDetalleSalonQuimica);
 
   data = JSON.stringify({
     estado_simulador: 1
   })
-  console.log(data);
+  //console.log(data);
 
   $.ajax({
       type: 'PUT',
@@ -291,7 +291,7 @@ function simQuimica(){
       async: false,
       data: data,
       success: function (data) {
-          console.log(data);
+          //console.log(data);
           setCookie('api-nombreMateria', 'QUÍMICA', 1);
           setCookie('api-idTemario', 5, 1);
           window.location.href = "simuladorPR.html";
@@ -316,7 +316,7 @@ $(document).ready(function () {
          dataType: 'json',
          async: false,
          success: function (data) {
-         console.log(data.asignado.estado_simulador);
+         //console.log(data.asignado.estado_simulador);
          if(data.asignado.estado_simulador === 1){
            alertify.set('notifier','position', 'bottom-center');
            alertify.warning("El simulador de BIOLOGÍA ya lo has realizado.");
@@ -350,7 +350,7 @@ $(document).ready(function () {
            dataType: 'json',
            async: false,
            success: function (data) {
-           console.log(data.asignado.estado_simulador);
+           //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
              alertify.set('notifier','position', 'bottom-center');
              alertify.warning("El simulador de FÍSICA ya lo has realizado.");
@@ -383,7 +383,7 @@ $(document).ready(function () {
            dataType: 'json',
            async: false,
            success: function (data) {
-           console.log(data.asignado.estado_simulador);
+           //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
              alertify.set('notifier','position', 'bottom-center');
              alertify.warning("El simulador de LENGUAJE ya lo has realizado.");
@@ -415,7 +415,7 @@ $(document).ready(function () {
            dataType: 'json',
            async: false,
            success: function (data) {
-           console.log(data.asignado.estado_simulador);
+           //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
              alertify.set('notifier','position', 'bottom-center');
              alertify.warning("El simulador de MATEMÁTICA ya lo has realizado.");
@@ -447,7 +447,7 @@ $(document).ready(function () {
            dataType: 'json',
            async: false,
            success: function (data) {
-           console.log(data.asignado.estado_simulador);
+           //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
              alertify.set('notifier','position', 'bottom-center');
              alertify.warning("El simulador de QUÍMICA ya lo has realizado.");
