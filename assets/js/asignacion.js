@@ -819,7 +819,7 @@ $.ajax({
         $("#selCentros").hide();
         $("#selFacultades").hide();
         $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
-      //  location.reload();
+        location.reload();
      },
      error: function (response) {
        //  window.location.href = "index.html";
