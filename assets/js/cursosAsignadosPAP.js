@@ -161,7 +161,7 @@ function verificarAsignacion(){
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(60, 75, "CONSTANCIA DE CURSOS ASIGNADOS PAP DE CONOCIMIENTOS BÁSICOS");
-            pdf.text(240, 90, "2023 (Primer Semestre)");
+            pdf.text(240, 90, "2023 (Segundo Semestre)");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
             if(novCarne.length === 10){
