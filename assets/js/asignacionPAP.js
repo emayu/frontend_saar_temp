@@ -154,10 +154,10 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,680,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,680,"\n Plan Diario 01/02/2023, Plan Sabatino 04/02/2023");
+            pdf.text(150,680,"\n Plan Diario 17/07/2023, Plan Sabatino 15/07/2023");
 
             pdf.setFontSize(17).setFont(undefined, 'bold');
-            pdf.textWithLink('https://forms.gle/kKRkzAoRWUAxozrS8', 145, 435, {url: 'https://forms.gle/kKRkzAoRWUAxozrS8'});
+            pdf.textWithLink('https://forms.gle/nSoQYeBU3ncuwZ5g9', 145, 435, {url: 'https://forms.gle/nSoQYeBU3ncuwZ5g9'});
 
 
             var fechajs = new Date();
