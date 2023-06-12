@@ -102,7 +102,7 @@ function buscarResultado() {
                   '<br>Critero: ' + criterioVacio + '</p>';
          }
 
-         html += '<p style="font-size: 1.6rem;"><label><strong>NOTA: '+ sumarNota.toFixed(2)+ '</strong></label></p>'
+         html += '<p style="font-size: 1.6rem;"><label><strong>NOTA: '+ sumarNota.toFixed(2)+ '/100 puntos.</strong></label></p>'
          html += '<p><strong>Recuerda: </strong>Los resultados que se obtengan no comprometen al Sistema de Ubicación y Nivelación –SUN– en la admisión para ingreso a las Pruebas Especificas en las unidades académicas, ni están asociados con los futuros desempeños en las pruebas reales.</p>'
          ////console.log(sumarNota);
          document.getElementById("notas").innerHTML = html;
@@ -519,6 +519,7 @@ $("#limpRespuesta").on('click', function () {
   document.getElementById('op2O').checked = false;
   document.getElementById('op3O').checked = false;
   document.getElementById('op4O').checked = false;
+  selected = "";
 
 });
 
