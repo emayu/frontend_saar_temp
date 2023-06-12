@@ -180,7 +180,7 @@ function simFisica(){
 
 
   idDetalleSalonFisica = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['FÍSICA'];
-  //console.log(idDetalleSalonFisica);
+  console.log(idDetalleSalonFisica);
 
   data = JSON.stringify({
     estado_simulador: 1
@@ -304,6 +304,245 @@ function simQuimica(){
 
 //////////////
 
+//////////////reiniciar simuladores //////////////////////
+
+function reiniciarSimBiologia(){
+
+  idDetalleSalonBiologia = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['BIOLOGÍA'];
+  //console.log(idDetalleSalonFisica);
+
+  data = JSON.stringify({
+    estado_simulador: 2
+  })
+  //console.log(data);
+
+  $.ajax({
+      type: 'PUT',
+      url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonBiologia,
+      contentType: 'application/json',
+      dataType: 'HTML',
+      crossDomain: true,
+      async: false,
+      data: data,
+      success: function (data) {
+          //console.log(data);
+
+          $.ajax({
+                type: 'DELETE',
+                url: dominio + 'deleteSimResultado/' + novCarne,
+                contentType: "application/json",
+                dataType: 'json',
+                crossDomain: true,
+                async: false,
+
+                success: function (response) {
+
+                      alertify.success('Se elimino correctamente');
+                      setCookie('api-nombreMateria', 'BIOLOGÍA', 1);
+                      setCookie('api-idTemario', 1, 1);
+                      window.location.href = "simuladorPR.html";
+
+                },
+                error: function (response) {
+                //   window.location.href = "index.html";
+                }
+        });
+
+      }
+  });
+
+}
+
+
+function reiniciarSimFisica(){
+
+  idDetalleSalonFisica = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['FÍSICA'];
+  console.log(idDetalleSalonFisica);
+
+  data = JSON.stringify({
+    estado_simulador: 2
+  })
+  //console.log(data);
+
+  $.ajax({
+      type: 'PUT',
+      url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonFisica,
+      contentType: 'application/json',
+      dataType: 'HTML',
+      crossDomain: true,
+      async: false,
+      data: data,
+      success: function (data) {
+          //console.log(data);
+
+          $.ajax({
+                type: 'DELETE',
+                url: dominio + 'deleteSimResultado/' + novCarne,
+                contentType: "application/json",
+                dataType: 'json',
+                crossDomain: true,
+                async: false,
+
+                success: function (response) {
+
+                      alertify.success('Se elimino correctamente');
+                      setCookie('api-nombreMateria', 'FÍSICA', 1);
+                      setCookie('api-idTemario', 2, 1);
+                      window.location.href = "simuladorPR.html";
+
+                },
+                error: function (response) {
+                //   window.location.href = "index.html";
+                }
+        });
+
+      }
+  });
+
+}
+
+function reiniciarSimLenguaje(){
+
+  idDetalleSalonLenguaje = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['LENGUAJE'];
+
+  data = JSON.stringify({
+    estado_simulador: 2
+  })
+  //console.log(data);
+
+  $.ajax({
+      type: 'PUT',
+      url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonLenguaje,
+      contentType: 'application/json',
+      dataType: 'HTML',
+      crossDomain: true,
+      async: false,
+      data: data,
+      success: function (data) {
+          //console.log(data);
+
+          $.ajax({
+                type: 'DELETE',
+                url: dominio + 'deleteSimResultado/' + novCarne,
+                contentType: "application/json",
+                dataType: 'json',
+                crossDomain: true,
+                async: false,
+
+                success: function (response) {
+
+                      alertify.success('Se elimino correctamente');
+                      setCookie('api-nombreMateria', 'LENGUAJE', 1);
+                      setCookie('api-idTemario', 3, 1);
+                      window.location.href = "simuladorPR.html";
+
+                },
+                error: function (response) {
+                //   window.location.href = "index.html";
+                }
+        });
+
+      }
+  });
+
+}
+
+function reiniciarSimMate(){
+
+  idDetalleSalonMate = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['MATEMÁTICA'];
+
+  data = JSON.stringify({
+    estado_simulador: 2
+  })
+  //console.log(data);
+
+  $.ajax({
+      type: 'PUT',
+      url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonMate,
+      contentType: 'application/json',
+      dataType: 'HTML',
+      crossDomain: true,
+      async: false,
+      data: data,
+      success: function (data) {
+          //console.log(data);
+
+          $.ajax({
+                type: 'DELETE',
+                url: dominio + 'deleteSimResultado/' + novCarne,
+                contentType: "application/json",
+                dataType: 'json',
+                crossDomain: true,
+                async: false,
+
+                success: function (response) {
+
+                      alertify.success('Se elimino correctamente');
+                      setCookie('api-nombreMateria', 'MATEMÁTICA', 1);
+                      setCookie('api-idTemario', 4, 1);
+                      window.location.href = "simuladorPR.html";
+
+                },
+                error: function (response) {
+                //   window.location.href = "index.html";
+                }
+        });
+
+      }
+  });
+
+}
+
+function reiniciarSimQuimica(){
+
+  idDetalleSalonQuimica = JSON.parse(jsonHtml.substring(0, jsonHtml.length -2) + '}')['QUÍMICA'];
+
+  data = JSON.stringify({
+    estado_simulador: 2
+  })
+  //console.log(data);
+
+  $.ajax({
+      type: 'PUT',
+      url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonQuimica,
+      contentType: 'application/json',
+      dataType: 'HTML',
+      crossDomain: true,
+      async: false,
+      data: data,
+      success: function (data) {
+          //console.log(data);
+
+          $.ajax({
+                type: 'DELETE',
+                url: dominio + 'deleteSimResultado/' + novCarne,
+                contentType: "application/json",
+                dataType: 'json',
+                crossDomain: true,
+                async: false,
+
+                success: function (response) {
+
+                      alertify.success('Se elimino correctamente');
+                      setCookie('api-nombreMateria', 'QUÍMICA', 1);
+                      setCookie('api-idTemario', 5, 1);
+                      window.location.href = "simuladorPR.html";
+
+                },
+                error: function (response) {
+                //   window.location.href = "index.html";
+                }
+        });
+
+      }
+  });
+
+}
+
+
+/////////////////////////////////////
+
+
 $(document).ready(function () {
 
   $("#BIOLOGÍA").on('click', function () {
@@ -318,13 +557,22 @@ $(document).ready(function () {
          success: function (data) {
          //console.log(data.asignado.estado_simulador);
          if(data.asignado.estado_simulador === 1){
+           alertify.confirm('Simulador', '¿Deseas realizar la segunda oportunidad del simulador de PCB para: BIOLOGÍA?', function(){reiniciarSimBiologia(); }
+                      , function(){setCookie('api-nombreMateria', 'BIOLOGÍA', 1);
+                      setCookie('api-idTemario', 1, 1);
+                      window.location.href = "simuladorPR.html";});
+           //simBiologia();
+         }
+         else if(data.asignado.estado_simulador === 2){
            alertify.set('notifier','position', 'bottom-center');
-           alertify.warning("El simulador de BIOLOGÍA ya lo has realizado.");
-           simBiologia();
+            alertify.warning("Ya realizaste las dos oportunidades del simulador: BIOLOGÍA.");
+            setCookie('api-nombreMateria', 'BIOLOGÍA', 1);
+            setCookie('api-idTemario', 1, 1);
+            window.location.href = "simuladorPR.html";
          }
          else{
 
-           alertify.confirm('Asignación', '¿Deseas realizar el simulador de PCB para: BIOLOGÍA?', function(){simBiologia(); }
+           alertify.confirm('Simulador', '¿Deseas realizar el simulador de PCB para: BIOLOGÍA?', function(){simBiologia(); }
                       , function(){ alertify.error('Puedes seleccionar otro simulador')});
 
          }
@@ -352,13 +600,22 @@ $(document).ready(function () {
            success: function (data) {
            //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
+             alertify.confirm('Simulador', '¿Deseas realizar la segunda oportunidad del simulador de PCB para: FÍSICA?', function(){reiniciarSimFisica(); }
+                        , function(){setCookie('api-nombreMateria', 'FÍSICA', 1);
+                        setCookie('api-idTemario', 2, 1);
+                        window.location.href = "simuladorPR.html";});
+             //simFisica();
+           }
+           else if(data.asignado.estado_simulador === 2){
              alertify.set('notifier','position', 'bottom-center');
-             alertify.warning("El simulador de FÍSICA ya lo has realizado.");
-             simFisica();
+              alertify.warning("Ya realizaste las dos oportunidades del simulador: FÍSICA.");
+              setCookie('api-nombreMateria', 'FÍSICA', 1);
+              setCookie('api-idTemario', 2, 1);
+              window.location.href = "simuladorPR.html";
            }
            else{
 
-             alertify.confirm('Asignación', '¿Deseas realizar el simulador de PCB para: FÍSICA?', function(){simFisica(); }
+             alertify.confirm('Simulador', '¿Deseas realizar el simulador de PCB para: FÍSICA?', function(){simFisica(); }
                         , function(){ alertify.error('Puedes seleccionar otro simulador')});
 
            }
@@ -385,13 +642,22 @@ $(document).ready(function () {
            success: function (data) {
            //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
+             alertify.confirm('Simulador', '¿Deseas realizar la segunda oportunidad del simulador de PCB para: LENGUAJE?', function(){reiniciarSimLenguaje(); }
+                        , function(){setCookie('api-nombreMateria', 'LENGUAJE', 1);
+                        setCookie('api-idTemario', 3, 1);
+                        window.location.href = "simuladorPR.html";});
+             //simLenguaje();
+           }
+           else if(data.asignado.estado_simulador === 2){
              alertify.set('notifier','position', 'bottom-center');
-             alertify.warning("El simulador de LENGUAJE ya lo has realizado.");
-             simLenguaje();
+              alertify.warning("Ya realizaste las dos oportunidades del simulador: LENGUAJE.");
+              setCookie('api-nombreMateria', 'LENGUAJE', 1);
+              setCookie('api-idTemario', 3, 1);
+              window.location.href = "simuladorPR.html";
            }
            else{
 
-             alertify.confirm('Asignación', '¿Deseas realizar el simulador de PCB para: LENGUAJE?', function(){simLenguaje(); }
+             alertify.confirm('Simulador', '¿Deseas realizar el simulador de PCB para: LENGUAJE?', function(){simLenguaje(); }
                         , function(){ alertify.error('Puedes seleccionar otro simulador')});
 
            }
@@ -417,13 +683,22 @@ $(document).ready(function () {
            success: function (data) {
            //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
+             alertify.confirm('Simulador', '¿Deseas realizar la segunda oportunidad del simulador de PCB para: MATEMÁTICA?', function(){reiniciarSimMate(); }
+                        , function(){setCookie('api-nombreMateria', 'MATEMÁTICA', 1);
+                        setCookie('api-idTemario', 4, 1);
+                        window.location.href = "simuladorPR.html";});
+            // simMatematica();
+           }
+           else if(data.asignado.estado_simulador === 2){
              alertify.set('notifier','position', 'bottom-center');
-             alertify.warning("El simulador de MATEMÁTICA ya lo has realizado.");
-             simMatematica();
+              alertify.warning("Ya realizaste las dos oportunidades del simulador: MATEMÁTICA.");
+              setCookie('api-nombreMateria', 'MATEMÁTICA', 1);
+              setCookie('api-idTemario', 4, 1);
+              window.location.href = "simuladorPR.html";
            }
            else{
 
-             alertify.confirm('Asignación', '¿Deseas realizar el simulador de PCB para: MATEMÁTICA?', function(){simMatematica(); }
+             alertify.confirm('Simulador', '¿Deseas realizar el simulador de PCB para: MATEMÁTICA?', function(){simMatematica(); }
                         , function(){ alertify.error('Puedes seleccionar otro simulador')});
 
            }
@@ -449,13 +724,22 @@ $(document).ready(function () {
            success: function (data) {
            //console.log(data.asignado.estado_simulador);
            if(data.asignado.estado_simulador === 1){
+             alertify.confirm('Simulador', '¿Deseas realizar la segunda oportunidad del simulador de PCB para: QUÍMICA?', function(){reiniciarSimQuimica(); }
+                        , function(){setCookie('api-nombreMateria', 'QUÍMICA', 1);
+                        setCookie('api-idTemario', 5, 1);
+                        window.location.href = "simuladorPR.html";});
+            // simQuimica();
+           }
+           else if(data.asignado.estado_simulador === 2){
              alertify.set('notifier','position', 'bottom-center');
-             alertify.warning("El simulador de QUÍMICA ya lo has realizado.");
-             simQuimica();
+              alertify.warning("Ya realizaste las dos oportunidades del simulador: QUÍMICA.");
+              setCookie('api-nombreMateria', 'QUÍMICA', 1);
+              setCookie('api-idTemario', 5, 1);
+              window.location.href = "simuladorPR.html";
            }
            else{
 
-             alertify.confirm('Asignación', '¿Deseas realizar el simulador de PCB para: QUÍMICA?', function(){simQuimica(); }
+             alertify.confirm('Simulador', '¿Deseas realizar el simulador de PCB para: QUÍMICA?', function(){simQuimica(); }
                         , function(){ alertify.error('Puedes seleccionar otro simulador')});
 
            }
