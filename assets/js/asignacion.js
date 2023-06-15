@@ -283,9 +283,12 @@ function facultades() {
    selectFacultad.remove(i);
  }
 
-
+     var option = document.createElement('option');
+     option.text = 'Selecciona Unidad Académica';
+     option.value = 0;
+     selectFacultad.appendChild(option);
       for(i=0; i<data.facultad.length; i++){
-        const option = document.createElement('option');
+        option = document.createElement('option');
     //    console.log(option.text = data.facultad[i].nombre);
         //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
         option.value = data.facultad[i].id_facultad;
