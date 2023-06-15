@@ -105,7 +105,7 @@ function verificarAsignacion(){
 
                   $("#activo").html(html);
                     document.getElementById("instrucciones").innerHTML = `<a class="nav-link" style="color: black; font-size: 17px;"><strong>Instrucciones:</strong> <p class="text-left">1. Solo puedes realizar las pruebas de los requisitos
-                    a los cuales estas asignado. No podrás aplicar dos veces  a la misma prueba.</p><p class="text-left">2. Las pruebas tienen una duración máxima de 30 minutos
+                    a los cuales estas asignado.</p><p class="text-left">2. Las pruebas tienen una duración máxima de 30 minutos
                      y constan de 15 preguntas (Física y Matemática) y de 20 preguntas (Lenguaje, Química y Biología).</p>
                      <p class="text-left">3. No respondas las pruebas al azar ya que al finalizar se te presentará tu resultado con el listado de preguntas y el criterio de cada una, el cual consta de: <br>
                                         - Criterio de pregunta con respuesta incorrecta<br>

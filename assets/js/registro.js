@@ -1,4 +1,10 @@
 $(document).ready(function () {
+  var hoy = new Date();
+  var year = hoy.getFullYear();
+
+  document.getElementById("infoRegistro").innerHTML = '<label><p> <br> <strong>Nota: Si tu NOV es del año ' + year + ' y acabas de recibir tus resultados de la Prueba de Orientación Vocacional,'
+  +  'debes esperar al menos 3 días hábiles para poder crear tu cuenta. </strong> </p></label>';
+
 tipoCuenta = 0;
 $(".divAspirante").hide();
 $(".divEstudiante").hide();
@@ -112,7 +118,7 @@ else if(cuenta==1){
           crossDomain: true,
           async: false,
           success: function (response) {
-          
+
             if (response.USAC_ESTUDIANTE.length > 0) {
               alertify.set('notifier','position', 'bottom-center');
               alertify.error("Como estudiante no puedes crear perfil de aspirante, debes crear tu perfil de estudiante, si ya lo tienes creado debes iniciar sesión.");
