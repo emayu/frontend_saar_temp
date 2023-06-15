@@ -156,9 +156,13 @@
 
           //  html += '<label for="">Selecciona Centro: </label>';
             //html +=  '<select data-live-search="true" data-live-search-style="startsWith"  class="selectpicker">';
+            var option = document.createElement('option');
+            option.text = 'Selecciona Centro Universitario';
+            option.value = 0;
+            $select.appendChild(option);
 
             for(i=0; i<data.centros.length; i++){
-              const option = document.createElement('option');
+               option = document.createElement('option');
               //console.log(option.text = data.centros[i].nombre);
               //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
               option.value = data.centros[i].id;
@@ -172,7 +176,6 @@
           ///////sleector de inicio
 
           idCentro = $("#selbox").val();
-
          $.ajax({
               type: 'GET',
               url:  dominio + "buscarFacultadActiva/" + idCentro + "/1",
@@ -184,9 +187,14 @@
 
             // html = "";
               const selectFacultad = document.querySelector("#selFacultad");
-
+              var option = document.createElement('option');
+              option.text = 'Selecciona Unidad Académica';
+              option.value = 0;
+              selectFacultad.appendChild(option);
+              console.log(option.text);
+              console.log("paso n veces");
               for(i=0; i<data.facultad.length; i++){
-                const option = document.createElement('option');
+
                 //console.log(option.text = data.facultad[i].nombre);
                 //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
                 option.value = data.facultad[i].id_facultad;
