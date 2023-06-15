@@ -557,16 +557,25 @@ function verificarResultado(){
              var selUnidad = document.getElementById("selFacultad");
              var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
 
-             if(unidadSelect === 'Asignación Unidad Académica'){
+             if(centroSelect === 'Selecciona Centro Universitario'){
                alertify.set('notifier','position', 'bottom-center');
-               alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+               alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
 
              }
-             else {
+             else{
 
-             alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
-                        , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-                 }
+               if(unidadSelect === 'Selecciona Unidad Académica'){
+                 alertify.set('notifier','position', 'bottom-center');
+                 alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+               }
+               else {
+
+               alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
+                          , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+                   }
+
+             }
 
            });
          }
@@ -587,16 +596,25 @@ function verificarResultado(){
            var selUnidad = document.getElementById("selFacultad");
            var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
 
-           if(unidadSelect === 'Asignación Unidad Académica'){
+           if(centroSelect === 'Selecciona Centro Universitario'){
              alertify.set('notifier','position', 'bottom-center');
-             alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+             alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
 
            }
-           else {
+           else{
 
-           alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
-                      , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-               }
+             if(unidadSelect === 'Selecciona Unidad Académica'){
+               alertify.set('notifier','position', 'bottom-center');
+               alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+             }
+             else {
+
+             alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
+                        , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+                 }
+
+           }
 
          });
        }
@@ -861,16 +879,25 @@ $(".botonAsignar").on('click', function () {
    var selUnidad = document.getElementById("selFacultad");
    var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
 
-   if(unidadSelect === 'Asignación Unidad Académica'){
+   if(centroSelect === 'Selecciona Centro Universitario'){
      alertify.set('notifier','position', 'bottom-center');
-     alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+     alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
 
    }
-   else {
+   else{
 
-   alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo(); if(asignacionJson.length > 0){generarAsignacion()};; }
-              , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-       }
+     if(unidadSelect === 'Selecciona Unidad Académica'){
+       alertify.set('notifier','position', 'bottom-center');
+       alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+
+     }
+     else {
+
+     alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
+                , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
+         }
+
+   }
 
  }
  else {
