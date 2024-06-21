@@ -119,7 +119,7 @@ function verificarAsignacion(){
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(100, 75, "CONSTANCIA DE INSCRIPCIÓN PAP DE CONOCIMIENTOS BÁSICOS");
-            pdf.text(240, 90, "2023 (Segundo Semestre)");
+            pdf.text(240, 90, "2024 (Primer Semestre)");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
             if(novCarne.length === 10){
@@ -141,12 +141,12 @@ function verificarAsignacion(){
             pdf.text(40,390,"IMPORTANTE:");
 
             pdf.setFontSize(15).setFont(undefined, 'normal');
-            pdf.text(40,410,"Para finalizar tu inscripción ingresa a al siguente formulario:");
+            pdf.text(40,410,"Para finalizar tu inscripción dirigete a las instalaciones de EFPEM \nCiudad Universitaria zona 12, ingreso por Av. Petapa \nel dia de inicio de clases según tu jornada");
 
-            pdf.text(40,475,"llena tus datos y envia tu papelería. \n Se te solicitará: \n - Esta constancia de inscripción. \n - Fotografía de DPI (parte frontal) o partida de nacimiento. \n - Fotografía de tu tarjeta, resultado en pdf de orientación vocacional o \n carné universitario. \n - Fotografía tamaño cédula (Los archivos en formato pdf ó jpg deben tener \n un máximo de 1MB).");
+            //pdf.text(40,475,"llena tus datos y envia tu papelería. \n Se te solicitará: \n - Esta constancia de inscripción. \n - Fotografía de DPI (parte frontal) o partida de nacimiento. \n - Fotografía de tu tarjeta, resultado en pdf de orientación vocacional o \n carné universitario. \n - Fotografía tamaño cédula (Los archivos en formato pdf ó jpg deben tener \n un máximo de 1MB).");
 
             pdf.setFontSize(14).setFont(undefined, 'bold');
-            pdf.text(40,615,"- Es indispensable el envío de tus datos personales y papelería a través del \n formulario en caso no lo realices, tu inscripción quedará sin efecto.");
+            //pdf.text(40,615,"- Es indispensable el envío de tus datos personales y papelería a través del \n formulario en caso no lo realices, tu inscripción quedará sin efecto.");
 
             pdf.setFontSize(14).setFont(undefined, 'normal');
             pdf.text(40,665,"Una vez asignado no hay cambios de horarios o jornada.");
@@ -154,10 +154,10 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,680,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,680,"\n Plan Diario 17/07/2023, Plan Sabatino 15/07/2023");
+            pdf.text(150,680,"\n Plan Diario 01/02/2024, Plan Sabatino 03/02/2024");
 
             pdf.setFontSize(17).setFont(undefined, 'bold');
-            pdf.textWithLink('https://forms.gle/nSoQYeBU3ncuwZ5g9', 145, 435, {url: 'https://forms.gle/nSoQYeBU3ncuwZ5g9'});
+           // pdf.textWithLink('https://forms.gle/nSoQYeBU3ncuwZ5g9', 145, 435, {url: 'https://forms.gle/nSoQYeBU3ncuwZ5g9'});
 
 
             var fechajs = new Date();
