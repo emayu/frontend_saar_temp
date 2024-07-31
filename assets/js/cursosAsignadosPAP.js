@@ -94,7 +94,7 @@ let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStar
         var tmpDate = new Date(fechaLimiteConstancia[0] , fechaLimiteConstancia[1] - 1, fechaLimiteConstancia[2]); // Augest 20, 2020
 
          //document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
-         document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong>Si te inscribiste al Programa Académico Preparatorio PAP primer semestre 2023, tu constancia de cursos asignados con el enlace de acceso a tus clases virtuales estará disponible a partir de '+ addDaysToDate(tmpDate, 30) +'</strong></a>';
+         document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong>Si te inscribiste al Programa Académico Preparatorio PAP segundo semestre 2023, tu constancia de cursos asignados con el enlace de acceso a tus clases virtuales estará disponible a partir de '+ addDaysToDate(tmpDate, 30) +'</strong></a>';
 
       }
 
