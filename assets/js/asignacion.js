@@ -140,12 +140,21 @@ function adAsignacion() {
                      pdf.addImage(imgUsac, 'jpeg', 10, 10, 0, 0);
                      pdf.addImage(imgSun, 'jpeg', 535, 470, 0, 0);
                      pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
+                     // Header text
                      pdf.setFontSize(13).setFont(undefined, 'bold');
                      pdf.text(250, 75, "Form.SUN.09.01");
                      pdf.text(50, 90, "CONSTANCIA DE ASIGNACIÓN DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
                      pdf.setFontSize(12).setFont(undefined, 'normal');
 
+                     var fechajs = new Date();
+                     const tiempoTranscurrido = Date.now();
+                     const hoy = new Date(tiempoTranscurrido);
+                     // console.log(hoy.toLocaleDateString());
+                     pdf.setFontSize(9).setFont(undefined, 'bold');
+                     pdf.text(440,10,"Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
+                     pdf.text(440,25, "Fecha de asignación: " + fechaAsignacionVista);
 
+                     //Body
                      if(novCarne.toString().length === 10){
                        pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
                        pdf.text(40,145,"NOV: " + novCarne.toString() );
@@ -164,32 +173,40 @@ function adAsignacion() {
                      pdf.text(40,185,"Estudiará en: " + centroConstancia);
                      pdf.text(40,205,"Unidad académica: " + facultadConstancia);
 
-                     pdf.setFontSize(15).setFont(undefined, 'normal');
+                     //Notes
+            pdf.setFontSize(17).setFont(undefined, 'bold');
+            pdf.text(214, 390,"*** IMPORTANTE ***");
 
-                     pdf.text(40,390,"Tus Pruebas de Conocimientos Básicos se llevarán a cabo en línea. \n Podrás ingresar dando clic en el siguiente enlace:");
+            pdf.setFontSize(17).setFont(undefined, 'normal');            
+            pdf.text(160,420,"Instrucciones y Recomendaciones"); 
 
-                     pdf.text(40,490,"En las fechas y horarios establecidos en esta constancia de inscripción.");
+            pdf.setFontSize(13).setFont(undefined, 'normal');            
+            pdf.text(40,450,
+`
+   Revisa el lugar asignado para tus Pruebas de Conocimientos Básicos PCB y 
+   sigue las instrucciones según sea el caso:
 
-                     pdf.setFontSize(13).setFont(undefined, 'normal');
-                     pdf.text(40,545,"Tres días antes de tu(s) prueba(s) se habilitará el acceso a la plataforma de aplicación, \n para que verifques lo siguiente: \n - Que tu explorador de Internet sea compatible y esté actualizado \n - Que puedas iniciar sesión (debes utilizar el número de orientación vocacional o carnet \n universitario y la fecha de nacimiento registrada en esta constancia de inscripción) \n - Las materias y horarios asignados");
+      - Si tus PCB se llevarán a cabo
 
-                     pdf.text(40,665,"Para la aplicación de Pruebas de Conocimientos Básicos");
+                  
 
-                     pdf.setFontSize(17).setFont(undefined, 'bold');
-                     pdf.textWithLink('https://radd1.virtual.usac.edu.gt/pcb/', 145, 445, {url: 'https://radd1.virtual.usac.edu.gt/pcb/'});
-                     pdf.textWithLink('Clic acá', 260, 685, {url: 'https://drive.google.com/file/d/1u-b0x2vsWcMOxbgSJZf0uZDSnCcR9Y6D/view'});
-                     pdf.text(40,520,"** IMPORTANTE**");
-                     pdf.text(160,645,"Instrucciones y Recomendaciones");
+      - Si tus PCB se llevarán a cabo
+      
+                  `);
 
+                  pdf.setFontSize(17).setFont(undefined, 'bold');            
+                  pdf.text(247,510, 'en línea:');
+                  pdf.textWithLink('Clic acá', 102, 540, {url: 'https://drive.google.com/file/d/1pFfPWG7qAl1O6VHYUPCdMV1DMseOq41w/view?usp=drivesdk'}); 
 
-                     var fechajs = new Date();
-                     const tiempoTranscurrido = Date.now();
-                     const hoy = new Date(tiempoTranscurrido);
-                    // console.log(hoy.toLocaleDateString());
-                    pdf.setFontSize(9).setFont(undefined, 'bold');
-                    pdf.text(440,10,"Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
-                    pdf.text(440,25, "Fecha de asignación: " + fechaAsignacionVista);
+                  pdf.text(247,570, 'presencialmente:');
+                  pdf.textWithLink('Clic acá', 102, 600, {url: 'https://drive.google.com/file/d/1p8pYIDguwIdvBNO9m6jGhWU9K24-fy-T/view?usp=drivesdk'}); 
 
+            pdf.setFontSize(13).setFont(undefined, 'bold');
+            pdf.text(40,650, "Toma en cuenta que NO hay cambios de hora y/o fecha en ninguna modalidad.");
+
+            
+
+                    //Footer
                      pdf.text(20,780,risa);
                      pdf.setFontSize(10).setFont(undefined, 'bold');
                      pdf.textWithLink('SUNUSAC', 255, 765, {url: 'https://www.facebook.com/SUNUSAC'});
@@ -360,12 +377,21 @@ function verificarResultadoAsignacion(){
             pdf.addImage(imgUsac, 'jpeg', 10, 10, 0, 0);
             pdf.addImage(imgSun, 'jpeg', 535, 470, 0, 0);
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
+            // Header text
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(250, 75, "Form.SUN.09.01");
             pdf.text(50, 90, "CONSTANCIA DE ASIGNACIÓN DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
+            var fechajs = new Date();
+            const tiempoTranscurrido = Date.now();
+            const hoy = new Date(tiempoTranscurrido);
+          //  console.log(hoy.toLocaleDateString());
+            pdf.setFontSize(9).setFont(undefined, 'bold');
+            pdf.text(440,10,"Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
+            pdf.text(440,25, "Fecha de asignación: " + fechaAsignacionVista);
 
+            //Body
             if(novCarne.toString().length === 10){
               pdf.text(40,125,"Nombre: " + nombres + " " + apellidos);
               pdf.text(40,145,"NOV: " + novCarne.toString() );
@@ -384,33 +410,40 @@ function verificarResultadoAsignacion(){
             pdf.text(40,185,"Estudiará en: " + centroConstancia);
             pdf.text(40,205,"Unidad académica: " + facultadConstancia);
 
-
-            pdf.setFontSize(15).setFont(undefined, 'normal');
-
-            pdf.text(40,390,"Tus Pruebas de Conocimientos Básicos se llevarán a cabo en línea. \n Podrás ingresar dando clic en el siguiente enlace:");
-
-            pdf.text(40,490,"En las fechas y horarios establecidos en esta constancia de inscripción.");
-
-            pdf.setFontSize(13).setFont(undefined, 'normal');
-            pdf.text(40,545,"Tres días antes de tu(s) prueba(s) se habilitará el acceso a la plataforma de aplicación, \n para que verifques lo siguiente: \n - Que tu explorador de Internet sea compatible y esté actualizado \n - Que puedas iniciar sesión (debes utilizar el número de orientación vocacional o carnet \n universitario y la fecha de nacimiento registrada en esta constancia de inscripción) \n - Las materias y horarios asignados");
-
-            pdf.text(40,665,"Para la aplicación de Pruebas de Conocimientos Básicos");
-
+            //Notes
             pdf.setFontSize(17).setFont(undefined, 'bold');
-            pdf.textWithLink('https://radd1.virtual.usac.edu.gt/pcb/', 145, 445, {url: 'https://radd1.virtual.usac.edu.gt/pcb/'});
-            pdf.textWithLink('Clic acá', 260, 685, {url: 'https://drive.google.com/file/d/1u-b0x2vsWcMOxbgSJZf0uZDSnCcR9Y6D/view'});
-            pdf.text(40,520,"** IMPORTANTE**");
-            pdf.text(160,645,"Instrucciones y Recomendaciones");
+            pdf.text(214, 390,"*** IMPORTANTE ***");
 
+            pdf.setFontSize(17).setFont(undefined, 'normal');            
+            pdf.text(160,420,"Instrucciones y Recomendaciones"); 
 
-            var fechajs = new Date();
-            const tiempoTranscurrido = Date.now();
-            const hoy = new Date(tiempoTranscurrido);
-          //  console.log(hoy.toLocaleDateString());
-            pdf.setFontSize(9).setFont(undefined, 'bold');
-            pdf.text(440,10,"Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
-            pdf.text(440,25, "Fecha de asignación: " + fechaAsignacionVista);
+            pdf.setFontSize(13).setFont(undefined, 'normal');            
+            pdf.text(40,450,
+`
+   Revisa el lugar asignado para tus Pruebas de Conocimientos Básicos PCB y 
+   sigue las instrucciones según sea el caso:
 
+      - Si tus PCB se llevarán a cabo
+
+                  
+
+      - Si tus PCB se llevarán a cabo
+      
+                  `);
+
+                  pdf.setFontSize(17).setFont(undefined, 'bold');            
+                  pdf.text(247,510, 'en línea:');
+                  pdf.textWithLink('Clic acá', 102, 540, {url: 'https://drive.google.com/file/d/1pFfPWG7qAl1O6VHYUPCdMV1DMseOq41w/view?usp=drivesdk'}); 
+
+                  pdf.text(247,570, 'presencialmente:');
+                  pdf.textWithLink('Clic acá', 102, 600, {url: 'https://drive.google.com/file/d/1p8pYIDguwIdvBNO9m6jGhWU9K24-fy-T/view?usp=drivesdk'}); 
+
+            pdf.setFontSize(13).setFont(undefined, 'bold');
+            pdf.text(40,650, "Toma en cuenta que NO hay cambios de hora y/o fecha en ninguna modalidad.");
+
+            
+
+            //Footer
             pdf.text(20,780,risa);
             pdf.setFontSize(10).setFont(undefined, 'bold');
             pdf.textWithLink('SUNUSAC', 255, 765, {url: 'https://www.facebook.com/SUNUSAC'});
