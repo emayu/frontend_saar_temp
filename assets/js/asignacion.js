@@ -104,148 +104,28 @@ function adAsignacion() {
               $("#selFacultades").hide();
               $("#visorPDF").show();
 
-
-              for (i = 0; i < data.asignaciones.length; i++) {
-
-                fechaEvaluacion = data.asignaciones[i].fecha_examen.split("-");
-                fechaAsignacion = fechaEvaluacion[2] + "/" + fechaEvaluacion[1] + "/" + fechaEvaluacion[0];
-
-                datosAsignacion.push([data.asignaciones[i].asignacion, data.asignaciones[i].materia, fechaAsignacion, data.asignaciones[i].tipo, data.asignaciones[i].hora_examen]);
-                //  buscarEnAsignacion(data.DETALLEFACULTAD[i].fecha_examen);
-
-              }
-              facultadConstancia = data.asignaciones[0].facultad;
-              centroConstancia = data.asignaciones[0].centro;
-              fechaAsignacionConstancia = data.asignaciones[0].fecha_asignacion.split("-");
-              fechaAsignacionVista = fechaAsignacionConstancia[2] + "/" + fechaAsignacionConstancia[1] + "/" + fechaAsignacionConstancia[0];
-
               /////////////crear pdf
-
-
-              var imgUsac = new Image()
-              var imgSun = new Image()
-              var imgRedes = new Image()
-
-
-              imgUsac.src = 'assets/img/logoUSACCarta.png'
-              imgSun.src = 'assets/img/logosunLetras.png'
-              imgRedes.src = 'assets/img/footerRedes.png'
-              const addFooters = pdf => {
-                const pageCount = pdf.internal.getNumberOfPages()
-
-                pdf.setFont('helvetica', 'italic')
-                pdf.setFontSize(8)
-                for (var i = 1; i <= pageCount; i++) {
-                  pdf.addImage(imgUsac, 'jpeg', 10, 10, 0, 0);
-                  pdf.addImage(imgSun, 'jpeg', 535, 470, 0, 0);
-                  pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
-                  // Header text
-                  pdf.setFontSize(13).setFont(undefined, 'bold');
-                  pdf.text(250, 75, "Form.SUN.09.01");
-                  pdf.text(50, 90, "CONSTANCIA DE ASIGNACIÓN DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
-                  pdf.setFontSize(12).setFont(undefined, 'normal');
-
-                  var fechajs = new Date();
-                  const tiempoTranscurrido = Date.now();
-                  const hoy = new Date(tiempoTranscurrido);
-                  // console.log(hoy.toLocaleDateString());
-                  pdf.setFontSize(9).setFont(undefined, 'bold');
-                  pdf.text(440, 10, "Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
-                  pdf.text(440, 25, "Fecha de asignación: " + fechaAsignacionVista);
-
-                  //Body
-                  if (novCarne.toString().length === 10) {
-                    pdf.text(40, 125, "Nombre: " + nombres + " " + apellidos);
-                    pdf.text(40, 145, "NOV: " + novCarne.toString());
-                    risa = myCipher(novCarne.toString());
-                  }
-                  else if (novCarne.toString().length >= 1 && novCarne.toString().length <= 9) {
-                    pdf.text(40, 125, "Nombre: " + nombreCompleto);
-                    pdf.text(40, 145, "Carné: " + novCarne.toString());
-                    risa = myCipher(novCarne.toString());
-                  }
-
-                  var fechaNa = fechaNacimiento.split("-");
-                  var fechaNac = fechaNa[2] + "/" + fechaNa[1] + "/" + fechaNa[0];
-
-                  pdf.text(40, 165, "Fecha de Nacimiento: " + fechaNac);
-                  pdf.text(40, 185, "Estudiará en: " + centroConstancia);
-                  pdf.text(40, 205, "Unidad académica: " + facultadConstancia);
-
-                  //Notes
-                  pdf.setFontSize(17).setFont(undefined, 'bold');
-                  pdf.text(214, 390, "*** IMPORTANTE ***");
-
-                  pdf.setFontSize(17).setFont(undefined, 'normal');
-                  pdf.text(160, 420, "Instrucciones y Recomendaciones");
-
-                  pdf.setFontSize(13).setFont(undefined, 'normal');
-                  pdf.text(40, 450,
-                    `
-   Revisa el lugar asignado para tus Pruebas de Conocimientos Básicos PCB y 
-   sigue las instrucciones según sea el caso:
-
-      - Si tus PCB se llevarán a cabo
-
-                  
-
-      - Si tus PCB se llevarán a cabo
-      
-                  `);
-
-                  pdf.setFontSize(17).setFont(undefined, 'bold');
-                  pdf.text(247, 510, 'en línea:');
-                  pdf.textWithLink('Clic acá', 102, 540, { url: 'https://drive.google.com/file/d/1pFfPWG7qAl1O6VHYUPCdMV1DMseOq41w/view?usp=drivesdk' });
-
-                  pdf.text(247, 570, 'presencialmente:');
-                  pdf.textWithLink('Clic acá', 102, 600, { url: 'https://drive.google.com/file/d/1p8pYIDguwIdvBNO9m6jGhWU9K24-fy-T/view?usp=drivesdk' });
-
-                  pdf.setFontSize(13).setFont(undefined, 'bold');
-                  pdf.text(40, 650, "Toma en cuenta que NO hay cambios de hora y/o fecha en ninguna modalidad.");
-
-
-
-                  //Footer
-                  pdf.text(20, 780, risa);
-                  pdf.setFontSize(10).setFont(undefined, 'bold');
-                  pdf.textWithLink('SUNUSAC', 255, 765, { url: 'https://www.facebook.com/SUNUSAC' });
-                  pdf.textWithLink('sun_usac', 337, 765, { url: 'https://www.instagram.com/sun_usac/' });
-                  pdf.setPage(i);
-                  pdf.text('Página ' + String(i) + ' de ' + String(pageCount), 560, 780, {
-                    align: 'center'
-                  });
-
-
+              const builder = PDFBuilder.jsPDFBuilder;
+              try{
+                if(novCarne.toString().length === 10){
+                  builder.setName(nombres + " " + apellidos)
+                }else{
+                  builder.setName(nombreCompleto)
                 }
+                builder.setNov(novCarne)
+                  .setFechaNacimiento(fechaNacimiento)
+                  .setAsignaciones(data.asignaciones);
+              }catch(err){
+                console.error('error al colocar valores', err);
+                return;
               }
-
-              var risa = "";
-
-
-
-
-              var pdf = new jsPDF('p', 'pt', 'letter');
-
-
-
-              var columns = ["No. Asignado", "Materia Asignada", "Fecha", "Lugar", "Hora"];
-              var data = datosAsignacion;
-
-
-              pdf.autoTable(columns, data,
-                {
-                  margin: { top: 220, left: 65, right: 65, bottom: 75 }
-                }
-              );
-              addFooters(pdf);
-
 
               /////////////////////////////////////////////////
 
               //pdf.save(carneEmpleado + '.pdf');
-              var out = pdf.output();
+              
               //  console.log(out);
-              var url = 'data:application/pdf;base64,' + btoa(out);
+              var url = builder.build();
               //console.log(url);
               //  PDFObject.embed('data:application/pdf;base64,' + btoa(out), '#visorPDF');
 
@@ -341,148 +221,29 @@ function verificarResultadoAsignacion() {
         $("#selFacultades").hide();
         $("#visorPDF").show();
 
-
-        for (i = 0; i < data.asignaciones.length; i++) {
-
-          fechaEvaluacion = data.asignaciones[i].fecha_examen.split("-");
-          fechaAsignacion = fechaEvaluacion[2] + "/" + fechaEvaluacion[1] + "/" + fechaEvaluacion[0];
-
-          datosAsignacion.push([data.asignaciones[i].asignacion, data.asignaciones[i].materia, fechaAsignacion, data.asignaciones[i].tipo, data.asignaciones[i].hora_examen]);
-          //  buscarEnAsignacion(data.DETALLEFACULTAD[i].fecha_examen);
-
-        }
-        facultadConstancia = data.asignaciones[0].facultad;
-        centroConstancia = data.asignaciones[0].centro;
-        fechaAsignacionConstancia = data.asignaciones[0].fecha_asignacion.split("-");
-        fechaAsignacionVista = fechaAsignacionConstancia[2] + "/" + fechaAsignacionConstancia[1] + "/" + fechaAsignacionConstancia[0];
-
         /////////////crear pdf
 
-
-        var imgUsac = new Image()
-        var imgSun = new Image()
-        var imgRedes = new Image()
-
-
-        imgUsac.src = 'assets/img/logoUSACCarta.png'
-        imgSun.src = 'assets/img/logosunLetras.png'
-        imgRedes.src = 'assets/img/footerRedes.png'
-        const addFooters = pdf => {
-          const pageCount = pdf.internal.getNumberOfPages()
-
-          pdf.setFont('helvetica', 'italic')
-          pdf.setFontSize(8)
-          for (var i = 1; i <= pageCount; i++) {
-            pdf.addImage(imgUsac, 'jpeg', 10, 10, 0, 0);
-            pdf.addImage(imgSun, 'jpeg', 535, 470, 0, 0);
-            pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
-            // Header text
-            pdf.setFontSize(13).setFont(undefined, 'bold');
-            pdf.text(250, 75, "Form.SUN.09.01");
-            pdf.text(50, 90, "CONSTANCIA DE ASIGNACIÓN DE PRUEBAS DE CONOCIMIENTOS BÁSICOS");
-            pdf.setFontSize(12).setFont(undefined, 'normal');
-
-            var fechajs = new Date();
-            const tiempoTranscurrido = Date.now();
-            const hoy = new Date(tiempoTranscurrido);
-            //  console.log(hoy.toLocaleDateString());
-            pdf.setFontSize(9).setFont(undefined, 'bold');
-            pdf.text(440, 10, "Fecha de impresión: " + hoy.toLocaleDateString() + ' ' + fechajs.getHours() + ':' + fechajs.getMinutes() + ':' + fechajs.getSeconds());
-            pdf.text(440, 25, "Fecha de asignación: " + fechaAsignacionVista);
-
-            //Body
-            if (novCarne.toString().length === 10) {
-              pdf.text(40, 125, "Nombre: " + nombres + " " + apellidos);
-              pdf.text(40, 145, "NOV: " + novCarne.toString());
-              risa = myCipher(novCarne.toString());
-            }
-            else if (novCarne.toString().length >= 1 && novCarne.toString().length <= 9) {
-              pdf.text(40, 125, "Nombre: " + nombreCompleto);
-              pdf.text(40, 145, "Carné: " + novCarne.toString());
-              risa = myCipher(novCarne.toString());
-            }
-
-            var fechaNa = fechaNacimiento.split("-");
-            var fechaNac = fechaNa[2] + "/" + fechaNa[1] + "/" + fechaNa[0];
-
-            pdf.text(40, 165, "Fecha de Nacimiento: " + fechaNac);
-            pdf.text(40, 185, "Estudiará en: " + centroConstancia);
-            pdf.text(40, 205, "Unidad académica: " + facultadConstancia);
-
-            //Notes
-            pdf.setFontSize(17).setFont(undefined, 'bold');
-            pdf.text(214, 390, "*** IMPORTANTE ***");
-
-            pdf.setFontSize(17).setFont(undefined, 'normal');
-            pdf.text(160, 420, "Instrucciones y Recomendaciones");
-
-            pdf.setFontSize(13).setFont(undefined, 'normal');
-            pdf.text(40, 450,
-              `
-   Revisa el lugar asignado para tus Pruebas de Conocimientos Básicos PCB y 
-   sigue las instrucciones según sea el caso:
-
-      - Si tus PCB se llevarán a cabo
-
-                  
-
-      - Si tus PCB se llevarán a cabo
-      
-                  `);
-
-            pdf.setFontSize(17).setFont(undefined, 'bold');
-            pdf.text(247, 510, 'en línea:');
-            pdf.textWithLink('Clic acá', 102, 540, { url: 'https://drive.google.com/file/d/1pFfPWG7qAl1O6VHYUPCdMV1DMseOq41w/view?usp=drivesdk' });
-
-            pdf.text(247, 570, 'presencialmente:');
-            pdf.textWithLink('Clic acá', 102, 600, { url: 'https://drive.google.com/file/d/1p8pYIDguwIdvBNO9m6jGhWU9K24-fy-T/view?usp=drivesdk' });
-
-            pdf.setFontSize(13).setFont(undefined, 'bold');
-            pdf.text(40, 650, "Toma en cuenta que NO hay cambios de hora y/o fecha en ninguna modalidad.");
-
-
-
-            //Footer
-            pdf.text(20, 780, risa);
-            pdf.setFontSize(10).setFont(undefined, 'bold');
-            pdf.textWithLink('SUNUSAC', 255, 765, { url: 'https://www.facebook.com/SUNUSAC' });
-            pdf.textWithLink('sun_usac', 337, 765, { url: 'https://www.instagram.com/sun_usac/' });
-            pdf.setPage(i);
-            pdf.text('Página ' + String(i) + ' de ' + String(pageCount), 560, 780, {
-              align: 'center'
-            });
-
-
+        const builder = PDFBuilder.jsPDFBuilder;
+        try {
+          if (novCarne.toString().length === 10) {
+            builder.setName(nombres + " " + apellidos)
+          } else {
+            builder.setName(nombreCompleto)
           }
+          builder.setNov(novCarne.toString())
+            .setFechaNacimiento(fechaNacimiento)
+            .setAsignaciones(data.asignaciones);
+        } catch (err) {
+          console.error('error al colocar valores', err);
+          return;
         }
-
-        var risa = "";
-
-
-
-
-        var pdf = new jsPDF('p', 'pt', 'letter');
-
-
-
-        var columns = ["No. Asignado", "Materia Asignada", "Fecha", "Lugar", "Hora"];
-        var data = datosAsignacion;
-
-
-        pdf.autoTable(columns, data,
-          {
-            margin: { top: 220, left: 65, right: 65, bottom: 75 }
-          }
-        );
-        addFooters(pdf);
-
 
         /////////////////////////////////////////////////
 
         //pdf.save(carneEmpleado + '.pdf');
-        var out = pdf.output();
+        
         //  console.log(out);
-        var url = 'data:application/pdf;base64,' + btoa(out);
+        var url = builder.build();
         //console.log(url);
         //  PDFObject.embed('data:application/pdf;base64,' + btoa(out), '#visorPDF');
 
