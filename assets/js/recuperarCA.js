@@ -74,29 +74,24 @@ $.ajax({
         alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
       }
-      else {
+      else if (data.OV_ASPIRANTE?.registrado === 1) {
 
-        if(data.OV_ASPIRANTE.registrado === 1){
+        var nombres = data.OV_ASPIRANTE.nombres;
+        var apellidos = data.OV_ASPIRANTE.apellidos;
+        var nov = data.OV_ASPIRANTE.nov;
 
-          var nombres = data.OV_ASPIRANTE.nombres;
-          var apellidos = data.OV_ASPIRANTE.apellidos;
-          var nov = data.OV_ASPIRANTE.nov;
+        $("#recPassword").show();
+        $("#datos").hide();
 
-          $("#recPassword").show();
-          $("#datos").hide();
-
-          document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: '+nov+ '</strong></a>' +
-          '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombres + ' ' + apellidos + '.</strong></a>'
-
-        }
-        else {
-          alertify.set('notifier','position', 'bottom-center');
-          alertify.warning("Debes de crear tu cuenta en el menú Crear Cuenta.");
-        }
-
-
+        document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: '+nov+ '</strong></a>' +
+        '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombres + ' ' + apellidos + '.</strong></a>'
 
       }
+      else {
+        alertify.set('notifier','position', 'bottom-center');
+        alertify.warning("Debes de crear tu cuenta en el menú Crear Cuenta.");
+      }
+
 
   },
   error: function (response) {
