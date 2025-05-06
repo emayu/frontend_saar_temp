@@ -94,7 +94,7 @@ let fechaActual = date.getFullYear() + '-' + String(date.getMonth() + 1).padStar
         var tmpDate = new Date(fechaLimiteConstancia[0] , fechaLimiteConstancia[1] - 1, fechaLimiteConstancia[2]); // Augest 20, 2020
 
          //document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
-         document.getElementById("activo").innerHTML = '<a class="nav-link" style="color: black; font-size: 25px;">Nota: <strong>Si te inscribiste al Programa Académico Preparatorio PAP segundo semestre 2023, tu constancia de cursos asignados con el enlace de acceso a tus clases virtuales estará disponible a partir de '+ addDaysToDate(tmpDate, 30) +'</strong></a>';
+         //Se quita mensaje porque no se utiliza
 
       }
 
@@ -161,7 +161,7 @@ function verificarAsignacion(){
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(60, 75, "CONSTANCIA DE CURSOS ASIGNADOS PAP DE CONOCIMIENTOS BÁSICOS");
-            pdf.text(240, 90, "2023 (Segundo Semestre)");
+            pdf.text(240, 90, "2025 (Segundo Semestre)");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
             if(novCarne.length === 10){
@@ -184,7 +184,10 @@ function verificarAsignacion(){
 
             pdf.setFontSize(14).setFont(undefined, 'normal');
           //  pdf.text(40,430,"- Puedes acceder a los salones virtuales de clases a través del enlace que aparece \n en la descripción de cada curso.");
-            pdf.text(40,430,"- Los salones que están pendientes de llenarse continuarán haciéndolo \n del 6 al 17 de febrero, con la inscripción extraordinaria. Dichos salones \n iniciarán clases el 20 de febrero plan diario y 25 de febrero plan sabatino. \n Debes estar atento a esa fecha para generar tu constancia nuevamente.");
+            pdf.text(40,430,"- Los salones que están pendientes de llenarse continuarán haciéndolo \n"
+              +" del 6 al 17 de febrero, con la inscripción extraordinaria. Dichos salones \n"
+              +" iniciarán clases el 20 de febrero plan diario y 25 de febrero plan sabatino. \n"
+              +" Debes estar atento a esa fecha para generar tu constancia nuevamente.");
 
             pdf.setFontSize(14).setFont(undefined, 'normal');
             pdf.text(40,505,"- Debes ingresar al enlace iniciando sesión con el correo que registraste en el \n formulario, para evitar problemas de asistencia y entrega de tareas. Los \n listados oficiales tendrán el correo electrónico que registraste en la plataforma.");

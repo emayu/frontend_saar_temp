@@ -92,13 +92,13 @@ function adAsignacion(){
                  window.location.href = "asignacionPAP.html";
                }
                else {
-                 document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+                 document.getElementById("activo").innerHTML = '<img src="assets/img/pap.webp" class="img-fluid" alt="">';
                  $("#seleccionCursos").hide();
                  $("#generarBoletaCursos").hide();
                }
               }
               else {
-                document.getElementById("activo").innerHTML = '<img src="assets/img/pap.jpeg" class="img-fluid" alt="">';
+                document.getElementById("activo").innerHTML = '<img src="assets/img/pap.webp" class="img-fluid" alt="">';
                 $("#seleccionCursos").hide();
                 $("#generarBoletaCursos").hide();
               }
