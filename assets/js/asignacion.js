@@ -721,3 +721,77 @@ $("#cerrarSesion").on('click', function () {
   setCookie('api-novCarne', null, 1);
 
 });
+
+$.ajax({
+      type: 'GET',
+      url: dominio + "buscarCentroActivo/1",
+      contentType: "application/json",
+      dataType: 'json',
+      async: false ,
+      success: function (data) {
+        //  console.log(data);
+
+        html = "";
+        const $select = document.querySelector("#selbox");
+
+        //  html += '<label for="">Selecciona Centro: </label>';
+        //html +=  '<select data-live-search="true" data-live-search-style="startsWith"  class="selectpicker">';
+        var option = document.createElement('option');
+        option.text = 'Selecciona Centro Universitario';
+        option.value = 0;
+        $select.appendChild(option);
+
+        for (i = 0; i < data.centros.length; i++) {
+          option = document.createElement('option');
+          //console.log(option.text = data.centros[i].nombre);
+          //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
+          option.value = data.centros[i].id;
+          option.text = data.centros[i].nombre;
+          $select.appendChild(option);
+        }
+
+        //  html += '</select>';
+        //  $("#selbox").html(html);
+
+        ///////sleector de inicio
+
+        idCentro = $("#selbox").val();
+        $.ajax({
+          type: 'GET',
+          url: dominio + "buscarFacultadActiva/" + idCentro + "/1",
+          contentType: "application/json",
+          dataType: 'json',
+          async: false,
+          success: function (data) {
+            //console.log(data);
+
+            // html = "";
+            const selectFacultad = document.querySelector("#selFacultad");
+            var option = document.createElement('option');
+            option.text = 'Selecciona Unidad Académica';
+            option.value = 0;
+            selectFacultad.appendChild(option);
+            for (i = 0; i < data.facultad.length; i++) {
+
+              //console.log(option.text = data.facultad[i].nombre);
+              //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
+              option.value = data.facultad[i].id_facultad;
+              option.text = data.facultad[i].nombre;
+              selectFacultad.appendChild(option);
+            }
+
+          },
+          error: function (response) {
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.error("Usuario o Contraseña Incorrecto!");
+          }
+
+        });
+        //////////////
+
+      },
+      error: function (response) {
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.error("Usuario o Contraseña Incorrecto!");
+      }
+    });
