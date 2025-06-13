@@ -72,3 +72,51 @@ function get(url, param) {
     var param = url.searchParams.get(param);
     return param;
 }
+
+
+/**
+ * Global error handler
+ * @param {*} alertify local var
+ * @returns 
+ */
+const errorHandlerSetup = (alertify) => (xhr, status, errorThrow) => {
+    alertify.set('notifier', 'position', 'bottom-center');
+    if (xhr.status >= 400 && xhr.responseJSON?.details) {
+        alertify.error(`Ocurrió un error: ${xhr.responseJSON.details}`);
+    } else {
+        alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
+    }
+};
+
+/**
+ * 
+ * @param {string} nov 
+ * @returns {boolean}
+ */
+function isNOVCarnet(nov){
+    return nov.length === 10 //un número de nov debe de ser de 10
+}
+
+//CONSTANTES
+
+/**
+ * Enum par tipos de examens
+ * @enum {number}
+ */
+const EXAMENES = Object.freeze({
+    PCBS: 1,
+    PAP: 2,
+    SIMULADOR: 3
+});
+
+const EXAMEN_ACTIVO = 1;
+
+//Modelos DTO
+class AsignacionPasada {
+    /** @type {number} */
+    id_detalle_salon;
+    /** @type {string} */
+    fecha_examen;
+    /** @type {number} */
+    asignacion;
+}

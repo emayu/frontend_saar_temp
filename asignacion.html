@@ -93,7 +93,7 @@
           </div>
           <br>
 
-          <div class="text-center" style="text-align: center;" id="selCentros" style="">
+          <div class="text-center" style="display: none;" id="selCentros">
             <label for="">Selecciona el centro </label>
             <select id="selbox" onchange="facultades(this)" data-live-search="true" data-live-search-style="startsWith"
               class="selectpicker">
@@ -102,7 +102,7 @@
 
           </div>
 
-          <div class="text-center" style="text-align: center;" id="selFacultades">
+          <div class="text-center" style="display: none;" id="selFacultades">
             <label for="">Selecciona la Facultad/Escuela </label>
             <select id="selFacultad" data-live-search="true" data-live-search-style="startsWith" class="selectpicker">
 
@@ -110,7 +110,7 @@
 
           </div>
 
-          <div class="" id="visorPDF" style="width: auto; height: 650px;">
+          <div class="" id="visorPDF" style="width: auto; height: 650px; display: none;">
           </div>
           <br>
 
@@ -145,11 +145,14 @@
 
   <script src="assets/js/cookie.js"></script>
   <script src="assets/js/base.js"></script>
-  <script src="assets/js/asignacion.js?v=1.0.0"></script>
+  <!-- <script src="assets/js/asignacion.js?v=1.0.0"></script> -->
   <script src="assets/js/common.js?v=0.0.1"></script>
   <script src="assets/js/main.js"></script>
 
-  
+  <!-- Nuevos módulos refactorización -->
+  <script src="assets/app/servicios/apiService.js"></script>
+  <script src="assets/app/componentes/asignacionComponent.js"></script>
+
 
   <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap-select.js?updated=1234567890"></script>
