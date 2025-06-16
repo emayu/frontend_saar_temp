@@ -1681,3 +1681,16 @@ section {
     padding: 5px 0;
   }
 }
+
+/*--------------------------------------------------------------
+# Loading dialog
+--------------------------------------------------------------*/
+.loading-dialog {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.loading-dialog img {
+  width: 24px;
+  height: 24px;
+}

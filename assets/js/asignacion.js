@@ -433,7 +433,7 @@ function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria) {
     success: function (data) {
 
       if (novCarne.length === 10) {
-
+        //                         0       1          2 novCarne  3 (novCarne.lenth === 10 ? 0 : novEstudiante)  
         cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
 
       }

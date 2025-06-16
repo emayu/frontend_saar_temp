@@ -97,6 +97,31 @@ function isNOVCarnet(nov){
     return nov.length === 10 //un número de nov debe de ser de 10
 }
 
+/**
+ * Get Local given date object in this format:
+ * YYYY-MM-DD
+ * @param {Date} date - The date to formmat
+ * @returns {(string|null)} formatted date or null
+ */
+const formatDate = (date) => {
+    if(date instanceof Date && !isNaN(date)){
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1 ).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+    }
+    return null;
+}
+
+/**
+ * Get Local today time in this format:
+ * YYYY-MM-DD
+ * @returns {string}
+ */
+const getTodayFormatted = () => {
+    return formatDate(new Date());
+}
+
 //CONSTANTES
 
 /**
@@ -110,6 +135,15 @@ const EXAMENES = Object.freeze({
 });
 
 const EXAMEN_ACTIVO = 1;
+
+/**
+ * Emun para resultados.aprobado
+ * @enum {number}
+ */
+const ASIGNACION_RESULTADO = Object.freeze({
+    APROBADO: 1,
+    NO_APROBADO: 2
+})
 
 //Modelos DTO
 class AsignacionPasada {
