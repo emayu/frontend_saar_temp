@@ -59,7 +59,7 @@ class AsignacionComponent {
 
             }
         } catch (err) {
-            console.error('Error al cargar centros o facultades', err);
+            console.error('Error en carga inicial de datos', err);
             alertify.set('notifier', 'position', 'bottom-center');
             alertify.error("No se pudieron cargar los datos necesarios. Verifica tu conexión e intenta nuevamente.");
         }
@@ -136,13 +136,26 @@ class AsignacionComponent {
         `;
     }
 
+    setLoadingOption(select, selectHtmlId){
+        select.innerHTML = "";
+        this.addOption(select, "", 'Cargando...', true);
+        select.disabled = true;
+        $(`#${selectHtmlId}`).selectpicker('refresh');
+    }
+
     async cargarCentrosList() {
+        this.setLoadingOption(this.$selectCentro, "selbox");
+        this.setLoadingOption(this.$selectFacultad, "selFacultad");
+        $("#selCentros").show();
+        $("#selFacultades").show();
+        
         const centrosResponse = await ApiService.getCentrosActivos();
         this.$selectCentro.innerHTML = "";
         this.addOption(this.$selectCentro, "", 'Seleccionar Unidad Académica', true);
         for (const centro of centrosResponse.centros) {
             this.addOption(this.$selectCentro, centro.id, centro.nombre)
         }
+        this.$selectCentro.disabled = false;
         // Refrescar el plugin de Bootstrap Select
         $('#selbox').selectpicker('refresh');
         const idCentro = this.$selectCentro.value;
@@ -153,13 +166,23 @@ class AsignacionComponent {
     async cargarFacultadesList(idCentro) {
         this.$selectFacultad.innerHTML = "";
         this.addOption(this.$selectFacultad, "", idCentro == null ? "Primero selecciona un centro" : 'Selecciona Unidad Académica', true);
-        if (idCentro) {
-            const facultadesResponse = await ApiService.getFacultades(idCentro);
-            for (const facultad of facultadesResponse.facultad) {
-                this.addOption(this.$selectFacultad, facultad.id_facultad, facultad.nombre);
+        try {
+            if (idCentro) {
+                this.setLoadingOption(this.$selectFacultad, "selFacultad");
+                const facultadesResponse = await ApiService.getFacultades(idCentro);
+                this.$selectFacultad.innerHTML = "";
+                this.addOption(this.$selectFacultad, "", 'Selecciona Unidad Académica', true);
+                for (const facultad of facultadesResponse.facultad) {
+                    this.addOption(this.$selectFacultad, facultad.id_facultad, facultad.nombre);
+                }
             }
+            this.$selectFacultad.disabled = false;
+            $('#selFacultad').selectpicker('refresh');
+        } catch (err) {
+            console.error('Error en carga de facultades', err);
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.error("Ocurrió un error al cargar los datos de facultades/escuelas.");
         }
-        $('#selFacultad').selectpicker('refresh');
     }
 
 
@@ -188,16 +211,18 @@ class AsignacionComponent {
             this.alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
             return;
         }
-        if (!this.$selectFacultad.checkValidity()) {
+        // console.debug('selectFacultad enabled:', this.$selectFacultad.disabled, "validity:", this.$selectFacultad.checkValidity());
+        if (this.$selectFacultad.disabled || !this.$selectFacultad.checkValidity()) {
             this.$selectFacultad.closest('.bootstrap-select').classList.add('is-invalid');
             this.$selectFacultad.reportValidity();
             this.alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
             return;
         }
 
+
         const centroText = this.$selectCentro.options[this.$selectCentro.selectedIndex].text;
         const facultadText = this.$selectFacultad.options[this.$selectFacultad.selectedIndex].text;
-        console.log(`centro: ${centroText}, facultad: ${facultadText}.`, this.$selectCentro.selectedIndex, this.$selectFacultad.selectedIndex);
+        // console.debug(`centro: ${centroText}, facultad: ${facultadText}.`, this.$selectCentro.value, this.$selectFacultad.value);
         const dialogText = `¿Deseas Asignarte al centro universitario: ${centroText}, a la unidad académica:  ${facultadText}?`;
         const self = this;
         this.alertify.confirm('Asignación',
@@ -220,10 +245,10 @@ class AsignacionComponent {
                         </p>
                     </div>`;
                 this.alertify.loadingDialog(loadingHTML).show();
-                
+
                 try {
                     const asignaciones = await this.generarAsignaciones();
-                    console.log('asignaciones por generar', asignaciones);
+                    console.debug('asignaciones por generar', asignaciones);
                     if(asignaciones && asignaciones.length> 0){
                         await this.guardarAsignacion(asignaciones);
                         location.reload();
