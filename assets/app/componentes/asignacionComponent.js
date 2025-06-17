@@ -24,40 +24,46 @@ class AsignacionComponent {
         $("#menuAE").load("menu.html");
 
         this.renderDatosUsuario();
+        try {
+            const asignacionPasadaResponse = await ApiService.getAsignacionPasada(novCarne);
+            if (asignacionPasadaResponse.asignaciones.length > 0) {
+                $("#visorPDF").show();
+                this.renderAsignaciones(asignacionPasadaResponse)
 
-        //verificar estado de prueba PCBs
-        const examenResponse = await ApiService.getExamen(EXAMENES.PCBS);
-        const asignacionPasadaResponse = await ApiService.getAsignacionPasada(novCarne);
-        if (examenResponse.examen.activo === EXAMEN_ACTIVO) {
-            if (asignacionPasadaResponse.asignaciones.length > 0) {
-                $("#visorPDF").show();
-                this.renderAsignaciones(asignacionPasadaResponse)
             } else {
-                await this.cargarCentrosList();
-                $("#selCentros").show();
-                $("#selFacultades").show();
-                this.$selectCentro.addEventListener('change', () => {
-                    const idCentro = this.$selectCentro.value;
-                    this.cargarFacultadesList(idCentro);
-                });
-                const boton = this.doc.createElement('button');
-                boton.className = "btn btn-primary btn-lg botonAsignar";
-                boton.type = "submit";
-                boton.textContent = "Asignar";
-                boton.addEventListener('click', this.handleAsignacionClick);
-                this.$divButtonAsignar.innerHTML = '';
-                this.$divButtonAsignar.appendChild(boton);
-            }
-        } else {
-            if (asignacionPasadaResponse.asignaciones.length > 0) {
-                $("#visorPDF").show();
-                this.renderAsignaciones(asignacionPasadaResponse)
-            } else {
-                this.$divActivo.innerHTML = `
+                //verificar estado de prueba PCBs
+                const examenResponse = await ApiService.getExamen(EXAMENES.PCBS);
+                if (examenResponse.examen.activo === EXAMEN_ACTIVO) {
+
+                    await this.cargarCentrosList();
+                    $("#selCentros").show();
+                    $("#selFacultades").show();
+                    this.$selectCentro.addEventListener('change', () => {
+                        const idCentro = this.$selectCentro.value;
+                        this.cargarFacultadesList(idCentro);
+                    });
+                    const boton = this.doc.createElement('button');
+                    boton.className = "btn btn-primary btn-lg botonAsignar";
+                    boton.type = "submit";
+                    boton.textContent = "Asignar";
+                    boton.addEventListener('click', this.handleAsignacionClick);
+                    this.$divButtonAsignar.innerHTML = '';
+                    this.$divButtonAsignar.appendChild(boton);
+
+
+                } else {
+                    this.$divActivo.innerHTML = `
                 <a class="nav-link text-dark" style="font-size: 25px;">Nota: <strong> ${examenResponse.examen.mensaje}</strong></a>
                 `;
+                }
+
             }
+        } catch (err) {
+            console.error('Error al cargar centros o facultades', err);
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.error("No se pudieron cargar los datos necesarios. Verifica tu conexión e intenta nuevamente.");
         }
+
 
         //dialogo personalizado
         if (!this.alertify.loadingDialog) {
