@@ -8,6 +8,7 @@ class AsignacionComponent {
         this.$divButtonAsignar = this.doc.querySelector("#btnAsignar");
         this.$divVisorPDF = this.doc.querySelector("#visorPDF");
         this.$divActivo = this.doc.querySelector("#activo");
+        this.$linkCerrarSesion = this.doc.getElementById("cerrarSesion");
         /**
          * alertify: objeto global proporcionado por AlertifyJS (https://alertifyjs.com/)
          * Se carga desde: cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js
@@ -63,6 +64,11 @@ class AsignacionComponent {
             alertify.set('notifier', 'position', 'bottom-center');
             alertify.error("No se pudieron cargar los datos necesarios. Verifica tu conexión e intenta nuevamente.");
         }
+
+        this.$linkCerrarSesion.addEventListener('click', () => {
+            setCookie('api-nombre', null, 1);
+            setCookie('api-novCarne', null, 1);
+        })
 
 
         //dialogo personalizado
