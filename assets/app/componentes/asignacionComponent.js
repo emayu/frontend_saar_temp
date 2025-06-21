@@ -307,18 +307,26 @@ class AsignacionComponent {
         const idCentro = this.$selectCentro.value;
         const idFacultad = this.$selectFacultad.value;
 
-        const { DETALLEFACULTAD } = await ApiService.buscarSalonesActivos(idCentro, idFacultad);
+        const { DETALLEFACULTAD: detalleSalones } = await ApiService.buscarSalonesActivos(idCentro, idFacultad);
         const { materias } = await ApiService.getMateriasEnDetalleFacultad(idCentro, idFacultad);
-        console.log('facultades y materias', DETALLEFACULTAD, materias);
+        // console.debug('facultades y materias', JSON.stringify(DETALLEFACULTAD), JSON.stringify(materias));
+        const materiasUnicasEncontradasEnSalones = [];
+        // verifica que las materias configuradas en salones sean las mismas que las configuradas en el detalle facultad
+        for(const materia of materias){
+            if(detalleSalones.find( detalleSalon => materia.id_materia === detalleSalon.id_materia)){
+                materiasUnicasEncontradasEnSalones.push(detalleSalones);
+                materiasUnicasEncontradasEnSalones.fin
+            }
+        }
         const cantidadMateriasConfiguradas = materias.length;
-        const cantidadSalonesActivos = DETALLEFACULTAD.length;
-        if (cantidadMateriasConfiguradas != cantidadSalonesActivos) {
+        const cantidadSalonesActivos = detalleSalones.length;
+        if (cantidadMateriasConfiguradas != cantidadSalonesActivos || cantidadSalonesActivos != materiasUnicasEncontradasEnSalones.length) {
             const seconds = 15;
             this.alertify.warning('La unidad académica seleccionada no cuenta con salones creados, comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', seconds);
             return;
         }
 
-        for (const detalleSalon of DETALLEFACULTAD) {
+        for (const detalleSalon of detalleSalones) {
             //consultar asignados para materia específica
             const { contador } = await ApiService.getContadorAsignadosPorSalon(detalleSalon.id_tablads, detalleSalon.fecha_examen);
             console.log('detalleSalon', detalleSalon, 'response', contador);
