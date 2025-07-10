@@ -154,3 +154,10 @@ class AsignacionPasada {
     /** @type {number} */
     asignacion;
 }
+
+class AppBusinessException extends Error {
+    constructor(message){
+        super(message);
+        this.name = 'AppBusinessException';
+    }
+}

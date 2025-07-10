@@ -234,6 +234,8 @@ class AsignacionComponent {
         this.alertify.confirm('Asignación',
             dialogText,
             async () => {
+                const botonAsignar = this.doc.querySelector(".botonAsignar");
+                botonAsignar.disabled = true;
                 const examenResponse = await ApiService.getExamen(EXAMENES.PCBS);
                 if (examenResponse.examen.activo !== EXAMEN_ACTIVO) {
                     this.alertify.set('notifier', 'position', 'bottom-center');
@@ -260,10 +262,18 @@ class AsignacionComponent {
                         location.reload();
                     }
                 } catch(e){
-                    console.error(e);
-                    this.alertify.set('notifier', 'position', 'bottom-center');
-                    this.alertify.error("Ocurrió un error al procesar tu solicitud, por favor vuelve a intentar más tarde", 25);
-
+                    console.error('error al procesar asignación:', e);
+                    if(e instanceof AppBusinessException){
+                        this.alertify.set('notifier', 'position', 'bottom-center');
+                        this.alertify.error(e.message, 15);
+                    }else{
+                        this.alertify.set('notifier', 'position', 'bottom-center');
+                        this.alertify.error("Ocurrió un error al procesar tu solicitud, por favor vuelve a intentar más tarde", 25);
+                    }
+                    //después de 8s se habilita nuevamente el botón.
+                    setTimeout(() => {
+                        botonAsignar.disabled = false;
+                    }, 8000);
                 }finally{
                     this.alertify.loadingDialog().close()
                 }
@@ -295,10 +305,7 @@ class AsignacionComponent {
             this.alertify.warning("Ya has ganado el requisito QUÍMICA, ve al menú de Resultados para descargar la constancia.");
         }
     }
-   /**
-    * 
-    * @returns {Promise<AsignacionRecord[]|undefined>}
-    */
+   
     async generarAsignaciones() {
 
         /** @type{AsignacionRecord[]}*/
@@ -315,34 +322,27 @@ class AsignacionComponent {
         for(const materia of materias){
             if(detalleSalones.find( detalleSalon => materia.id_materia === detalleSalon.id_materia)){
                 materiasUnicasEncontradasEnSalones.push(detalleSalones);
-                materiasUnicasEncontradasEnSalones.fin
             }
         }
         const cantidadMateriasConfiguradas = materias.length;
         const cantidadSalonesActivos = detalleSalones.length;
         if (cantidadMateriasConfiguradas != cantidadSalonesActivos || cantidadSalonesActivos != materiasUnicasEncontradasEnSalones.length) {
-            const seconds = 15;
-            this.alertify.warning('La unidad académica seleccionada no cuenta con salones creados, comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', seconds);
-            return;
+            throw new AppBusinessException('La unidad académica seleccionada no cuenta con salones creados, por favor vuelve a intentar más tarde.');
         }
 
         for (const detalleSalon of detalleSalones) {
             //consultar asignados para materia específica
             const { contador } = await ApiService.getContadorAsignadosPorSalon(detalleSalon.id_tablads, detalleSalon.fecha_examen);
-            console.log('detalleSalon', detalleSalon, 'response', contador);
+            console.debug('detalleSalon', detalleSalon.id_tablads, 'response', contador);
             if (!Array.isArray(contador) || contador.length < 1) {
-                alertify.set('notifier', 'position', 'bottom-center');
-                alertify.error("Ocurrió un error al encontrar espacios en un salón, por favor vuelve a intentar más tarde.");
-                return;
+                throw new AppBusinessException("Ocurrió un error al encontrar espacios en un salón, por favor vuelve a intentar más tarde.");
             }
 
             const [{ count }] = contador;
-            console.log('count', count);
+            console.debug('count', count);
             if (count >= detalleSalon.cupo) {
                 //aquí puedo lanzar una notificación de que salon se llenó
-                alertify.set('notifier', 'position', 'bottom-center');
-                alertify.error("No se puede asignar en este momento, espacio no disponible en esta unidad académica. Comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
-                return;
+                throw new AppBusinessException("No se puede asignar en este momento, espacio no disponible en esta unidad académica, por favor vuelve a intentar más tarde.");
             }
 
             const { RESULTADO } = await ApiService.buscarResultadosAnteriores(
@@ -350,18 +350,19 @@ class AsignacionComponent {
                 isNOVCarnet(novCarne) ? 0 : novEstudiante,
                 detalleSalon.id_materia,
                 ASIGNACION_RESULTADO.APROBADO);
-            console.log('resultado anterior', RESULTADO)
+            console.debug('resultado anterior', RESULTADO)
             if (!Array.isArray(RESULTADO)) {
-                alertify.set('notifier', 'position', 'bottom-center');
-                alertify.error("Ocurrió un error al consultar resultados anteriores, por favor vuelve a intentar más tarde.");
-                return;
+                throw new AppBusinessException("Ocurrió un error al consultar resultados anteriores, por favor vuelve a intentar más tarde.");
             }
 
             if (RESULTADO.length > 0) {
                 this.notificarMateriaAprobada(detalleSalon);
             } else {
                 const { ultimo_asingado } = await ApiService.getUltimoAsignado(detalleSalon.id_tablads, detalleSalon.fecha_examen);
-                console.log('ultimo_asingado', ultimo_asingado)
+                console.debug('ultimo_asingado', ultimo_asingado)
+                if(!Array.isArray(ultimo_asingado)){
+                    throw new AppBusinessException("Ocurrió un error al consultar tu número de asignado, por favor vuelve a intentar más tarde.");
+                }
                 //investigar el uso de sumador, que solo se copio la lógica
                 let sumador;
                 if (ultimo_asingado.length === 0) {
