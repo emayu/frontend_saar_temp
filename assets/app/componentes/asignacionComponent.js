@@ -255,10 +255,12 @@ class AsignacionComponent {
                 this.alertify.loadingDialog(loadingHTML).show();
 
                 try {
+                    this.bloquearSalidaORecarga();
                     const asignaciones = await this.generarAsignaciones();
                     console.debug('asignaciones por generar', asignaciones);
                     if(asignaciones && asignaciones.length> 0){
                         await this.guardarAsignacion(asignaciones);
+                        this.desbloquearSalidaORecarga();
                         location.reload();
                     }
                 } catch(e){
@@ -275,6 +277,7 @@ class AsignacionComponent {
                         botonAsignar.disabled = false;
                     }, 8000);
                 }finally{
+                    this.desbloquearSalidaORecarga();
                     this.alertify.loadingDialog().close()
                 }
 
@@ -396,6 +399,24 @@ class AsignacionComponent {
             records.push(JSON.stringify(asignacion));
         }
         return ApiService.guardarAsignacion(JSON.stringify(records));
+    }
+
+    /**
+     * Agrega dialogo de confirmación si el usuario intenta cerrar o recargar la página
+     */
+    bloquearSalidaORecarga(){
+        window.addEventListener("beforeunload", this.confirmarSalida);
+    }
+    /**
+     * Remueve dialogo de confirmación cuando el usuario cierra o recarga la página
+     */
+    desbloquearSalidaORecarga(){
+        window.removeEventListener("beforeunload", this.confirmarSalida);
+    }
+
+    confirmarSalida = (event) => {
+        event.preventDefault();
+        event.returnValue = 'Hay una operación en curso. ¿Estás seguro que deseas salir?';
     }
 }
 
