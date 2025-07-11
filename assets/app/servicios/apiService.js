@@ -1,97 +1,77 @@
+const axiosInstance = axios.create({
+    baseURL: dominio,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+// Interceptor para simplificar respuesta y desempaquetar la Promesa<AxiosResponse>
+// esto hace transparente el uso de Axios 
+axiosInstance.interceptors.response.use(
+    res => res.data,
+    err => Promise.reject(err)
+);
+console.debug('instancia de axios', axiosInstance);
+
 const ApiService = {
     /**
      * Regresa configuración de exámenes
      * @param {EXAMENES} tipo - Tipo de examen ( ver enum EXAMENES)
-     * @returns {JQuery.jqXHR}
+     * @returns {{examen:{id:number, activo:number, mensaje:string }}}
      */
     getExamen: (tipo) => {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + `examenLimite/${tipo}`,
-            contentType: "application/json",
-            dataType: 'json'
-        });
+        return axiosInstance.get(`examenLimite/${tipo}`);
     },
     /**
      * Regresa listado de centros activos
-     * @returns 
+     * @returns {{centros:[]}}
      */
     getCentrosActivos: function () {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + "buscarCentroActivo/1",
-            contentType: "application/json",
-            dataType: 'json',
-        });
+        return axiosInstance.get("buscarCentroActivo/1");
     },
     /**
      * Regresa listado de Facultades para el centro
-     * @param {number} idCentro - identificador entero para centro
-     * @returns 
+     * @param {number} idCentro - identificador entero para centro.
+     *  espera campo id (primary key) de la tabla centros, NO USAR id_centro
+     * @returns {{facultad:[]}}
      */
     getFacultades:  (idCentro) => {
-        return  $.ajax({
-          type: 'GET',
-          url: dominio + "buscarFacultadActiva/" + idCentro + "/1",
-          contentType: "application/json",
-          dataType: 'json',
-        });
+        return  axiosInstance.get("buscarFacultadActiva/" + idCentro + "/1");
     },
     /**
      * Regresa listado de pruebas asignadas
      * @param {string} nov
-     * @returns {JQuery.jqXHR<AsignacionPasada[]>}
+     * @returns {{asignaciones:[]}}
      */
     getAsignacionPasada: (nov) => {
-        return $.ajax({
-          type: 'GET',
-          url: dominio + "buscarAsignacionPasada/" + nov,
-          contentType: "application/json",
-          dataType: 'json',
-        });
+        return axiosInstance.get("buscarAsignacionPasada/" + nov);
     },
     /**
      * Regresa listado de salones configurados para el centro y facultad determinado
      * que se encuentran en estado activo
      * @param {number} idCentro 
      * @param {number} idFacultad 
-     * @returns 
+     * @returns {{DETALLEFACULTAD:[]}}
      */
     buscarSalonesActivos: (idCentro, idFacultad) => {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro + "/1",
-            contentType: "application/json",
-            dataType: 'json',
-        });
+        return axiosInstance.get("buscarFechaExamen/" + idFacultad + "/" + idCentro + "/1");
     },
     /**
      * Obtiene listado de materias configuradas para el centro y facultad determinado
      * @param {number} idCentro 
      * @param {number} idFacultad 
-     * @returns 
+     * @returns {{materias:[]}
      */
     getMateriasEnDetalleFacultad: (idCentro, idFacultad) => {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
-            contentType: "application/json",
-            dataType: 'json',
-        });
+        return axiosInstance.get("facultadMaterias/" + idCentro + "/" + idFacultad);
     },
     /**
      * Obtiene el contador actual de asignados al momento de hacer la consulta.
      * @param {number} idDetalleSalon 
      * @param {string} fechaExamen 
-     * @returns 
+     * @returns {{contador:[{count:number}]}}
      */
     getContadorAsignadosPorSalon: (idDetalleSalon, fechaExamen) => {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + "asignadosPorSalon/" + idDetalleSalon + "/" + fechaExamen,
-            contentType: "application/json",
-            dataType: 'json',
-        });
+        return axiosInstance.get("asignadosPorSalon/" + idDetalleSalon + "/" + fechaExamen);
     },
     /**
      * Buscar resultados anteriores para una materia específica.
@@ -100,45 +80,28 @@ const ApiService = {
      * @param {number} novEstudiante 
      * @param {number} idMateria 
      * @param {ASIGNACION_RESULTADO} tipo
-     * @returns 
+     * @returns {{RESULTADO:[]}}
      */
     buscarResultadosAnteriores: (novOCarne, novEstudiante, idMateria, tipo) => {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + "resultadoPorAsignacionNC/" + novOCarne + "/" + novEstudiante + "/" + idMateria + "/"+ tipo,
-            contentType: "application/json",
-            dataType: 'json',
-        });
+        return axiosInstance.get("resultadoPorAsignacionNC/" + novOCarne + "/" + novEstudiante + "/" + idMateria + "/"+ tipo);
     },
     /**
      * Obtiene el último registro insertado por salon y fecha
      * @param {number} idDetalleSalon 
      * @param {string} fechaExamen 
-     * @returns 
+     * @returns {{ultimo_asingado:[]}}
      */
     getUltimoAsignado: (idDetalleSalon, fechaExamen) => {
-        return $.ajax({
-            type: 'GET',
-            url: dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen,
-            contentType: "application/json",
-            dataType: 'json',
-        });
+        return axiosInstance.get(dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen);
     },
     /**
      * Guarda las asignaciones 
      * @param {Array<AsignacionRecord>} data 
-     * @returns 
+     * @returns {{asignado:string}}
      */
     guardarAsignacion: (data) => {
-        console.log('got', data);
-        return $.ajax({
-            type: 'POST',
-            url: dominio + 'insertarAsignacion',
-            contentType: "application/json",
-            dataType: 'json',
-            crossDomain: true,
-            data: data,
-        });
+        console.debug('using axios got', data);
+        return axiosInstance.post('insertarAsignacion', data);
     }
 
 
