@@ -199,6 +199,8 @@ class jsPDFWrapper{
                 pdf.setFontSize(17).setFont(undefined, 'bold');
                 pdf.text(190, 575, 'presencial');
                 pdf.textWithLink('Clic acá', 102, 600, { url: 'https://drive.google.com/file/d/1p8pYIDguwIdvBNO9m6jGhWU9K24-fy-T/view?usp=drivesdk' });
+                pdf.setFontSize(13).setFont(undefined, 'bold');
+                pdf.text(40, 665, 'Debes presentar esta constancia impresa y tu documento de identificación físico \ncon fotografía y sello el día de tus pruebas.');
             }
 
             pdf.setFontSize(13).setFont(undefined, 'bold');
