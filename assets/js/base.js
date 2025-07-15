@@ -122,6 +122,17 @@ const getTodayFormatted = () => {
     return formatDate(new Date());
 }
 
+/**
+ * Verifica si alguna variable tiene un valor no válido
+ * @param {[]} array 
+ * @returns {boolean} true si al menos un es nulo, undefined o vacío para un string ""
+ */
+const isSomeInvalidValue = (array) => {
+    return array.some(field =>
+        (field === null || field === undefined)
+        || (typeof field === "string" && (field.trim() === "" || field === "null")))
+}
+
 //CONSTANTES
 
 /**

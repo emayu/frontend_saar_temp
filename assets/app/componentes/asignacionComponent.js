@@ -17,7 +17,8 @@ class AsignacionComponent {
     }
 
     async init() {
-        if (!novCarne) {
+        const cookieValuesRequired = [novCarne, fechaNacimiento, nombres];
+        if (isSomeInvalidValue(cookieValuesRequired)) {
             window.location.href = "index.html";
             return;
         }
