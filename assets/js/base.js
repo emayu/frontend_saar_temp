@@ -72,3 +72,103 @@ function get(url, param) {
     var param = url.searchParams.get(param);
     return param;
 }
+
+
+/**
+ * Global error handler
+ * @param {*} alertify local var
+ * @returns 
+ */
+const errorHandlerSetup = (alertify) => (xhr, status, errorThrow) => {
+    alertify.set('notifier', 'position', 'bottom-center');
+    if (xhr.status >= 400 && xhr.responseJSON?.details) {
+        alertify.error(`Ocurrió un error: ${xhr.responseJSON.details}`);
+    } else {
+        alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
+    }
+};
+
+/**
+ * 
+ * @param {string} nov 
+ * @returns {boolean}
+ */
+function isNOVCarnet(nov){
+    return nov.length === 10 //un número de nov debe de ser de 10
+}
+
+/**
+ * Get Local given date object in this format:
+ * YYYY-MM-DD
+ * @param {Date} date - The date to formmat
+ * @returns {(string|null)} formatted date or null
+ */
+const formatDate = (date) => {
+    if(date instanceof Date && !isNaN(date)){
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1 ).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+    }
+    return null;
+}
+
+/**
+ * Get Local today time in this format:
+ * YYYY-MM-DD
+ * @returns {string}
+ */
+const getTodayFormatted = () => {
+    return formatDate(new Date());
+}
+
+/**
+ * Verifica si alguna variable tiene un valor no válido
+ * @param {[]} array 
+ * @returns {boolean} true si al menos un es nulo, undefined o vacío para un string ""
+ */
+const isSomeInvalidValue = (array) => {
+    return array.some(field =>
+        (field === null || field === undefined)
+        || (typeof field === "string" && (field.trim() === "" || field === "null")))
+}
+
+//CONSTANTES
+
+/**
+ * Enum par tipos de examens
+ * @enum {number}
+ */
+const EXAMENES = Object.freeze({
+    PCBS: 1,
+    PAP: 2,
+    SIMULADOR: 3
+});
+
+const EXAMEN_ACTIVO = 1;
+
+/**
+ * Emun para resultados.aprobado
+ * @enum {number}
+ */
+const ASIGNACION_RESULTADO = Object.freeze({
+    APROBADO: 1,
+    NO_APROBADO: 2
+})
+
+//Modelos DTO
+class AsignacionPasada {
+    /** @type {number} */
+    id_detalle_salon;
+    /** @type {string} */
+    fecha_examen;
+    /** @type {number} */
+    asignacion;
+}
+
+class AppBusinessException extends Error {
+    constructor(message){
+        super(message);
+        this.name = 'AppBusinessException';
+    }
+}

@@ -3,64 +3,64 @@ $(document).ready(function () {
   $("#selCentros").hide();
   $("#selFacultades").hide();
 
-$("#menuAE").load("menu.html");
+  $("#menuAE").load("menu.html");
 
-if(novCarne.length === 10){
-  //////////body
-  var tel = "";
-  if(telefono == 'null'){
-    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+  if (novCarne.length === 10) {
+    //////////body
+    var tel = "";
+    if (telefono == 'null') {
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+    }
+    else {
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> ' + telefono + '</a>';
+    }
+    document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>' + novCarne + '</a>' +
+      '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>' + nombres + ' ' + apellidos + '</a>';
+
+
+    //////header
+    document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">' + nombres + ' ' + apellidos +
+      '<br><b>NOV: ' + novCarne + '</b></a>';
+
+    /////////////recibir los resultados
+
+
   }
-  else {
-    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
+  else if (novCarne == 'null') {
+    window.location.href = "index.html";
+
   }
-  document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novCarne+ '</a>' +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+nombres+ ' ' +apellidos+'</a>';
+  else if (novCarne.length >= 1 && novCarne.length <= 9) {
+
+    //////////body
+    var tel = "";
+    var novE = "";
+    if (telefono == 'null') {
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
+    }
+    else {
+      tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> ' + telefono + '</a>';
+    }
+
+    if (novEstudiante == 'null') {
+      novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong> No esta Registrado</a>';
+    }
+    else {
+      novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>' + novEstudiante + '</a>';
+    }
 
 
-  //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+nombres+' '+apellidos+
-  '<br><b>NOV: '+novCarne+'</b></a>';
-
-/////////////recibir los resultados
+    document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>' + novCarne + '</a>' + novE +
+      '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>' + nombreCompleto + '</a>';
 
 
-}
-else if (novCarne == 'null') {
-  window.location.href = "index.html";
+    //////header
+    document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">' + nombreCompleto + '<br><b>Carné: ' + novCarne + '</b></a>';
 
-}
-else if(novCarne.length >= 1 && novCarne.length <= 9){
-
-  //////////body
-  var tel = "";
-  var novE = "";
-  if(telefono == 'null'){
-    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> No esta registrado</a>';
-  }
-  else {
-    tel = '<a class="nav-link" style="color: black;"><strong>Teléfono:</strong> '+telefono+'</a>';
-  }
-
-  if( novEstudiante == 'null'){
-    novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong> No esta Registrado</a>';
-  }
-  else {
-    novE = '<a class="nav-link" style="color: black;"><strong>NOV: </strong>'+novEstudiante+ '</a>';
   }
 
 
-  document.getElementById("datosResultados").innerHTML = '<a class="nav-link" style="color: black;"><strong>Carné: </strong>'+novCarne+ '</a>' + novE +
-  '<a class="nav-link" style="color: black;"><strong> Nombre: </strong>'+ nombreCompleto +'</a>';
-
-
-  //////header
-  document.getElementById("datosHeader").innerHTML = '<a style="font-size: .82rem; color: #5777ba">'+ nombreCompleto +'<br><b>Carné: '+novCarne+'</b></a>';
-
-}
-
-
-adAsignacion();
+  adAsignacion();
 
 
 });
@@ -106,16 +106,16 @@ function adAsignacion() {
 
               /////////////crear pdf
               const builder = PDFBuilder.jsPDFBuilder;
-              try{
-                if(novCarne.toString().length === 10){
+              try {
+                if (novCarne.toString().length === 10) {
                   builder.setName(nombres + " " + apellidos)
-                }else{
+                } else {
                   builder.setName(nombreCompleto)
                 }
                 builder.setNov(novCarne)
                   .setFechaNacimiento(fechaNacimiento)
                   .setAsignaciones(data.asignaciones);
-              }catch(err){
+              } catch (err) {
                 console.error('error al colocar valores', err);
                 return;
               }
@@ -123,7 +123,7 @@ function adAsignacion() {
               /////////////////////////////////////////////////
 
               //pdf.save(carneEmpleado + '.pdf');
-              
+
               //  console.log(out);
               var url = builder.build();
               //console.log(url);
@@ -164,28 +164,28 @@ function facultades() {
   idCentro = $("#selbox").val();
   $('.selectpicker').selectpicker();
 
- $.ajax({
-      type: 'GET',
-      url:  dominio + "buscarFacultadActiva/" + idCentro + "/1",
-      contentType: "application/json",
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-    //  console.log(data);
+  $.ajax({
+    type: 'GET',
+    url: dominio + "buscarFacultadActiva/" + idCentro + "/1",
+    contentType: "application/json",
+    dataType: 'json',
+    async: false,
+    success: function (data) {
+      //  console.log(data);
 
-    // html = "";
+      // html = "";
       const selectFacultad = document.querySelector("#selFacultad");
-    for (let i = selectFacultad.options.length; i >= 0; i--) {
-   selectFacultad.remove(i);
- }
+      for (let i = selectFacultad.options.length; i >= 0; i--) {
+        selectFacultad.remove(i);
+      }
 
-     var option = document.createElement('option');
-     option.text = 'Selecciona Unidad Académica';
-     option.value = 0;
-     selectFacultad.appendChild(option);
-      for(i=0; i<data.facultad.length; i++){
+      var option = document.createElement('option');
+      option.text = 'Selecciona Unidad Académica';
+      option.value = 0;
+      selectFacultad.appendChild(option);
+      for (i = 0; i < data.facultad.length; i++) {
         option = document.createElement('option');
-    //    console.log(option.text = data.facultad[i].nombre);
+        //    console.log(option.text = data.facultad[i].nombre);
         //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
         option.value = data.facultad[i].id_facultad;
         option.text = data.facultad[i].nombre;
@@ -195,9 +195,9 @@ function facultades() {
 
     },
     error: function (response) {
-      alertify.set('notifier','position', 'bottom-center');
+      alertify.set('notifier', 'position', 'bottom-center');
       alertify.error("error de conexión");
-        }
+    }
   });
 }
 
@@ -241,7 +241,7 @@ function verificarResultadoAsignacion() {
         /////////////////////////////////////////////////
 
         //pdf.save(carneEmpleado + '.pdf');
-        
+
         //  console.log(out);
         var url = builder.build();
         //console.log(url);
@@ -281,254 +281,253 @@ function verificarResultadoAsignacion() {
 ////////////////////////verificar resultado y cupo para Asignar
 cupoAsignacion = [];
 /////////buscar resultados
-function verificarResultado(){
+function verificarResultado() {
 
 
   idCentro = $("#selbox").val();
   idFacultad = $("#selFacultad").val();
   $.ajax({
     type: 'GET',
-    url:  dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro + "/1",
+    url: dominio + "buscarFechaExamen/" + idFacultad + "/" + idCentro + "/1",
     contentType: "application/json",
     dataType: 'json',
     async: false,
-        beforeSend: function() {
-            $('#btnAsignar').html("<img src='assets/img/cargando.gif' />"); // Muestro el Spinner (Animación)
-        },
-    })
+    beforeSend: function () {
+      $('#btnAsignar').html("<img src='assets/img/cargando.gif' />"); // Muestro el Spinner (Animación)
+    },
+  })
 
-    .done(function(data) {
+    .done(function (data) {
       var cantidadMaterias = 0;
       $.ajax({
 
-           type: 'GET',
-           url:  dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
-           contentType: "application/json",
-           dataType: 'json',
-           async: false,
-           success: function (data) {
-            // console.log(data.materias.length);
-         //  console.log(data.contador[0].count);
-            cantidadMaterias = data.materias.length;
+        type: 'GET',
+        url: dominio + "facultadMaterias/" + idCentro + "/" + idFacultad,
+        contentType: "application/json",
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          // console.log(data.materias.length);
+          //  console.log(data.contador[0].count);
+          cantidadMaterias = data.materias.length;
 
 
-         },
-         error: function (response) {
-           alertify.set('notifier','position', 'bottom-center');
-           alertify.error("Error de conexión");
-             }
-       });
-       ///console.log(cantidadMaterias);
-       ///console.log(data.DETALLEFACULTAD.length);
+        },
+        error: function (response) {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.error("Error de conexión");
+        }
+      });
+      ///console.log(cantidadMaterias);
+      ///console.log(data.DETALLEFACULTAD.length);
 
-       if(cantidadMaterias === data.DETALLEFACULTAD.length){
-         cupoAsignacion.length = 0;
+      if (cantidadMaterias === data.DETALLEFACULTAD.length) {
+        cupoAsignacion.length = 0;
 
-         if(data.DETALLEFACULTAD.length > 0) {
+        if (data.DETALLEFACULTAD.length > 0) {
 
-           for (i = 0; i < data.DETALLEFACULTAD.length; i++){
-             //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
-               buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
-           }
+          for (i = 0; i < data.DETALLEFACULTAD.length; i++) {
+            //  buscarAsignacion(data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].id_materia, data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_salon);
+            buscarCupo(data.DETALLEFACULTAD[i].id_tablads, data.DETALLEFACULTAD[i].fecha_examen, data.DETALLEFACULTAD[i].cupo, data.DETALLEFACULTAD[i].id_materia);
+          }
 
-         }
-         else
-         {
-             $('#btnAsignar').html('<p>cargando...</p><img src="assets/img/cargando.gif" />');
-           alertify.set('notifier','position', 'bottom-center');
-           var duration = 15;
-           var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
-           var interval = setInterval(function(){
-                   msg.setContent('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
-                 },1000);
-           document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+        }
+        else {
+          $('#btnAsignar').html('<p>cargando...</p><img src="assets/img/cargando.gif" />');
+          alertify.set('notifier', 'position', 'bottom-center');
+          var duration = 15;
+          var msg = alertify.warning('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function () { clearInterval(interval); });
+          var interval = setInterval(function () {
+            msg.setContent('La unidad académica seleccionada no cuenta con salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
+          }, 1000);
+          document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
-           $(".botonAsignar").on('click', function () {
-             var selCentro = document.getElementById("selbox");
-             var centroSelect= selCentro.options[selCentro.selectedIndex].text;
+          $(".botonAsignar").on('click', function () {
+            var selCentro = document.getElementById("selbox");
+            var centroSelect = selCentro.options[selCentro.selectedIndex].text;
 
-             var selUnidad = document.getElementById("selFacultad");
-             var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+            var selUnidad = document.getElementById("selFacultad");
+            var unidadSelect = selUnidad.options[selUnidad.selectedIndex].text;
 
-             if(centroSelect === 'Selecciona Centro Universitario'){
-               alertify.set('notifier','position', 'bottom-center');
-               alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
+            if (centroSelect === 'Selecciona Centro Universitario') {
+              alertify.set('notifier', 'position', 'bottom-center');
+              alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
 
-             }
-             else{
+            }
+            else {
 
-               if(unidadSelect === 'Selecciona Unidad Académica'){
-                 alertify.set('notifier','position', 'bottom-center');
-                 alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+              if (unidadSelect === 'Selecciona Unidad Académica') {
+                alertify.set('notifier', 'position', 'bottom-center');
+                alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
 
-               }
-               else {
+              }
+              else {
 
-               alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
-                          , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-                   }
+                alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function () { verificarResultado(); verificarCupo(); if (asignacionJson.length > 0) { generarAsignacion() };; }
+                  , function () { alertify.error('Vuelve a seleccionar las opciones de nuevo') });
+              }
 
-             }
+            }
 
-           });
-         }
-       }
-       else {
-         alertify.set('notifier','position', 'bottom-center');
-         var duration = 15;
-         var msg = alertify.warning('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function(){ clearInterval(interval);});
-         var interval = setInterval(function(){
-                 msg.setContent('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
-               },1000);
-         document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
+          });
+        }
+      }
+      else {
+        alertify.set('notifier', 'position', 'bottom-center');
+        var duration = 15;
+        var msg = alertify.warning('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ', 15, function () { clearInterval(interval); });
+        var interval = setInterval(function () {
+          msg.setContent('La unidad académica seleccionada no cuenta con uno o varios salones creados,  comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder apoyarte. ');
+        }, 1000);
+        document.getElementById("btnAsignar").innerHTML = '<button class="btn btn-primary btn-lg botonAsignar" type="submit" id="">Asignar</button>';
 
-         $(".botonAsignar").on('click', function () {
-           var selCentro = document.getElementById("selbox");
-           var centroSelect= selCentro.options[selCentro.selectedIndex].text;
+        $(".botonAsignar").on('click', function () {
+          var selCentro = document.getElementById("selbox");
+          var centroSelect = selCentro.options[selCentro.selectedIndex].text;
 
-           var selUnidad = document.getElementById("selFacultad");
-           var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+          var selUnidad = document.getElementById("selFacultad");
+          var unidadSelect = selUnidad.options[selUnidad.selectedIndex].text;
 
-           if(centroSelect === 'Selecciona Centro Universitario'){
-             alertify.set('notifier','position', 'bottom-center');
-             alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
+          if (centroSelect === 'Selecciona Centro Universitario') {
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
 
-           }
-           else{
+          }
+          else {
 
-             if(unidadSelect === 'Selecciona Unidad Académica'){
-               alertify.set('notifier','position', 'bottom-center');
-               alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+            if (unidadSelect === 'Selecciona Unidad Académica') {
+              alertify.set('notifier', 'position', 'bottom-center');
+              alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
 
-             }
-             else {
+            }
+            else {
 
-             alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
-                        , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-                 }
+              alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function () { verificarResultado(); verificarCupo(); if (asignacionJson.length > 0) { generarAsignacion() };; }
+                , function () { alertify.error('Vuelve a seleccionar las opciones de nuevo') });
+            }
 
-           }
+          }
 
-         });
-       }
+        });
+      }
 
-})
+    })
 
-// Este método es para manejar algún error al obtener los datos
-.fail(function(data) {
-  alertify.set('notifier','position', 'bottom-center');
-  alertify.error("Error de conexión");
-    //
-});
+    // Este método es para manejar algún error al obtener los datos
+    .fail(function (data) {
+      alertify.set('notifier', 'position', 'bottom-center');
+      alertify.error("Error de conexión");
+      //
+    });
 
 }
 
 ///////////buscar cupo en los salones que se quiere asignar
-function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria){
- $.ajax({
-      type: 'GET',
-      url:  dominio + "asignadosPorSalon/" + idDetalleSalon + "/" + fechaExamen,
-      contentType: "application/json",
-      dataType: 'json',
-      async: false,
-      success: function (data) {
+function buscarCupo(idDetalleSalon, fechaExamen, cupo, idMateria) {
+  $.ajax({
+    type: 'GET',
+    url: dominio + "asignadosPorSalon/" + idDetalleSalon + "/" + fechaExamen,
+    contentType: "application/json",
+    dataType: 'json',
+    async: false,
+    success: function (data) {
 
-      if(novCarne.length === 10){
-
+      if (novCarne.length === 10) {
+        //                         0       1          2 novCarne  3 (novCarne.lenth === 10 ? 0 : novEstudiante)  
         cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, 0, parseInt(data.contador[0].count), cupo, fechaExamen]);
 
       }
-      else if(novCarne.length >= 1 && novCarne.length <= 9){
+      else if (novCarne.length >= 1 && novCarne.length <= 9) {
 
-      cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
+        cupoAsignacion.push([idMateria, idDetalleSalon, novCarne, novEstudiante, parseInt(data.contador[0].count), cupo, fechaExamen]);
 
       }
 
 
     },
     error: function (response) {
-      alertify.set('notifier','position', 'bottom-center');
+      alertify.set('notifier', 'position', 'bottom-center');
       alertify.error("error de conexión");
-        }
+    }
   });
 
 }
 
 
-function verificarCupo(){
+function verificarCupo() {
 
-contadorCUpo = 0;
-//console.log(cupoAsignacion);
+  contadorCUpo = 0;
+  //console.log(cupoAsignacion);
 
-for(i = 0; i < cupoAsignacion.length; i++) {
+  for (i = 0; i < cupoAsignacion.length; i++) {
 
-  if(cupoAsignacion[i][4] >= cupoAsignacion[i][5]){
-     contadorCUpo += 1;
+    if (cupoAsignacion[i][4] >= cupoAsignacion[i][5]) {
+      contadorCUpo += 1;
+    }
+    else {
+
+      //  console.log("no");
+    }
+
+  }
+
+  if (contadorCUpo > 0) {
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("No se puede asignar en este momento, espacio no disponible en esta unidad académica. Comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
+    $('#btnAsignar').html("");
   }
   else {
 
-  //  console.log("no");
-  }
+    for (i = 0; i < cupoAsignacion.length; i++) {
 
-}
+      buscarResultado(cupoAsignacion[i][0], cupoAsignacion[i][1], cupoAsignacion[i][2], cupoAsignacion[i][3], cupoAsignacion[i][4], cupoAsignacion[i][6]);
 
-if(contadorCUpo > 0){
-  alertify.set('notifier','position', 'bottom-center');
-  alertify.error("No se puede asignar en este momento, espacio no disponible en esta unidad académica. Comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
-  $('#btnAsignar').html("");
-}
-else {
-
-  for(i = 0; i < cupoAsignacion.length; i++) {
-
-    buscarResultado(cupoAsignacion[i][0], cupoAsignacion[i][1], cupoAsignacion[i][2], cupoAsignacion[i][3], cupoAsignacion[i][4], cupoAsignacion[i][6]);
+    }
 
   }
 
 }
 
-}
 
+function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, contadorAsignado, fechaExamen) {
 
-function buscarResultado(idMateria, idDetalleSalon, novOCarne, novEstudiante, contadorAsignado, fechaExamen){
+  $.ajax({
+    type: 'GET',
+    url: dominio + "resultadoPorAsignacionNC/" + novOCarne + "/" + novEstudiante + "/" + idMateria + "/1",
+    contentType: "application/json",
+    dataType: 'json',
+    async: false,
+    success: function (data) {
+      //  console.log(data);
 
-$.ajax({
-      type: 'GET',
-      url:  dominio + "resultadoPorAsignacionNC/" + novOCarne + "/" + novEstudiante + "/" + idMateria + "/1",
-      contentType: "application/json",
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-    //  console.log(data);
-
-     if(data.RESULTADO.length === 0){
+      if (data.RESULTADO.length === 0) {
         ////////insertar en la tabla asignacion
         numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaExamen);
         //agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen);
 
       }
-      else{
-        if(idMateria === 1){
-          alertify.set('notifier','position', 'bottom-center');
+      else {
+        if (idMateria === 1) {
+          alertify.set('notifier', 'position', 'bottom-center');
           alertify.warning("Ya has ganado el requisito BIOLOGÍA, ve al menú de Resultados para descargar la constancia.");
         }
         else if (idMateria === 2) {
-          alertify.set('notifier','position', 'bottom-center');
+          alertify.set('notifier', 'position', 'bottom-center');
           alertify.warning("Ya has ganado el requisito FÍSICA, ve al menú de Resultados para descargar la constancia.");
 
         }
         else if (idMateria === 3) {
-          alertify.set('notifier','position', 'bottom-center');
+          alertify.set('notifier', 'position', 'bottom-center');
           alertify.warning("Ya has ganado el requisito LENGUAJE, ve al menú de Resultados para descargar la constancia.");
 
         }
         else if (idMateria === 4) {
-          alertify.set('notifier','position', 'bottom-center');
+          alertify.set('notifier', 'position', 'bottom-center');
           alertify.warning("Ya has ganado el requisito MATEMÁTICA, ve al menú de Resultados para descargar la constancia.");
 
         }
         else if (idMateria === 5) {
-          alertify.set('notifier','position', 'bottom-center');
+          alertify.set('notifier', 'position', 'bottom-center');
           alertify.warning("Ya has ganado el requisito QUÍMICA, ve al menú de Resultados para descargar la constancia.");
 
         }
@@ -540,54 +539,54 @@ $.ajax({
 
     },
     error: function (response) {
-      alertify.set('notifier','position', 'bottom-center');
+      alertify.set('notifier', 'position', 'bottom-center');
       alertify.error("Error de conexión!");
-        }
+    }
   });
 
 }
 
-function numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaExamen){
+function numeroUltimoAsignado(idDetalleSalon, novCarne, contadorAsignado, fechaExamen) {
   $.ajax({
-       type: 'GET',
-       url:  dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen,
-       contentType: "application/json",
-       dataType: 'json',
-       async: false,
-       success: function (data) {
+    type: 'GET',
+    url: dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen,
+    contentType: "application/json",
+    dataType: 'json',
+    async: false,
+    success: function (data) {
 
-        if(data.ultimo_asingado.length === 0) {
-          agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 1);
+      if (data.ultimo_asingado.length === 0) {
+        agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 1);
+      }
+      else {
+
+        if (contadorAsignado < data.ultimo_asingado[0].asignacion) {
+          agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 2);
         }
         else {
-
-         if(contadorAsignado  < data.ultimo_asingado[0].asignacion){
-           agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 2);
-         }
-         else {
-           agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 1);
-         }
+          agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, 1);
         }
-     },
-     error: function (response) {
-       alertify.set('notifier','position', 'bottom-center');
-       alertify.error("Error de conexión!");
-         }
-   });
+      }
+    },
+    error: function (response) {
+      alertify.set('notifier', 'position', 'bottom-center');
+      alertify.error("Error de conexión!");
+    }
+  });
 
 }
 
 
 var asignacionJson = [];
 
-function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, sumadorContador){
+function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExamen, sumadorContador) {
 
   var fechajs = new Date();
   const tiempoTranscurrido = Date.now();
   const hoy = new Date(tiempoTranscurrido);
 
-  var fechaNa =  hoy.toLocaleDateString().split("/");
-  var fechaFormato = fechaNa[2] +"-"+ fechaNa[1]+"-"+ fechaNa[0];
+  var fechaNa = hoy.toLocaleDateString().split("/");
+  var fechaFormato = fechaNa[2] + "-" + fechaNa[1] + "-" + fechaNa[0];
 
 
 
@@ -595,50 +594,50 @@ function agregarAsignacion(idDetalleSalon, novCarne, contadorAsignado, fechaExam
   sumadorAsignados = parseInt(contadorAsignado) + sumadorContador;
 
   data = JSON.stringify({
-  id_detalle_salon: idDetalleSalon,
-  nov: novCarne,
-  asignacion: sumadorAsignados,
-  fecha_examen: fechaExamen,
-  asignado_por: nombres + ' ' + apellidos,
-  fecha_asignacion: fechaFormato
-})
+    id_detalle_salon: idDetalleSalon,
+    nov: novCarne,
+    asignacion: sumadorAsignados,
+    fecha_examen: fechaExamen,
+    asignado_por: nombres + ' ' + apellidos,
+    fecha_asignacion: fechaFormato
+  })
 
-asignacionJson.push(data);
+  asignacionJson.push(data);
 }
 
 
-  /*// Listen for messages
-  socket.addEventListener('message', function (event) {
-      console.log('Message from server ', event.data);
-  });
+/*// Listen for messages
+socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+});
 
-  const sendMessage = () => {
-      socket.send('');
-  }*/
+const sendMessage = () => {
+    socket.send('');
+}*/
 
 function generarAsignacion() {
 
   data = JSON.stringify(asignacionJson);
 
-$.ajax({
-     type: 'POST',
-     url: dominio + 'insertarAsignacion',
-     contentType: "application/json",
-     dataType: 'json',
-     crossDomain: true,
-     async: false,
-     data: data,
-     success: function (response) {
+  $.ajax({
+    type: 'POST',
+    url: dominio + 'insertarAsignacion',
+    contentType: "application/json",
+    dataType: 'json',
+    crossDomain: true,
+    async: false,
+    data: data,
+    success: function (response) {
 
-        $("#selCentros").hide();
-        $("#selFacultades").hide();
-        $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
-        location.reload();
-     },
-     error: function (response) {
-       //  window.location.href = "index.html";
-     }
- });
+      $("#selCentros").hide();
+      $("#selFacultades").hide();
+      $('#btnAsignar').html('<p style="color: black; font-size: 25px;"> <strong> Espera un momento, se está generando tu constancia de inscripción a las PCB, no cierres esta ventana ni refresques el navegador. </strong></p><p>cargando...</p><img src="assets/img/cargando.gif" />');
+      location.reload();
+    },
+    error: function (response) {
+      //  window.location.href = "index.html";
+    }
+  });
 }
 
 ////////////////////////////////////
@@ -651,69 +650,68 @@ $.ajax({
 
 $(document).ready(function () {
 
-$(".botonAsignar").on('click', function () {
+  $(".botonAsignar").on('click', function () {
 
-  $.ajax({
- type: 'GET',
- url:  dominio + "examenLimite/1",
- contentType: "application/json",
- dataType: 'json',
- async: false,
- success: function (data) {
- //console.log(data.examen[0].activo);
- mensajeMostrar = data.examen.mensaje;
+    $.ajax({
+      type: 'GET',
+      url: dominio + "examenLimite/1",
+      contentType: "application/json",
+      dataType: 'json',
+      async: false,
+      success: function (data) {
+        //console.log(data.examen[0].activo);
+        mensajeMostrar = data.examen.mensaje;
 
- if(data.examen.activo === 1)
- {
+        if (data.examen.activo === 1) {
 
-   var selCentro = document.getElementById("selbox");
-   var centroSelect= selCentro.options[selCentro.selectedIndex].text;
+          var selCentro = document.getElementById("selbox");
+          var centroSelect = selCentro.options[selCentro.selectedIndex].text;
 
-   var selUnidad = document.getElementById("selFacultad");
-   var unidadSelect= selUnidad.options[selUnidad.selectedIndex].text;
+          var selUnidad = document.getElementById("selFacultad");
+          var unidadSelect = selUnidad.options[selUnidad.selectedIndex].text;
 
-   if(centroSelect === 'Selecciona Centro Universitario'){
-     alertify.set('notifier','position', 'bottom-center');
-     alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
+          if (centroSelect === 'Selecciona Centro Universitario') {
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.warning("Debes seleccionar un centro universitario. Para poder asignarte.");
 
-   }
-   else{
+          }
+          else {
 
-     if(unidadSelect === 'Selecciona Unidad Académica'){
-       alertify.set('notifier','position', 'bottom-center');
-       alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
+            if (unidadSelect === 'Selecciona Unidad Académica') {
+              alertify.set('notifier', 'position', 'bottom-center');
+              alertify.warning("Debes seleccionar una unidad académica (Facultad/Escuela). Para poder asignarte.");
 
-     }
-     else {
+            }
+            else {
 
-     alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function(){verificarResultado(); verificarCupo();if(asignacionJson.length > 0){generarAsignacion()};; }
-                , function(){ alertify.error('Vuelve a seleccionar las opciones de nuevo')});
-         }
+              alertify.confirm('Asignación', '¿Deseas Asignarte al centro universitario: ' + centroSelect + ', a la unidad académica:  ' + unidadSelect + '?', function () { verificarResultado(); verificarCupo(); if (asignacionJson.length > 0) { generarAsignacion() };; }
+                , function () { alertify.error('Vuelve a seleccionar las opciones de nuevo') });
+            }
 
-   }
+          }
 
- }
- else {
+        }
+        else {
 
-   alertify.set('notifier','position', 'bottom-center');
-   alertify.warning("La fecha de asignación está cerrada.");
-   location.reload();
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.warning("La fecha de asignación está cerrada.");
+          location.reload();
 
- }
-
+        }
 
 
-},
-error: function (response) {
- alertify.set('notifier','position', 'bottom-center');
- alertify.error("Usuario o Contraseña Incorrecto!");
-   }
-});
 
-//verificarResultado();
-//verificarCupo();
+      },
+      error: function (response) {
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.error("Usuario o Contraseña Incorrecto!");
+      }
+    });
 
-});
+    //verificarResultado();
+    //verificarCupo();
+
+  });
 
 });
 
@@ -723,3 +721,77 @@ $("#cerrarSesion").on('click', function () {
   setCookie('api-novCarne', null, 1);
 
 });
+
+$.ajax({
+      type: 'GET',
+      url: dominio + "buscarCentroActivo/1",
+      contentType: "application/json",
+      dataType: 'json',
+      async: false ,
+      success: function (data) {
+        //  console.log(data);
+
+        html = "";
+        const $select = document.querySelector("#selbox");
+
+        //  html += '<label for="">Selecciona Centro: </label>';
+        //html +=  '<select data-live-search="true" data-live-search-style="startsWith"  class="selectpicker">';
+        var option = document.createElement('option');
+        option.text = 'Selecciona Centro Universitario';
+        option.value = 0;
+        $select.appendChild(option);
+
+        for (i = 0; i < data.centros.length; i++) {
+          option = document.createElement('option');
+          //console.log(option.text = data.centros[i].nombre);
+          //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
+          option.value = data.centros[i].id;
+          option.text = data.centros[i].nombre;
+          $select.appendChild(option);
+        }
+
+        //  html += '</select>';
+        //  $("#selbox").html(html);
+
+        ///////sleector de inicio
+
+        idCentro = $("#selbox").val();
+        $.ajax({
+          type: 'GET',
+          url: dominio + "buscarFacultadActiva/" + idCentro + "/1",
+          contentType: "application/json",
+          dataType: 'json',
+          async: false,
+          success: function (data) {
+            //console.log(data);
+
+            // html = "";
+            const selectFacultad = document.querySelector("#selFacultad");
+            var option = document.createElement('option');
+            option.text = 'Selecciona Unidad Académica';
+            option.value = 0;
+            selectFacultad.appendChild(option);
+            for (i = 0; i < data.facultad.length; i++) {
+
+              //console.log(option.text = data.facultad[i].nombre);
+              //html += '<option value="'+data.centros[i].id+'">'+data.centros[i].nombre+'</option>';
+              option.value = data.facultad[i].id_facultad;
+              option.text = data.facultad[i].nombre;
+              selectFacultad.appendChild(option);
+            }
+
+          },
+          error: function (response) {
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.error("Usuario o Contraseña Incorrecto!");
+          }
+
+        });
+        //////////////
+
+      },
+      error: function (response) {
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.error("Usuario o Contraseña Incorrecto!");
+      }
+    });
