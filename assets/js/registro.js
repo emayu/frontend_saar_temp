@@ -145,7 +145,7 @@ else if(cuenta== AccountType.ASPIRANTE){
                        if(data.source === 'Local'){
                         alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
                        }else if(data.source === 'External'){
-                        alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o dirigirte al edificio de bienestar estudiantil 3er nivel si eres del campus central o si eres de centro universitario departamental a la oficina de atención al estudiante, en horario de oficina.");
+                        alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.");
                        }
 
                      }
@@ -154,12 +154,12 @@ else if(cuenta== AccountType.ASPIRANTE){
                        if(data.source === 'Local'){
                         alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
                        }else if(data.source === 'External'){
-                        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o Dirigirte al edificio de bienestar estudiantil 3er nivel si eres del campus central o si eres de centro universitario departamental a la oficina de atención al estudiante, en horario de oficina.");
+                        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.");
                        }
 
                      }else if (data.message === 'nov no entregado') {
                       alertify.set('notifier','position', 'bottom-center');
-                      alertify.error(`NOV en estado incorrecto. ${data.details}. Dirigirte al edificio de bienestar estudiantil 3er nivel si eres del campus central o si eres de centro universitario departamental a la oficina de atención al estudiante, en horario de oficina.`);
+                      alertify.error(`NOV en estado incorrecto. ${data.details}. Para actualizarlo comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.`);
                      }else {
                        //console.log(data.OV_ASPIRANTE.nombres);
                        if (data.OV_ASPIRANTE.registrado === 1) {
@@ -204,7 +204,7 @@ else if(cuenta== AccountType.ASPIRANTE){
                       alertify.error(`Ocurrió un error. ${xhr.responseJSON.details}`);
                     }else if (xhr.status == 500 && xhr.responseJSON?.message === 'NOV incorrecto en servicio externo') {
                       alertify.set('notifier','position', 'bottom-center');
-                      alertify.error(`La información del NOV es incorrecta en servicio de Orientación Vocacional. Dirigirte al edificio de bienestar estudiantil 3er nivel si eres del campus central o si eres de centro universitario departamental a la oficina de atención al estudiante, en horario de oficina.`);
+                      alertify.error(`La información del NOV es incorrecta en servicio de Orientación Vocacional. comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.`);
                     }else{
                       alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
                     }
