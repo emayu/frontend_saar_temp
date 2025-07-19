@@ -20,15 +20,32 @@ $("#buscar").on('click', function () {
 
 
 $("#aceptar").on('click', function () {
+  const contraseniaInput = document.getElementById("contrasenia");
+  const repContraseniaInput = document.getElementById("repContrasenia");
 
-      var m = document.getElementById("contrasenia").value;
+
+  contraseniaInput.classList.remove('is-invalid');
+  repContraseniaInput.classList.remove('is-invalid');
+
+
+      var m = contraseniaInput.value;
 
       var expreg = /^((?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])|(?=.*[a-z])(?=.*[A-Z])(?=.*\d))([A-Za-z\d@$!%*?&]|[^ ]){8,}$/;
 
-        if($("#contrasenia").val()==="" || $("#repContrasenia").val()===""){
+        if(!contraseniaInput.checkValidity()){
+          contraseniaInput.classList.add('is-invalid');
           alertify.set('notifier','position', 'bottom-center');
           alertify.error("El campo contraseña esta vacio");
-        }else {
+        }
+
+        if(!repContraseniaInput.checkValidity()){
+          repContraseniaInput.classList.add('is-invalid');
+          alertify.set('notifier','position', 'bottom-center');
+          alertify.error("El campo de verificación de contraseña esta vacío");
+        }
+        
+        
+        if (contraseniaInput.checkValidity() && repContraseniaInput.checkValidity()) {
           if($("#contrasenia").val() !=  $("#repContrasenia").val()){
             alertify.set('notifier','position', 'bottom-center');
             alertify.error("La Contraseña no coincide");
@@ -79,12 +96,15 @@ $.ajax({
         var nombres = data.OV_ASPIRANTE.nombres;
         var apellidos = data.OV_ASPIRANTE.apellidos;
         var nov = data.OV_ASPIRANTE.nov;
+        var version = data.OV_ASPIRANTE.version;
 
         $("#recPassword").show();
         $("#datos").hide();
 
         document.getElementById("nombreBusqueda").innerHTML = '<a class="nav-link" style="color: black;"><strong>NOV: '+nov+ '</strong></a>' +
-        '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombres + ' ' + apellidos + '.</strong></a>'
+        '<a class="nav-link" style="color: black;"><strong>Nombre: '+ nombres + ' ' + apellidos + '.</strong></a>';
+
+        document.getElementById('version').value = version;
 
       }
       else {
@@ -107,14 +127,19 @@ function actualizarDatos() {
 
   password = $("#contrasenia").val();
   novCarne = $("#novAspirante").val();
-
-  data = '{"contrasena": "'+myCipher(password)+'"}';
+  const version = document.getElementById('version').value;
+  const dataRaw = {
+    contrasena: myCipher(password),
+    version: version,
+    usuario_ultima_modificacion: novCarne
+  };
+  const data = JSON.stringify(dataRaw);
 
     $.ajax({
         type: 'PUT',
         url: dominio + `actualizarAspirantePass/` + novCarne,
         contentType: 'application/json',
-        dataType: 'HTML',
+        dataType: 'json',
         crossDomain: true,
         async: false,
         data: data,
@@ -123,7 +148,8 @@ function actualizarDatos() {
             alertify.set('notifier','position', 'bottom-center');
             alertify.success("Se ha realizado el registro correctamente");
             window.location.href = "login.html";
-        }
+        },
+        error: errorHandlerSetup(alertify)
     })
 
 }
