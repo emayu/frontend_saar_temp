@@ -180,6 +180,7 @@ else if(cuenta== AccountType.ASPIRANTE){
                           document.getElementById("fechaNacimiento").value = fechaNacimiento;
                           document.getElementById("correo").value = correo;
                           document.getElementById('nov').textContent = nov;
+                          document.getElementById('version').value = data.OV_ASPIRANTE.version;
 
                              modal.style.display = "block";
 
@@ -235,7 +236,7 @@ function actualizarDatos() {
           type: 'PUT',
           url: dominio + `actualizarEstudiante/` + carne,
           contentType: 'application/json',
-          dataType: 'HTML',
+          dataType: 'json',
           crossDomain: true,
           async: false,
           data: data,
@@ -245,30 +246,38 @@ function actualizarDatos() {
               alertify.success("Se ha realizado el registro correctamente");
               window.location.href = "pass.html";
 
-          }
+          },
+          error: errorHandlerSetup(alertify)
       })
 
   } else if(tipoCuenta== AccountType.ASPIRANTE){
   nov = $("#novAspirante").val();
   correo = $("#correo").val();
   fechaNacimiento = $("#fechaNacimiento").val();
-  data = '{"correo": "'+correo+'", "fecha_nacimiento" : "'+fechaNacimiento+'"}';
+  const version = $("#version").val();
+  const data = {
+    correo:correo,
+    fecha_nacimiento :fechaNacimiento,
+    version,
+    usuario_ultima_modificacion: nov
+  };
 
     $.ajax({
         type: 'PUT',
         url: dominio + `actualizarAspirante/` + nov,
         contentType: 'application/json',
-        dataType: 'HTML',
+        dataType: 'json',
         crossDomain: true,
         async: false,
-        data: data,
+        data: JSON.stringify(data),
         success: function (data) {
             //console.log(data);
             alertify.set('notifier','position', 'bottom-center');
             alertify.success("Se ha realizado el registro correctamente");
             window.location.href = "pass.html";
 
-        }
+        },
+        error: errorHandlerSetup(alertify)
     })
   }
 }
