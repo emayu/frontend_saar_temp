@@ -254,11 +254,11 @@ function actualizarDatos() {
   nov = $("#novAspirante").val();
   correo = $("#correo").val();
   fechaNacimiento = $("#fechaNacimiento").val();
-  const version = $("#version").val();
+  const versionInput = document.getElementById('version');
   const data = {
     correo:correo,
-    fecha_nacimiento :fechaNacimiento,
-    version,
+    fecha_nacimiento:fechaNacimiento,
+    version: versionInput.value,
     usuario_ultima_modificacion: nov
   };
 
@@ -266,7 +266,7 @@ function actualizarDatos() {
         type: 'PUT',
         url: dominio + `actualizarAspirante/` + nov,
         contentType: 'application/json',
-        dataType: 'HTML',
+        dataType: 'json',
         crossDomain: true,
         async: false,
         data: JSON.stringify(data),
