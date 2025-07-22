@@ -320,7 +320,7 @@ class AsignacionComponent {
 
         const { DETALLEFACULTAD: detalleSalones } = await ApiService.buscarSalonesActivos(idCentro, idFacultad);
         const { materias } = await ApiService.getMateriasEnDetalleFacultad(idCentro, idFacultad);
-        // console.debug('facultades y materias', JSON.stringify(DETALLEFACULTAD), JSON.stringify(materias));
+        console.debug('detalleSalones', JSON.stringify(detalleSalones), 'facultad y materias', JSON.stringify(materias));
         const materiasUnicasEncontradasEnSalones = [];
         // verifica que las materias configuradas en salones sean las mismas que las configuradas en el detalle facultad
         for(const materia of materias){
@@ -337,7 +337,7 @@ class AsignacionComponent {
         for (const detalleSalon of detalleSalones) {
             //consultar asignados para materia específica
             const { contador } = await ApiService.getContadorAsignadosPorSalon(detalleSalon.id_tablads, detalleSalon.fecha_examen);
-            console.debug('detalleSalon', detalleSalon.id_tablads, 'response', contador);
+            console.debug('detalleSalon', detalleSalon.id_tablads, 'response.contador', JSON.stringify(contador));
             if (!Array.isArray(contador) || contador.length < 1) {
                 throw new AppBusinessException("Ocurrió un error al encontrar espacios en un salón, por favor vuelve a intentar más tarde.");
             }
@@ -359,7 +359,7 @@ class AsignacionComponent {
                 isNOVCarnet(novCarne) ? 0 : novEstudiante,
                 detalleSalon.id_materia,
                 ASIGNACION_RESULTADO.APROBADO);
-            console.debug('resultado anterior', RESULTADO)
+            console.debug('resultado anterior', JSON.stringify(RESULTADO));
             if (!Array.isArray(RESULTADO)) {
                 throw new AppBusinessException("Ocurrió un error al consultar resultados anteriores, por favor vuelve a intentar más tarde.");
             }
@@ -368,7 +368,7 @@ class AsignacionComponent {
                 this.notificarMateriaAprobada(detalleSalon);
             } else {
                 const { ultimo_asingado } = await ApiService.getUltimoAsignado(detalleSalon.id_tablads, detalleSalon.fecha_examen);
-                console.debug('ultimo_asingado', ultimo_asingado)
+                console.debug('ultimo_asingado', JSON.stringify(ultimo_asingado))
                 if(!Array.isArray(ultimo_asingado)){
                     throw new AppBusinessException("Ocurrió un error al consultar tu número de asignado, por favor vuelve a intentar más tarde.");
                 }
