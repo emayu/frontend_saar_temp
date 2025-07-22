@@ -342,8 +342,13 @@ class AsignacionComponent {
                 throw new AppBusinessException("Ocurrió un error al encontrar espacios en un salón, por favor vuelve a intentar más tarde.");
             }
 
-            const [{ count }] = contador;
-            console.debug('count', count);
+            const [{ count: countString }] = contador;
+            const count = parseInt(countString);
+            console.debug('count', count, 'cupo:', typeof detalleSalon.cupo);
+            if (Number.isNaN(count)){
+                throw new AppBusinessException("Ocurrió un error al encontrar espacios en un salón(conteo), por favor vuelve a intentar más tarde.");
+            }
+
             if (count >= detalleSalon.cupo) {
                 //aquí puedo lanzar una notificación de que salon se llenó
                 throw new AppBusinessException("No se puede asignar en este momento, espacio no disponible en esta unidad académica, por favor vuelve a intentar más tarde.");
