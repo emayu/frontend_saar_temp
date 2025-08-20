@@ -10,7 +10,7 @@ axiosInstance.interceptors.response.use(
     res => res.data,
     err => Promise.reject(err)
 );
-console.debug('instancia de axios', axiosInstance);
+//console.debug('instancia de axios', axiosInstance);
 
 const ApiService = {
     /**
