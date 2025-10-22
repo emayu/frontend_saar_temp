@@ -16,14 +16,16 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=PT+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-<!-- Default theme -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-<!-- Semantic UI theme -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
-<!-- Bootstrap theme -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600;700;800&family=PT+Mono&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+  <!-- Default theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+  <!-- Semantic UI theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+  <!-- Bootstrap theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
@@ -50,7 +52,8 @@
     <div class="container d-flex align-items-center">
 
       <div class="logo mr-auto">
-        <h1 class="text-light"><a href="index.html"><img src="assets/img/Logo USAC SUNcolor.png" class="img-fluid" alt=""></a></h1>
+        <h1 class="text-light"><a href="index.html"><img src="assets/img/Logo USAC SUNcolor.png" class="img-fluid"
+              alt=""></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
@@ -75,61 +78,69 @@
 
 
         <div class="form-signin">
-<div class="text-center mb-4" data-aos="fade-up">
-  <img class="mb-4" src="assets/img/Logo USAC SUNcolor.png" alt="" width="100%" height="auto">
+          <div class="text-center mb-4" data-aos="fade-up">
+            <img class="mb-4" src="assets/img/Logo USAC SUNcolor.png" alt="" width="100%" height="auto">
 
-          <div class="section-title">
-            <h2>Recupera tu contraseña</h2>
-            <label for="pass">Debes ingresar tu NOV y fecha de nacimiento para crear una contraseña, la cual
-             te servirá para ingresar al Sistema de Asignación,
-              Aplicación y Entrega de Resultados de Pruebas de Conocimientos Básicos.
-              La Contraseña debe tener mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula, un número y/o un caracter especial.
-              <p><b>Recuerda anotarla en un lugar seguro.</b></p>
-           </label>
-          </div>
-          <div class="" id="datos">
-
-            <div class="form-label-group">
-              <input type="number" id="novAspirante" class="form-control" placeholder="Número de Orientación Vocacional" required autofocus oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10">
-              <label for="novAspirante"></label>
+            <div class="section-title">
+              <h2>Recupera tu contraseña</h2>
+              <label for="pass">Debes ingresar tu NOV y fecha de nacimiento para crear una contraseña, la cual
+                te servirá para ingresar al Sistema de Asignación,
+                Aplicación y Entrega de Resultados de Pruebas de Conocimientos Básicos.
+                La Contraseña debe tener mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula, un
+                número y/o un caracter especial.
+                <p><b>Recuerda anotarla en un lugar seguro.</b></p>
+              </label>
             </div>
+            <div class="" id="datos">
 
-            <div class="form-label-group">
-              <input placeholder="Ingresa tu fecha de nacimiento" class="form-control" type="text" onfocus="(this.type='date')" id="fechaNacimientoAspirante">
-              <label for="novAspirante"></label>
-            </div>
+              <div class="form-label-group">
+                <input type="number" id="novAspirante" class="form-control"
+                  placeholder="Número de Orientación Vocacional" required autofocus
+                  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                  maxlength="10">
+                <label for="novAspirante"></label>
+              </div>
+
+              <div class="form-label-group">
+                <input placeholder="Ingresa tu fecha de nacimiento" class="form-control" type="text"
+                  onfocus="(this.type='date')" id="fechaNacimientoAspirante">
+                <label for="novAspirante"></label>
+              </div>
               <button class="btn btn-lg btn-primary btn-block" type="submit" id="buscar">Buscar</button>
+            </div>
+
+
+          </div>
+          <div class="" id="recPassword">
+            <div class="" id="nombreBusqueda">
+
+            </div>
+            <div class="input-group">
+              <input type="password" id="contrasenia" class="form-control" placeholder="Ingresa tu Contraseña" required>
+              <div class="input-group-append">
+                <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPassword()">
+                  <span class="bx bxs-low-vision iconP"></span> </button>
+              </div>
+            </div>
+            <label for="novAspirante"></label>
+            <div class="input-group">
+
+              <input type="password" id="repContrasenia" class="form-control"
+                placeholder="Ingresa de Nuevo tu Contraseña" required>
+              <div class="input-group-append">
+                <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPassword2()">
+                  <span class="bx bxs-low-vision iconR"></span> </button>
+              </div>
+            </div>
+            <label for="novAspirante"></label>
+            <input type="hidden" id="version">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="aceptar">Aceptar</button>
+            <button class="btn btn-lg btn-danger btn-block" type="submit" id="cancelar">Cancelar</button>
           </div>
 
 
-</div>
-<div class="" id="recPassword">
-  <div class="" id="nombreBusqueda">
 
-  </div>
-  <div class="input-group">
-    <input type="password" id="contrasenia" class="form-control" placeholder="Ingresa tu Contraseña" required>
-    <div class="input-group-append">
-          <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPassword()"> <span class="bx bxs-low-vision iconP"></span> </button>
         </div>
-  </div>
-    <label for="novAspirante"></label>
-  <div class="input-group">
-
-    <input type="password" id="repContrasenia" class="form-control" placeholder="Ingresa de Nuevo tu Contraseña" required>
-    <div class="input-group-append">
-          <button id="show_password" class="btn btn-outline-primary" type="button" onclick="mostrarPassword2()"> <span class="bx bxs-low-vision iconR"></span> </button>
-        </div>
-  </div>
-  <label for="novAspirante"></label>
-  <input type="hidden" id="version">
-  <button class="btn btn-lg btn-primary btn-block" type="submit" id="aceptar">Aceptar</button>
-  <button class="btn btn-lg btn-danger btn-block" type="submit" id="cancelar">Cancelar</button>
-</div>
-
-
-
-      </div>
     </section><!-- End App Features Section -->
 
 
@@ -149,7 +160,8 @@
           <div class="col-lg-3 col-md-6 footer-contact" data-aos="fade-up">
             <h3>-SUN-</h3>
             <p>
-              Primer Nivel, Edificio de Recursos Educativos (Biblioteca Central); <br>Ciudad Universitaria, <br>zona 12. Guatemala C.A.<br>
+              Primer Nivel, Edificio de Recursos Educativos (Biblioteca Central); <br>Ciudad Universitaria, <br>zona 12.
+              Guatemala C.A.<br>
               <strong>Telefono:</strong>+502 2418-8010<br>
               <strong>Correo:</strong>sun.aspirantes@correoe.usac.edu.gt<br>
             </p>
@@ -157,7 +169,7 @@
 
           <div class="col-lg-3 col-md-6 footer-links" data-aos="fade-up" data-aos-delay="100">
             <h3>SAAR</h3>
-	    <p>Sistema de Asignación, Aplicación y Entrega de Resultados</p>
+            <p>Sistema de Asignación, Aplicación y Entrega de Resultados</p>
 
           </div>
 
@@ -166,10 +178,14 @@
             <h4>Nuestras Redes Sociales</h4>
             <p>Siguenos en las siguientes redes sociales</p>
             <div class="social-links mt-3">
-              <a href="https://www.facebook.com/SUNUSAC" target="_blank" class="facebook"><i class="bx bxl-facebook"></i></a> 
-              <a href="https://www.tiktok.com/@sun_usac" target="_blank" class="tiktok"><i class="bx bxl-tiktok"></i></a>
-              <a href="https://www.instagram.com/sun_usac" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
-              <a href="https://www.youtube.com/channel/UC6H0SgYUb4dYu4Ajz9DsYOw" target="_blank" class="google-plus"><i class="bx bxl-youtube "></i></a>
+              <a href="https://www.facebook.com/SUNUSAC" target="_blank" class="facebook"><i
+                  class="bx bxl-facebook"></i></a>
+              <a href="https://www.tiktok.com/@sun_usac" target="_blank" class="tiktok"><i
+                  class="bx bxl-tiktok"></i></a>
+              <a href="https://www.instagram.com/sun_usac" target="_blank" class="instagram"><i
+                  class="bx bxl-instagram"></i></a>
+              <a href="https://www.youtube.com/channel/UC6H0SgYUb4dYu4Ajz9DsYOw" target="_blank" class="google-plus"><i
+                  class="bx bxl-youtube "></i></a>
               <a href="https://sun.usac.edu.gt/" target="_blank" class="link"><i class="bx bxs-graduation"></i></a>
             </div>
           </div>
