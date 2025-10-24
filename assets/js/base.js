@@ -1,6 +1,7 @@
 
 var dominio = 'https://sunenlineaapi.usac.edu.gt/';
 
+const apiV1 = dominio+'v1/';
 
 var nombres = getCookie('api-nombre');
 var apellidos = getCookie('api-apellido');
@@ -73,6 +74,42 @@ function get(url, param) {
     return param;
 }
 
+/** Instancia Global necesaria para los servicios de api */
+const axiosInstance = (() => {
+    try {
+        const instance = axios.create({
+            baseURL: apiV1,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true,
+        });
+        // Interceptor para simplificar respuesta y desempaquetar la Promesa<AxiosResponse>
+        // esto hace transparente el uso de Axios 
+        instance.interceptors.response.use(
+            res => res.data,
+            err => {
+                if (!err.response) {
+                    return Promise.reject(err);
+                }
+                const { status } = err.response;
+                if (status === 401) {
+                    alertify.set('notifier', 'position', 'bottom-center');
+                    alertify.error(`Ocurrió un error: ${err.response.data?.details}`);
+                    redirectToLogin();
+                    return;
+                }
+                if (status === 403) {
+                    alertify.set('notifier', 'position', 'bottom-center');
+                    alertify.error(`Ocurrió un error: ${err.response.data?.details}`);
+                }
+                return Promise.reject(err);
+            }
+        );
+        return instance;
+    } catch (e) { return null; }
+})();
+console.debug('Instancia global de axios', axiosInstance);
 
 /**
  * Global error handler
@@ -81,12 +118,49 @@ function get(url, param) {
  */
 const errorHandlerSetup = (alertify) => (xhr, status, errorThrow) => {
     alertify.set('notifier', 'position', 'bottom-center');
-    if (xhr.status >= 400 && xhr.responseJSON?.details) {
+    if(status && status === "timeout"){
+        alertify.error("Tiempo de espera agotado. La petición tardó demasiado en responder.");
+    }else if(xhr.status == 0){
+        alertify.error("Parece que no hay conexión. Por favor verifica tu conexión red.");
+    }else if (xhr.status >= 400 && xhr.responseJSON?.details) {
         alertify.error(`Ocurrió un error: ${xhr.responseJSON.details}`);
+        if (xhr.status === 401) {
+            redirectToLogin();
+        }
     } else {
         alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
     }
 };
+
+const redirectToLogin = () => {
+    setTimeout(() => {
+        console.log('novCarnet:', novCarne, 'here:', window.location.pathname, 'search:', window.location.search);
+        const here = window.location.pathname + window.location.search;
+        if (novCarne && novCarne !== 'null') {
+            if (isNOVCarnet(novCarne)) {
+                window.location.href = `login.html?type=aspirante&next=${encodeURIComponent(here)}`;
+            } else {
+                window.location.href = `login.html?type=estudiante&next=${encodeURIComponent(here)}`;
+            }
+        } else {
+            window.location.href = `login.html?next=${encodeURIComponent(here)}`;
+        }
+        return;
+    }, 1750);
+}
+
+const handlerLogout = event => {
+    event.preventDefault();
+    axiosInstance
+     .post('logout')
+     .finally( result => {
+        console.log(result);
+        setCookie('api-nombre', null, 1);
+        setCookie('api-novCarne', null, 1);
+        window.location.href = 'index.html';
+     });
+}
+
 
 /**
  * 
@@ -155,6 +229,14 @@ const ASIGNACION_RESULTADO = Object.freeze({
     APROBADO: 1,
     NO_APROBADO: 2
 })
+
+/**
+ * Enum for account type
+ */
+const AccountType = Object.freeze({
+  ASPIRANTE: 1,
+  ESTUDIANTE: 2
+});
 
 //Modelos DTO
 class AsignacionPasada {

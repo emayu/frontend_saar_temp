@@ -1,11 +1,3 @@
-/**
- * Enum for account type
- */
-const AccountType = Object.freeze({
-  ASPIRANTE: 1,
-  ESTUDIANTE: 2
-});
-
 $(document).ready(function () {
   var hoy = new Date();
   var year = hoy.getFullYear();
@@ -56,7 +48,7 @@ function registro(cuenta) {
     carne = $("#carneEstudiante").val();
     fechaNE = $("#fechaNacimientoEstudiante").val();
 
-    //console.log(nov.length);
+    console.log("fechaNE", fechaNE);
 
     $.ajax({
       type: 'GET',

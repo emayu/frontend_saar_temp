@@ -66,10 +66,7 @@ class AsignacionComponent {
             alertify.error("No se pudieron cargar los datos necesarios. Verifica tu conexión e intenta nuevamente.");
         }
 
-        this.$linkCerrarSesion.addEventListener('click', () => {
-            setCookie('api-nombre', null, 1);
-            setCookie('api-novCarne', null, 1);
-        })
+        this.$linkCerrarSesion.addEventListener('click', handlerLogout);
 
 
         //dialogo personalizado

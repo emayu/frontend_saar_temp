@@ -59,8 +59,4 @@ $(document).ready(function () {
 });
 
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);

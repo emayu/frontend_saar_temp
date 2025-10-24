@@ -75,7 +75,8 @@ function resultados(nov, carneE) {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "buscarResultadoActivo/" + nov + "/" + carneE + "/1",
+    url:  apiV1 + "buscarResultadoActivo/" + nov + "/" + carneE + "/1",
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -161,10 +162,7 @@ function resultados(nov, carneE) {
       }
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("Error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -249,8 +247,4 @@ $(document).ready(function () {
   });
 });
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);

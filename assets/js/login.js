@@ -1,13 +1,21 @@
+let tipoCuenta = null;
+let novAspiranteInput = null;
+let passAspiranteInput = null;
+let carneEstudianteInput = null;
+let passEstudianteInput = null;
 $(document).ready(function () {
   tipoCuenta = 0;
-  $(".divAspirante").hide();
-  $(".divEstudiante").hide();
+  novAspiranteInput = document.getElementById('novAspirante');
+  passAspiranteInput = document.getElementById('passAspirante');
+  carneEstudianteInput = document.getElementById('carneEstudiante');
+  passEstudianteInput = document.getElementById('passEstudiante');
+
 });
 
 
 function login(cuenta) {
-
-  if (cuenta == 2) {
+  console.log('cuenta', cuenta);
+  if (cuenta === AccountType.ESTUDIANTE) {
     carne = $("#carneEstudiante").val();
     pass = $("#passEstudiante").val();
 
@@ -17,14 +25,14 @@ function login(cuenta) {
 
     $.ajax({
       type: 'POST',
-      url: dominio + `loginEstudiante`,
+      url: apiV1 + `loginEstudiante`,
+      xhrFields: { withCredentials: true },
       contentType: 'application/json',
-      dataType: 'HTML',
+      dataType: 'json',
       crossDomain: true,
       async: false,
       data: data,
-      success: function (data) {
-        var info = JSON.parse(data);
+      success: function (info) {
         if (info.message === 'logueado') {
 
           var nombres = info.datos.nombre;
@@ -66,10 +74,11 @@ function login(cuenta) {
           alertify.warning('El Número de Carné que ingresaste es incorrecto.', 'custom', 2, function () { });
         }
 
-      }
+      },
+      error: errorHandlerSetup(alertify)
     })
   }
-  else if (cuenta == 1) {
+  else if (cuenta === AccountType.ASPIRANTE) {
     nov = $("#novAspirante").val();
     pass = $("#passAspirante").val();
 
@@ -78,14 +87,14 @@ function login(cuenta) {
 
     $.ajax({
       type: 'POST',
-      url: dominio + `loginAspirante`,
+      url: apiV1 + `loginAspirante`,
+      xhrFields: { withCredentials: true },
       contentType: 'application/json',
-      dataType: 'HTML',
+      dataType: 'json',
       crossDomain: true,
       async: false,
       data: data,
-      success: function (data) {
-        var info = JSON.parse(data);
+      success: function (info) {
         if (info.message === 'logueado') {
           // /console.log(info.datos);
 
@@ -125,7 +134,8 @@ function login(cuenta) {
           alertify.warning('El Número de Orientación Vocacional que ingresaste es incorrecto.', 'custom', 2, function () { });
         }
 
-      }
+      },
+      error: errorHandlerSetup(alertify)
     })
   }
 
@@ -135,7 +145,7 @@ function login(cuenta) {
 $("#aspirante").on('click', function () {
   this.style.background = "#D3ECFB";
   $("#estudiante").attr('style', 'background-color:#FFFFFF');
-  tipoCuenta = 1;
+  tipoCuenta = AccountType.ASPIRANTE;
   $(".divAspirante").show();
   scrollToElement('#botonesTipo');
   $(".divEstudiante").hide();
@@ -146,17 +156,27 @@ $("#loginAspirante").on('click', function () {
 });
 
 function inicioAspirante() {
+  novAspiranteInput.classList.remove('is-invalid');
+  passAspiranteInput.classList.remove('is-invalid');
   if ($("#novAspirante").val() === "" && $("#passAspirante").val() === "") {
+    passAspiranteInput.classList.add('is-invalid');
+    passAspiranteInput.reportValidity();
+    novAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("Los campos están vacios");
+    alertify.error("Los campos están vacíos");
   }
   else if ($("#novAspirante").val() === "") {
+    novAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Número de Orientación Vocacional esta vacio");
+    alertify.error("El campo Número de Orientación Vocacional esta vacío");
   }
   else if ($("#passAspirante").val() === "") {
+    passAspiranteInput.classList.add('is-invalid');
+    passAspiranteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Contraseña esta vacio");
+    alertify.error("El campo Contraseña esta vacío");
   }
   else {
     login(tipoCuenta);
@@ -166,7 +186,7 @@ function inicioAspirante() {
 $("#estudiante").on('click', function () {
   this.style.background = "#D3ECFB";
   $("#aspirante").attr('style', 'background-color:#FFFFFF');
-  tipoCuenta = 2;
+  tipoCuenta = AccountType.ESTUDIANTE;
   $(".divEstudiante").show();
   scrollToElement('#botonesTipo');
   $(".divAspirante").hide();
@@ -178,17 +198,27 @@ $("#loginEstudiante").on('click', function () {
 });
 
 function inicioEstudiante() {
+  carneEstudianteInput.classList.remove('is-invalid');
+  passEstudianteInput.classList.remove('is-invalid');
   if ($("#carneEstudiante").val() === "" && $("#passEstudiante").val() === "") {
+    passEstudianteInput.classList.add('is-invalid');
+    passEstudianteInput.reportValidity();
+    carneEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("Los campos están vacios");
+    alertify.error("Los campos están vacíos");
   }
   else if ($("#carneEstudiante").val() === "") {
+    carneEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Número de carné esta vacio");
+    alertify.error("El campo Número de carné esta vacío");
   }
   else if ($("#passEstudiante").val() === "") {
+    passEstudianteInput.classList.add('is-invalid');
+    passEstudianteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Contraseña esta vacio");
+    alertify.error("El campo Contraseña esta vacío");
   }
   else {
     login(tipoCuenta);
@@ -224,10 +254,10 @@ function mostrarPasswordEstudiante() {
 
 $('body').keyup(function (e) {
   if (e.keyCode === 13) {
-    if (tipoCuenta == 1) {
+    if (tipoCuenta === AccountType.ASPIRANTE) {
       inicioAspirante();
     }
-    else if (tipoCuenta == 2) {
+    else if (tipoCuenta === AccountType.ESTUDIANTE) {
       inicioEstudiante();
     }
   }

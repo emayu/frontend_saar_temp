@@ -70,7 +70,8 @@ jsonHtml = '{';
 function verificarAsignacion() {
   $.ajax({
     type: 'GET',
-    url: dominio + "examenLimite/3",
+    url:  apiV1 + "examenLimite/3",
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -78,10 +79,11 @@ function verificarAsignacion() {
       ////console.log(data.examen[0].activo);
       mensajeMostrar = data.examen.mensaje;
 
-      if (data.examen.activo === 1) {
+      if(data.examen.activo === 1){
         $.ajax({
           type: 'GET',
-          url: dominio + "buscarAsignacionPasada/" + novCarne,
+          url:  apiV1 + "buscarAsignacionPasada/" + novCarne,
+          xhrFields: { withCredentials: true },
           contentType: "application/json",
           dataType: 'json',
           async: false,
@@ -120,11 +122,8 @@ function verificarAsignacion() {
             }
 
 
-          },
-          error: function (response) {
-            alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("error de conexión");
-          }
+            },
+            error: errorHandlerSetup(alertify)
         });
       }
       else {
@@ -132,10 +131,7 @@ function verificarAsignacion() {
       }
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 }
 
@@ -158,7 +154,8 @@ function simBiologia() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonBiologia,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonBiologia,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -170,7 +167,8 @@ function simBiologia() {
       setCookie('api-idTemario', 1, 1);
       window.location.href = "simuladorPR.html";
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -189,7 +187,8 @@ function simFisica() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonFisica,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonFisica,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -201,7 +200,8 @@ function simFisica() {
       setCookie('api-idTemario', 2, 1);
       window.location.href = "simuladorPR.html";
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 }
 
@@ -220,7 +220,8 @@ function simLenguaje() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonLenguaje,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonLenguaje,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -232,7 +233,8 @@ function simLenguaje() {
       setCookie('api-idTemario', 3, 1);
       window.location.href = "simuladorPR.html";
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -252,7 +254,8 @@ function simMatematica() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonMate,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonMate,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -264,7 +267,8 @@ function simMatematica() {
       setCookie('api-idTemario', 4, 1);
       window.location.href = "simuladorPR.html";
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -284,7 +288,8 @@ function simQuimica() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonQuimica,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonQuimica,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -296,7 +301,8 @@ function simQuimica() {
       setCookie('api-idTemario', 5, 1);
       window.location.href = "simuladorPR.html";
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -318,7 +324,8 @@ function reiniciarSimBiologia() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonBiologia,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonBiologia,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -329,7 +336,8 @@ function reiniciarSimBiologia() {
 
       $.ajax({
         type: 'DELETE',
-        url: dominio + 'deleteSimResultado/' + novCarne,
+        url: apiV1 + 'deleteSimResultado/' + novCarne,
+        xhrFields: { withCredentials: true },
         contentType: "application/json",
         dataType: 'json',
         crossDomain: true,
@@ -343,12 +351,11 @@ function reiniciarSimBiologia() {
           window.location.href = "simuladorPR.html";
 
         },
-        error: function (response) {
-          //   window.location.href = "index.html";
-        }
+        error: errorHandlerSetup(alertify)
       });
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -366,7 +373,8 @@ function reiniciarSimFisica() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonFisica,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonFisica,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -377,7 +385,8 @@ function reiniciarSimFisica() {
 
       $.ajax({
         type: 'DELETE',
-        url: dominio + 'deleteSimResultado/' + novCarne,
+        url: apiV1 + 'deleteSimResultado/' + novCarne,
+        xhrFields: { withCredentials: true },
         contentType: "application/json",
         dataType: 'json',
         crossDomain: true,
@@ -391,12 +400,11 @@ function reiniciarSimFisica() {
           window.location.href = "simuladorPR.html";
 
         },
-        error: function (response) {
-          //   window.location.href = "index.html";
-        }
+        error: errorHandlerSetup(alertify)
       });
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -412,7 +420,8 @@ function reiniciarSimLenguaje() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonLenguaje,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonLenguaje,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -423,7 +432,8 @@ function reiniciarSimLenguaje() {
 
       $.ajax({
         type: 'DELETE',
-        url: dominio + 'deleteSimResultado/' + novCarne,
+        url: apiV1 + 'deleteSimResultado/' + novCarne,
+        xhrFields: { withCredentials: true },
         contentType: "application/json",
         dataType: 'json',
         crossDomain: true,
@@ -437,12 +447,11 @@ function reiniciarSimLenguaje() {
           window.location.href = "simuladorPR.html";
 
         },
-        error: function (response) {
-          //   window.location.href = "index.html";
-        }
+        error: errorHandlerSetup(alertify)
       });
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -458,7 +467,8 @@ function reiniciarSimMate() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonMate,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonMate,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -469,7 +479,8 @@ function reiniciarSimMate() {
 
       $.ajax({
         type: 'DELETE',
-        url: dominio + 'deleteSimResultado/' + novCarne,
+        url: apiV1 + 'deleteSimResultado/' + novCarne,
+        xhrFields: { withCredentials: true },
         contentType: "application/json",
         dataType: 'json',
         crossDomain: true,
@@ -483,12 +494,11 @@ function reiniciarSimMate() {
           window.location.href = "simuladorPR.html";
 
         },
-        error: function (response) {
-          //   window.location.href = "index.html";
-        }
+        error: errorHandlerSetup(alertify)
       });
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -504,7 +514,8 @@ function reiniciarSimQuimica() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonQuimica,
+    url: apiV1 + `actualizarEstadoSimulador/` + novCarne + '/' + idDetalleSalonQuimica,
+    xhrFields: { withCredentials: true },
     contentType: 'application/json',
     dataType: 'HTML',
     crossDomain: true,
@@ -515,7 +526,8 @@ function reiniciarSimQuimica() {
 
       $.ajax({
         type: 'DELETE',
-        url: dominio + 'deleteSimResultado/' + novCarne,
+        url: apiV1 + 'deleteSimResultado/' + novCarne,
+        xhrFields: { withCredentials: true },
         contentType: "application/json",
         dataType: 'json',
         crossDomain: true,
@@ -529,12 +541,11 @@ function reiniciarSimQuimica() {
           window.location.href = "simuladorPR.html";
 
         },
-        error: function (response) {
-          //   window.location.href = "index.html";
-        }
+        error: errorHandlerSetup(alertify) 
       });
 
-    }
+    },
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -550,7 +561,8 @@ $(document).ready(function () {
     idDetalleSalonBiologia = JSON.parse(jsonHtml.substring(0, jsonHtml.length - 2) + '}')['BIOLOGÍA'];
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonBiologia,
+      url: apiV1 + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonBiologia,
+      xhrFields: { withCredentials: true },
       contentType: "application/json",
       dataType: 'json',
       async: false,
@@ -580,10 +592,7 @@ $(document).ready(function () {
         }
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error de conexión");
-      }
+      error: errorHandlerSetup(alertify)
     });
 
 
@@ -595,7 +604,8 @@ $(document).ready(function () {
     idDetalleSalonFisica = JSON.parse(jsonHtml.substring(0, jsonHtml.length - 2) + '}')['FÍSICA'];
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonFisica,
+      url: apiV1 + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonFisica,
+      xhrFields: { withCredentials: true },
       contentType: "application/json",
       dataType: 'json',
       async: false,
@@ -625,10 +635,7 @@ $(document).ready(function () {
         }
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error de conexión");
-      }
+      error: errorHandlerSetup(alertify)
     });
 
 
@@ -639,7 +646,8 @@ $(document).ready(function () {
     idDetalleSalonLenguaje = JSON.parse(jsonHtml.substring(0, jsonHtml.length - 2) + '}')['LENGUAJE'];
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonLenguaje,
+      url: apiV1 + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonLenguaje,
+      xhrFields: { withCredentials: true },
       contentType: "application/json",
       dataType: 'json',
       async: false,
@@ -669,10 +677,7 @@ $(document).ready(function () {
         }
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error de conexión");
-      }
+      error: errorHandlerSetup(alertify)
     });
 
   });
@@ -682,7 +687,8 @@ $(document).ready(function () {
     idDetalleSalonMate = JSON.parse(jsonHtml.substring(0, jsonHtml.length - 2) + '}')['MATEMÁTICA'];
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonMate,
+      url: apiV1 + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonMate,
+      xhrFields: { withCredentials: true },
       contentType: "application/json",
       dataType: 'json',
       async: false,
@@ -712,10 +718,7 @@ $(document).ready(function () {
         }
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error de conexión");
-      }
+      error: errorHandlerSetup(alertify)
     });
 
   });
@@ -725,7 +728,8 @@ $(document).ready(function () {
     idDetalleSalonQuimica = JSON.parse(jsonHtml.substring(0, jsonHtml.length - 2) + '}')['QUÍMICA'];
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonQuimica,
+      url: apiV1 + "buscarEstadoSimulador/" + novCarne + '/' + idDetalleSalonQuimica,
+      xhrFields: { withCredentials: true },
       contentType: "application/json",
       dataType: 'json',
       async: false,
@@ -755,10 +759,7 @@ $(document).ready(function () {
         }
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error de conexión");
-      }
+      error: errorHandlerSetup(alertify)
     });
 
   });
@@ -767,8 +768,4 @@ $(document).ready(function () {
 
 });
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);

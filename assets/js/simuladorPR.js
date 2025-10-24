@@ -1,3 +1,6 @@
+/**
+ * Archivo js principal para realizar y ver resultados del simulador
+ */
 $(document).ready(function () {
 
   $("#preguntasRespuetas").hide();
@@ -70,7 +73,8 @@ function buscarResultado() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "buscarSimResultadoIdTemario/" + novCarne + "/" + idTemario,
+    url: apiV1 + "buscarSimResultadoIdTemario/" + novCarne + "/" + idTemario,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -125,10 +129,7 @@ function buscarResultado() {
       ////console.log(data.temarios[0].nombre_archivo2);
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -141,7 +142,8 @@ function buscarTemario() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "buscarTemarioId/" + idTemario,
+    url: apiV1 + "buscarTemarioId/" + idTemario,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -180,10 +182,7 @@ function buscarTemario() {
       preguntas(data.temarios[0].id_temario);
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 
@@ -194,7 +193,8 @@ function preguntas(idT) {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "buscarPorTemario/" + idT,
+    url: apiV1 + "buscarPorTemario/" + idT,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -207,10 +207,7 @@ function preguntas(idT) {
       document.getElementById("cargandoWS").innerHTML = '';
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
   if (start) {
@@ -372,7 +369,8 @@ function funCorrecta(tipoRespuesta) {
 
   $.ajax({
     type: 'POST',
-    url: dominio + 'crearSimResultado',
+    url: apiV1 + 'crearSimResultado',
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     crossDomain: true,
@@ -381,9 +379,7 @@ function funCorrecta(tipoRespuesta) {
     success: function (response) {
 
     },
-    error: function (response) {
-      window.location.href = "index.html";
-    }
+    error: errorHandlerSetup(alertify)
   });
 }
 
@@ -420,7 +416,8 @@ function matricularCurso() {
 
   $.ajax({
     type: 'POST',
-    url: dominio + 'wsMatricularCurso',
+    url: apiV1 + 'wsMatricularCurso',
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     crossDomain: true,
@@ -431,10 +428,11 @@ function matricularCurso() {
       document.getElementById("buttonMatricular").innerHTML = '<p style="color: black; font-size: 19px;"><strong>¿Quieres reforzar tus conocimientos en esta materia?</strong></p> <button class="btn btn-success" type="button" name="button" onclick="cursoVirtual()">matriculate al curso virtual de PCB ' + nombreMateria + '</button>';
       document.getElementById("cargandoWS").innerHTML = '';
     },
-    error: function (response) {
+    error: function (response,  status,  errorThrown){
       //  window.location.href = "index.html";
       document.getElementById("buttonMatricular").innerHTML = '<p style="color: black; font-size: 19px;"><strong>¿Quieres reforzar tus conocimientos en esta materia?</strong></p><label style="color: black; font-size: 17px;">En este momento no es posible matricularte al curso virtual, intentalo más tarde.</label>';
       document.getElementById("cargandoWS").innerHTML = '';
+      errorHandlerSetup(alertify)(response, status, errorThrown);//ejecuta lógica global para tratar errores
     }
   });
 }
