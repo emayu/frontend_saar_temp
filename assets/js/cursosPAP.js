@@ -66,7 +66,8 @@ function adAsignacion() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "examenLimite/2",
+    url: apiV1 + "examenLimite/2",
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -80,7 +81,8 @@ function adAsignacion() {
       else {
         $.ajax({
           type: 'GET',
-          url: dominio + "boletaPagada/" + novCarne,
+          url: apiV1 + "boletaPagada/" + novCarne,
+          xhrFields: { withCredentials: true },
           contentType: "application/json",
           dataType: 'json',
           async: false,
@@ -104,20 +106,14 @@ function adAsignacion() {
             }
 
           },
-          error: function (response) {
-            alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("error en la conexión");
-          }
+          error: errorHandlerSetup(alertify)
         });
 
       }
 
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error en la conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -286,7 +282,8 @@ function generarBoleta() {
 
   $.ajax({
     type: 'POST',
-    url: dominio + 'generarBoleta',
+    url: apiV1 + 'generarBoleta',
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     crossDomain: true,
@@ -297,9 +294,7 @@ function generarBoleta() {
       location.reload();
 
     },
-    error: function (response) {
-      //  window.location.href = "index.html";
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -316,7 +311,8 @@ function insertarPreasignacion(curso) {
 
   $.ajax({
     type: 'POST',
-    url: dominio + 'crearPreasignacionPap',
+    url: apiV1 + 'crearPreasignacionPap',
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     crossDomain: true,
@@ -327,9 +323,7 @@ function insertarPreasignacion(curso) {
       location.reload();
 
     },
-    error: function (response) {
-      //  window.location.href = "index.html";
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -340,7 +334,8 @@ function insertarPreasignacion(curso) {
 function verificarEstadoPago() {
   $.ajax({
     type: 'GET',
-    url: dominio + "boletaPagada/" + novCarne,
+    url: apiV1 + "boletaPagada/" + novCarne,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -364,7 +359,8 @@ function verificarEstadoPago() {
         else {
           $.ajax({
             type: 'GET',
-            url: dominio + "boleta/" + novCarne + "/" + numeroBoleta,
+            url: apiV1 + "boleta/" + novCarne + "/" + numeroBoleta,
+            xhrFields: { withCredentials: true },
             contentType: "application/json",
             dataType: 'json',
             async: false,
@@ -389,9 +385,10 @@ function verificarEstadoPago() {
 
               }
             },
-            error: function (response) {
+            error: function (response, status, error) {
               alertify.set('notifier', 'position', 'bottom-center');
               alertify.error("error de conexión al sistema de generación de boleta de pagos, intenta más tarde.");
+              errorHandlerSetup(alertify)(response, status, error);
             }
           });
         }
@@ -405,15 +402,8 @@ function verificarEstadoPago() {
 
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 }
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);

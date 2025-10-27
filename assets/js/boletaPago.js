@@ -43,7 +43,8 @@ $(document).ready(function () {
 function fechaExpiracion() {
   $.ajax({
     type: 'GET',
-    url: dominio + "fechaId/1",
+    url: apiV1 + "fechaId/1",
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -54,10 +55,7 @@ function fechaExpiracion() {
       fechaBoletaVistaExpiracion = fechaBoletaExpiracion[2] + "/" + fechaBoletaExpiracion[1] + "/" + fechaBoletaExpiracion[0];
       document.getElementById("limite").innerHTML = '** El documento es válido para su pago únicamente hasta ' + fechaBoletaVistaExpiracion + ' **';
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 }
 
@@ -66,7 +64,8 @@ var materias = [];
 function buscarCursosPAP() {
   $.ajax({
     type: 'GET',
-    url: dominio + "papPreasignacionNov/" + novCarne,
+    url: apiV1 + "papPreasignacionNov/" + novCarne,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -102,10 +101,7 @@ function buscarCursosPAP() {
       document.getElementById("materias").innerHTML = '4. Boleta generada para los cursos del PAP de Conocimientos Básicos: ' + materias;
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 }
 
@@ -121,8 +117,4 @@ function printBoleta() {
 }
 
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);

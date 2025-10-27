@@ -77,7 +77,8 @@ function verificarAsignacion() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "papAsignacionNov/" + novCarne,
+    url: apiV1 + "papAsignacionNov/" + novCarne,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -231,10 +232,7 @@ function verificarAsignacion() {
 
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("Error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -248,7 +246,8 @@ function obtenerPreasignacion() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "papPreasignacionNov/" + novCarne,
+    url: apiV1 + "papPreasignacionNov/" + novCarne,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -265,7 +264,8 @@ function obtenerPreasignacion() {
 
         $.ajax({
           type: 'GET',
-          url: dominio + "papDetalleSalonesMateria/" + data.PAPPREASIGNACION[i].id_materia,
+          url: apiV1 + "papDetalleSalonesMateria/" + data.PAPPREASIGNACION[i].id_materia,
+          xhrFields: { withCredentials: true },
           contentType: "application/json",
           dataType: 'json',
           async: false,
@@ -363,10 +363,7 @@ function obtenerPreasignacion() {
 
 
           },
-          error: function (response) {
-            alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("error de conexión");
-          }
+          error: errorHandlerSetup(alertify)
         });
 
       }
@@ -376,10 +373,7 @@ function obtenerPreasignacion() {
       //console.log(cursosPreasignacion.length);
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -389,7 +383,8 @@ function buscarCursosPagados(idMateria, idSalonPap, cupoPap, horaEntrada, horaSa
 
   $.ajax({
     type: 'GET',
-    url: dominio + "buscarPapSalon/" + idSalonPap,
+    url: apiV1 + "buscarPapSalon/" + idSalonPap,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -407,10 +402,7 @@ function buscarCursosPagados(idMateria, idSalonPap, cupoPap, horaEntrada, horaSa
       }
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
@@ -488,7 +480,8 @@ function conteoAsignadosPAP(result) {
 
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarPapSalon/" + result[i],
+      url: apiV1 + "buscarPapSalon/" + result[i],
+      xhrFields: { withCredentials: true },
       contentType: "application/json",
       dataType: 'json',
       async: false,
@@ -498,10 +491,7 @@ function conteoAsignadosPAP(result) {
         asignarPAP(data.PAPASIGNACION.length, result[i]);
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error de conexión");
-      }
+      error: errorHandlerSetup(alertify)
     });
   }
 }
@@ -525,7 +515,8 @@ function asignarPAP(asignados, idSalon) {
 
   $.ajax({
     type: 'POST',
-    url: dominio + 'crearAsignacionPap',
+    url: apiV1 + 'crearAsignacionPap',
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     crossDomain: true,
@@ -536,17 +527,11 @@ function asignarPAP(asignados, idSalon) {
       location.reload();
 
     },
-    error: function (response) {
-      window.location.href = "index.html";
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
 
 
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);

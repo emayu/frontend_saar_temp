@@ -76,7 +76,8 @@ function adAsignacion() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "fechaId/2",
+    url: apiV1 + "fechaId/2",
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -100,10 +101,7 @@ function adAsignacion() {
 
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error en la conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 }
 
@@ -119,7 +117,8 @@ function verificarAsignacion() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "papAsignacionNov/" + novCarne,
+    url: apiV1 + "papAsignacionNov/" + novCarne,
+    xhrFields: { withCredentials: true },
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -265,17 +264,10 @@ function verificarAsignacion() {
 
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("Error de conexión");
-    }
+    error: errorHandlerSetup(alertify)
   });
 
 }
 
 
-$("#cerrarSesion").on('click', function () {
-  setCookie('api-nombre', null, 1);
-  setCookie('api-novCarne', null, 1);
-
-});
+$("#cerrarSesion").on('click', handlerLogout);
