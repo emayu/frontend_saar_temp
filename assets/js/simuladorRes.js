@@ -1,3 +1,7 @@
+/**
+ * @fileoverview Parece ser archivo original para el resultado del simulador, cuando se revisó no se utilizaba
+ * en ninguna parte cuando se hizo revisión de código al integrar seguridad.
+ */
 $(document).ready(function () {
   buscarResultado();
   $("#menuAE").load("menu.html");

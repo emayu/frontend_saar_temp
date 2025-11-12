@@ -1,3 +1,7 @@
+/**
+ * @deprecated no se usa, se cambio por la versión \assets\app\componentes\asignacionComponent.js
+ * ver el commit f3449ec1db2c83272b915eccf084c08051d968d0
+ */
 $(document).ready(function () {
 
   $("#selCentros").hide();
