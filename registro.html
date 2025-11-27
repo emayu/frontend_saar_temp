@@ -100,7 +100,7 @@
                   src="assets/img/estudiante.png" alt="" width="115" height="115"> <br>Estudiante USAC</button>
             </div>
           </div>
-          <div class="divAspirante">
+          <div class="divAspirante" style="display: none;">
             <div class="form-label-group">
               <input type="number" id="novAspirante" class="form-control" placeholder="Número de Orientación Vocacional"
                 required autofocus
@@ -111,14 +111,18 @@
 
             <div class="form-label-group">
               <input placeholder="Ingresa tu fecha de nacimiento" class="form-control" type="text"
+                required
                 onfocus="(this.type='date')" id="fechaNacimientoAspirante">
               <label for="novAspirante"></label>
             </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit" id="registroAspirante">Registrar</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="registroAspirante">
+              <span class="spinner-border d-none" role="status" aria-hidden="true"></span>
+              Registrar
+            </button>
           </div>
 
-          <div class="divEstudiante">
+          <div class="divEstudiante" style="display: none;">
             <div class="form-label-group">
               <input type="number" id="carneEstudiante" class="form-control" placeholder="Carné Universitario" required
                 autofocus
@@ -128,11 +132,15 @@
             </div>
             <div class="form-label-group">
               <input placeholder="Ingresa tu fecha de nacimiento" class="form-control" type="text"
+                required
                 onfocus="(this.type='date')" id="fechaNacimientoEstudiante">
               <label for="carneEstudiante"></label>
             </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit" id="registroEstudiante">Registrar</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="registroEstudiante">
+              <span class="spinner-border d-none" role="status" aria-hidden="true"></span>
+              Registrar
+            </button>
           </div>
 
         </div>
@@ -147,7 +155,7 @@
 
 
   <!-- The Modal -->
-  <div id="myModal" class="modal">
+  <div id="myModal" class="modal" role="dialog">
 
     <!-- Modal content -->
     <div class="modal-content">
@@ -157,7 +165,8 @@
 
       </div>
       <div class="modal-body">
-        <div class="" id="modalNov">
+        <div class="customForm">
+          <div class="" id="modalNov">
           <p><b>Número de Orientación Vocacional:</b>
           <div id="nov"></div>
           </p>
@@ -171,17 +180,21 @@
         <div id="nombres"></div>
         </p>
         <p><b>Fecha de Nacimiento:</b></p>
-        <p><input type="date" id="fechaNacimiento" readonly></p>
+        <p><input type="date" id="fechaNacimiento" readonly ></p>
         <p><b>Correo:</b></p>
-        <p><input type="email" id="correo"></p>
-        <input id="version" type="hidden">
+        <p><input type="email" id="correo" required></p>
+        <input id="version" type="hidden"  >
 
         <b>Nota:</b></br>
-        Si algún dato está incorrecto por favor comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para
+        Si algún dato está incorrecto por favor comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para
         poder ayudarte.
+        </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" type="submit" id="registrar">Registrar</button>
+        <button class="btn btn-primary" type="button" id="registrar">
+          <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          Registrar
+        </button>
         <button class="btn btn-danger" type="submit" id="cancelar">Cancelar</button>
 
       </div>
@@ -255,8 +268,8 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/cookie.js"></script>
-  <script src="assets/js/base.js"></script>
-  <script src="assets/js/registro.js?v=0.0.3"></script>
+  <script src="assets/js/base.js?v=0.0.2"></script>
+  <script src="assets/js/registro.js?v=0.0.1"></script>
   <script src="assets/js/main.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js">
   </script>

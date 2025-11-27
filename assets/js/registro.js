@@ -1,3 +1,8 @@
+let tipoCuenta = null;
+let novAspiranteInput = null;
+let fechaAspiranteInput = null;
+let carneEstudianteInput = null;
+let fechaEstudianteInput = null;
 $(document).ready(function () {
   var hoy = new Date();
   var year = hoy.getFullYear();
@@ -6,11 +11,6 @@ $(document).ready(function () {
     + 'debes esperar al menos 3 días hábiles para poder crear tu cuenta. </strong> </p></label>';
 
   tipoCuenta = 0;
-  $(".divAspirante").hide();
-  $(".divEstudiante").hide();
-  //////carne y nov
-  $("#modalNov").hide();
-  $("#modalCarne").hide();
   alertify.defaults.notifier.delay = 10;
 });
 
@@ -48,14 +48,13 @@ function registro(cuenta) {
     carne = $("#carneEstudiante").val();
     fechaNE = $("#fechaNacimientoEstudiante").val();
 
-    console.log("fechaNE", fechaNE);
-
+    //console.log("fechaNE", fechaNE);
+    toggleButton('registroEstudiante', true);
     $.ajax({
       type: 'GET',
-      url: dominio + "buscarEstudiante/" + carne + '/' + fechaNE,
+      url: apiV1 + "buscarEstudiante/" + carne + '/' + fechaNE,
       contentType: "application/json",
       dataType: 'json',
-      async: false,
       success: function (data) {
 
         if (data.message === 'carnet no existe') {
@@ -66,6 +65,10 @@ function registro(cuenta) {
         else if (data.message === 'fecha de nacimiento incorrecta') {
           alertify.set('notifier', 'position', 'bottom-center');
           alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+
+        }else if (data.message === 'Eror en la consulta externa') {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.warning("Ocurrió un error");
 
         }
         else {
@@ -81,6 +84,9 @@ function registro(cuenta) {
             var correo = data.USAC_ESTUDIANTE.correo;
             var carne = data.USAC_ESTUDIANTE.carnet;
             var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
+            
+            //guardar nuevo token efímero
+            sessionStorage.setItem('actionToken', data.token);
 
             $("#modalNov").hide();
             $("#modalCarne").show();
@@ -101,9 +107,9 @@ function registro(cuenta) {
         }
 
       },
-      error: function (response) {
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("Error de conexión");
+      error: errorRegisterHandler,
+      complete: function( jqXHR, textStatus){
+        toggleButton('registroEstudiante', false);
       }
     });
   }
@@ -111,22 +117,22 @@ function registro(cuenta) {
     nov = $("#novAspirante").val();
     fechaNA = $("#fechaNacimientoAspirante").val();
 
+    toggleButton('registroAspirante', true)
+
     $.ajax({
       type: 'GET',
-      url: dominio + 'buscarEstudianteNOV/' + nov,
+      url: apiV1 + 'checkNOV/' + nov,
       contentType: "application/json",
       dataType: 'json',
-      crossDomain: true,
-      async: false,
       success: function (response) {
 
-        if (response.USAC_ESTUDIANTE.length > 0) {
+        if (response.estado == 'estudiante') {
           alertify.set('notifier', 'position', 'bottom-center');
           alertify.error("Como estudiante no puedes crear perfil de aspirante, debes crear tu perfil de estudiante, si ya lo tienes creado debes iniciar sesión.");
-        } else {
+        } else if(response.estado == 'OK') {
           $.ajax({
             type: 'GET',
-            url: dominio + "buscarAspirante/" + nov + '/' + fechaNA,
+            url: apiV1 + "buscarAspirante/" + nov + '/' + fechaNA,
             contentType: "application/json",
             dataType: 'json',
             async: false,
@@ -165,6 +171,10 @@ function registro(cuenta) {
                   var correo = data.OV_ASPIRANTE.correo;
                   var nov = data.OV_ASPIRANTE.nov;
 
+                  //guardar nuevo token efímero
+                  sessionStorage.setItem('actionToken', data.token);
+
+
                   $("#modalNov").show();
                   $("#modalCarne").hide();
 
@@ -202,12 +212,14 @@ function registro(cuenta) {
               }
             }
           });
+        }else {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.error("Ocurrió un error desconocido");
         }
       },
-      error: function (response, status) {
-        // console.log('on external', status, response)
-        alertify.set('notifier', 'position', 'bottom-center');
-        alertify.error("error en la conexión");
+      error: errorRegisterHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('registroAspirante', false)
       }
     });
 
@@ -218,19 +230,21 @@ function registro(cuenta) {
 }
 ////////////actualizar datos
 function actualizarDatos() {
+  const token = sessionStorage.getItem('actionToken');
+  toggleButton('registrar', true);
   if (tipoCuenta == AccountType.ESTUDIANTE) {
     carne = $("#carneEstudiante").val();
     correo = $("#correo").val();
-    fechaNacimiento = $("#fechaNacimiento").val();
-    data = '{"correo": "' + correo + '", "fecha_nacimiento" : "' + fechaNacimiento + '"}';
-
+    data = '{"correo": "' + correo + '"}';
     $.ajax({
       type: 'PUT',
-      url: dominio + `actualizarEstudiante/` + carne,
+      url: apiV1 + `actualizarEstudiante/` + carne,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       contentType: 'application/json',
-      dataType: 'HTML',
+      dataType: 'json',
       crossDomain: true,
-      async: false,
       data: data,
       success: function (data) {
         //console.log(data);
@@ -239,7 +253,10 @@ function actualizarDatos() {
         window.location.href = "pass.html";
 
       },
-      error: errorHandlerSetup(alertify)
+      error: errorRegisterHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('registrar', false);
+      }
     })
 
   } else if (tipoCuenta == AccountType.ASPIRANTE) {
@@ -256,7 +273,10 @@ function actualizarDatos() {
 
     $.ajax({
       type: 'PUT',
-      url: dominio + `actualizarAspirante/` + nov,
+      url: apiV1 + `actualizarAspirante/` + nov,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       contentType: 'application/json',
       dataType: 'json',
       crossDomain: true,
@@ -269,22 +289,32 @@ function actualizarDatos() {
         window.location.href = "pass.html";
 
       },
-      error: errorHandlerSetup(alertify)
+      error: errorRegisterHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('registrar', false);
+      }
     })
   }
 }
 
 $("#registrar").on('click', function () {
-  var m = document.getElementById("correo").value;
-  var expreg = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
+  const correoInput = document.getElementById("correo");
+  correoInput.classList.remove('is-invalid');
 
+  var m = correoInput.value;
+  var expreg = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
+  
   if ($("#correo").val() === "") {
+    correoInput.classList.add('is-invalid');
+    correoInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Correo esta vacio");
+    alertify.error("El campo Correo esta vacío");
   } else if (expreg.test(m)) {
     actualizarDatos();
   }
   else {
+    correoInput.classList.add('is-invalid');
+    correoInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
     alertify.warning("El formato del correo es incorrecto, revisalo.");
   }
@@ -295,28 +325,44 @@ $("#registrar").on('click', function () {
 $("#aspirante").on('click', function () {
   this.style.background = "#D3ECFB";
   $("#estudiante").attr('style', 'background-color:#FFFFFF');
-  tipoCuenta = AccountType.ASPIRANTE;
   $(".divAspirante").show();
   $(".divEstudiante").hide();
   scrollToElement('#botonesTipo');
-  alertify.set('notifier', 'position', 'bottom-center');
-  alertify.notify('Este tipo de cuenta es para aspirantes de primer ingreso con número de orientación vocacional.', 'custom', 4, function () { });
+  if(tipoCuenta !== AccountType.ASPIRANTE){
+    alertify.dismissAll();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.notify('Este tipo de cuenta es para aspirantes de <b>primer ingreso</b> con número de orientación vocacional.', 'custom', 4, function () { });
+  }
+  tipoCuenta = AccountType.ASPIRANTE;
   //  alertify.notify("Este tipo de cuenta es para aspirantes de primer ingreso");
 });
 
 $("#registroAspirante").on('click', function () {
-
-  if ($("#novAspirante").val() === "" && $("#fechaNacimientoAspirante").val() === "") {
+  
+  const novAspiranteInput = document.getElementById('novAspirante');
+  novAspiranteInput.classList.remove('is-invalid');
+  
+  const fechaNacimientoAspiranteInput = document.getElementById('fechaNacimientoAspirante');
+  fechaNacimientoAspiranteInput.classList.remove('is-invalid');
+  
+  if (novAspiranteInput.value === "" && $("#fechaNacimientoAspirante").val() === "") {
+    fechaNacimientoAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("Los dos campos estan vacios");
+    alertify.error("Los dos campos están vacíos");
   }
-  else if ($("#novAspirante").val() === "") {
+  else if (!novAspiranteInput.checkValidity()) {
+    novAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Número de Orientación Vocacional esta vacio");
+    alertify.error("El campo Número de Orientación Vocacional esta vacío");
   }
-  else if ($("#fechaNacimientoAspirante").val() === "") {
+  else if (!fechaNacimientoAspiranteInput.checkValidity()) {
+    fechaNacimientoAspiranteInput.classList.add('is-invalid');
+    fechaNacimientoAspiranteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Fecha de nacimiento esta vacio");
+    alertify.error("El campo Fecha de nacimiento esta vacío");
   }
   else {
     registro(tipoCuenta);
@@ -327,29 +373,45 @@ $("#registroAspirante").on('click', function () {
 $("#estudiante").on('click', function () {
   this.style.background = "#D3ECFB";
   $("#aspirante").attr('style', 'background-color:#FFFFFF');
-  tipoCuenta = AccountType.ESTUDIANTE;
   $(".divEstudiante").show();
   $(".divAspirante").hide();
   scrollToElement('#botonesTipo');
-  alertify.set('notifier', 'position', 'bottom-center');
-  alertify.notify('Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.', 'custom', 8, function () { });
-  //alertify.notify("Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.");
+  if(tipoCuenta !== AccountType.ESTUDIANTE){
+    alertify.dismissAll();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.notify('Este tipo de cuenta es para <b>estudiantes universitarios</b>, en tramites de traslados y/o carreras simultaneas.', 'custom', 8, function () { });
+    //alertify.notify("Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.");
+  }
+  tipoCuenta = AccountType.ESTUDIANTE;
 });
 
 
 $("#registroEstudiante").on('click', function () {
 
+  const carneEstudianteInput = document.getElementById('carneEstudiante');
+  carneEstudianteInput.classList.remove('is-invalid');
+  
+  const fechaNacimientoEstudianteInput = document.getElementById('fechaNacimientoEstudiante');
+  fechaNacimientoEstudianteInput.classList.remove('is-invalid');
+
   if ($("#carneEstudiante").val() === "" && $("#fechaNacimientoEstudiante").val() === "") {
+    fechaNacimientoEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("Los dos campos estan vacios");
+    alertify.error("Los dos campos están vacíos");
   }
-  else if ($("#carneEstudiante").val() === "") {
+  else if (!carneEstudianteInput.checkValidity()) {
+    carneEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Carné Universitario esta vacio");
+    alertify.error("El campo Carné Universitario esta vacío");
   }
-  else if ($("#fechaNacimientoEstudiante").val() === "") {
+  else if (!fechaNacimientoEstudianteInput.checkValidity()) {
+    fechaNacimientoEstudianteInput.classList.add('is-invalid');
+    fechaNacimientoEstudianteInput.reportValidity();
     alertify.set('notifier', 'position', 'bottom-center');
-    alertify.error("El campo Fecha de nacimiento esta vacio");
+    alertify.error("El campo Fecha de nacimiento esta vacío");
   }
 
   else {

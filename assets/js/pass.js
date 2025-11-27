@@ -7,9 +7,13 @@ $(document).ready(async function () {
     const passForm = document.getElementById('passForm');
     loadingForm.style.display = 'block';
     passForm.style.display = 'none';
+    const token = sessionStorage.getItem('actionToken');
     const response = await $.ajax({
       type: 'GET',
-      url: dominio + "buscarAspiranteNOV/" + novCarne,
+      url: apiV1 + "aspiranteNOV/" + novCarne,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       contentType: "application/json",
       dataType: 'json'
     });
@@ -72,12 +76,23 @@ $("#aceptar").on('click', function () {
   }
 });
 
+const errorHandler = (xhr, status, errorThrow) => {
+  errorRegisterHandler(xhr, status, errorThrow);
+  if (xhr?.responseJSON?.message === "TOKEN_EXPIRED") {
+    setTimeout(() => {
+      window.location.href = `registro.html`;
+      return;
+    }, 3500);
+  }
+};
+
 
 ////////////ingresar contraseña
 function actualizarDatos() {
   password = $("#contrasenia").val();
-
-  if (novCarne.length === 10) {
+  const token = sessionStorage.getItem('actionToken');
+  toggleButton('aceptar', true);
+  if (isNOVCarnet(novCarne)) {
     const versionInput = document.getElementById('version');
     const data = {
       contrasena: myCipher(password),
@@ -86,20 +101,26 @@ function actualizarDatos() {
     }
     $.ajax({
       type: 'PUT',
-      url: dominio + `actualizarAspirantePass/` + novCarne,
+      url: apiV1 + `actualizarAspirantePass/` + novCarne,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       contentType: 'application/json',
       dataType: 'json',
       crossDomain: true,
-      async: false,
       data: JSON.stringify(data),
       success: function (data) {
         //  console.log(data);
         alertify.set('notifier', 'position', 'bottom-center');
         alertify.success("Se ha realizado el registro correctamente");
+        sessionStorage.removeItem('actionToken');
         window.location.href = "login.html";
 
       },
-      error: errorHandlerSetup(alertify)
+      error: errorHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('aceptar', false);
+      }
     })
   }
   else if (novCarne == 'null') {
@@ -110,11 +131,13 @@ function actualizarDatos() {
     data = '{"contrasena": "' + myCipher(password) + '"}';
     $.ajax({
       type: 'PUT',
-      url: dominio + `actualizarEstudiantePass/` + novCarne,
+      url: apiV1 + `actualizarEstudiantePass/` + novCarne,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
       contentType: 'application/json',
       dataType: 'json',
       crossDomain: true,
-      async: false,
       data: data,
       success: function (data) {
         //console.log(data);
@@ -123,7 +146,10 @@ function actualizarDatos() {
         window.location.href = "login.html";
 
       },
-      error: errorHandlerSetup(alertify)
+      error: errorHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('aceptar', false);
+      }
     })
 
   }

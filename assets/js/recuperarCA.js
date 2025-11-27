@@ -1,3 +1,5 @@
+
+let actionToken = null;
 $(document).ready(function () {
   $("#recPassword").hide();
 });
@@ -74,7 +76,7 @@ function aspiranteNOV() {
 
   $.ajax({
     type: 'GET',
-    url: dominio + "buscarAspirante/" + nov + '/' + fechaNA,
+    url: apiV1 + `buscarAspirante/${nov}/${fechaNA}?type=recovery`,
     contentType: "application/json",
     dataType: 'json',
     async: false,
@@ -97,6 +99,9 @@ function aspiranteNOV() {
         var apellidos = data.OV_ASPIRANTE.apellidos;
         var nov = data.OV_ASPIRANTE.nov;
         var version = data.OV_ASPIRANTE.version;
+        
+        //nuevo token efímero
+        actionToken = data.token;
 
         $("#recPassword").show();
         $("#datos").hide();
@@ -114,10 +119,7 @@ function aspiranteNOV() {
 
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("error en la conexión");
-    }
+    error: errorRegisterHandler
   });
 }
 
@@ -137,7 +139,10 @@ function actualizarDatos() {
 
   $.ajax({
     type: 'PUT',
-    url: dominio + `actualizarAspirantePass/` + novCarne,
+    url: apiV1 + `actualizarAspirantePass/` + novCarne,
+    headers: {
+        'Authorization': 'Bearer ' + actionToken
+    },
     contentType: 'application/json',
     dataType: 'json',
     crossDomain: true,
@@ -149,7 +154,7 @@ function actualizarDatos() {
       alertify.success("Se ha realizado el registro correctamente");
       window.location.href = "login.html";
     },
-    error: errorHandlerSetup(alertify)
+    error: errorRegisterHandler
   })
 
 }

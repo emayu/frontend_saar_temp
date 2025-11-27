@@ -22,7 +22,7 @@ function login(cuenta) {
 
 
     data = '{"carne": "' + carne + '", "contrasena" : "' + myCipher(pass) + '"}';
-
+    toggleButton('loginEstudiante', true);
     $.ajax({
       type: 'POST',
       url: apiV1 + `loginEstudiante`,
@@ -30,7 +30,6 @@ function login(cuenta) {
       contentType: 'application/json',
       dataType: 'json',
       crossDomain: true,
-      async: false,
       data: data,
       success: function (info) {
         if (info.message === 'logueado') {
@@ -75,7 +74,10 @@ function login(cuenta) {
         }
 
       },
-      error: errorHandlerSetup(alertify)
+      error: errorHandlerSetup(alertify),
+      complete: function( jqXHR, textStatus){
+        toggleButton('loginEstudiante', false);
+      }
     })
   }
   else if (cuenta === AccountType.ASPIRANTE) {
@@ -84,7 +86,7 @@ function login(cuenta) {
 
 
     data = '{"nov": "' + nov + '", "contrasena" : "' + myCipher(pass) + '"}';
-
+    toggleButton('loginAspirante', true);
     $.ajax({
       type: 'POST',
       url: apiV1 + `loginAspirante`,
@@ -92,7 +94,6 @@ function login(cuenta) {
       contentType: 'application/json',
       dataType: 'json',
       crossDomain: true,
-      async: false,
       data: data,
       success: function (info) {
         if (info.message === 'logueado') {
@@ -135,7 +136,10 @@ function login(cuenta) {
         }
 
       },
-      error: errorHandlerSetup(alertify)
+      error: errorHandlerSetup(alertify),
+      complete: function( jqXHR, textStatus){
+        toggleButton('loginAspirante', false);
+      }
     })
   }
 

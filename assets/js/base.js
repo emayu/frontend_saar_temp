@@ -112,7 +112,7 @@ const axiosInstance = (() => {
 console.debug('Instancia global de axios', axiosInstance);
 
 /**
- * Global error handler
+ * Global error handler for jquery
  * @param {*} alertify local var
  * @returns 
  */
@@ -126,6 +126,28 @@ const errorHandlerSetup = (alertify) => (xhr, status, errorThrow) => {
         alertify.error(`Ocurrió un error: ${xhr.responseJSON.details}`);
         if (xhr.status === 401) {
             redirectToLogin();
+        }
+    } else {
+        alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
+    }
+};
+
+/**
+ * Error handler for register Estudiante/Aspirante views
+ */
+const errorRegisterHandler = (xhr, status, errorThrow) => {
+    alertify.set('notifier', 'position', 'bottom-center');
+    if(status && status === "timeout"){
+        alertify.error("Tiempo de espera agotado. La petición tardó demasiado en responder.");
+    }else if(xhr.status == 0){
+        alertify.error("Parece que no hay conexión. Por favor verifica tu conexión red.");
+    }else if (xhr.status >= 400 && xhr.responseJSON?.message) {
+        if (xhr.responseJSON.message === "NOT_AUTHENTICATED") {
+            alertify.error(`Ocurrió un error: debes volver a iniciar`);
+        } else if (xhr.responseJSON.message === "NOT_AUTHORIZED") {
+            alertify.error(`Ocurrió un error: ${xhr.responseJSON.details ? xhr.responseJSON.details : "operación no permitida para este token, intenta volver a iniciar"}`);
+        } else if (xhr.responseJSON.message === "TOKEN_EXPIRED") {
+            alertify.error(`Ocurrió un error: token expirado, debes volver a iniciar`);
         }
     } else {
         alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
@@ -196,6 +218,7 @@ const getTodayFormatted = () => {
     return formatDate(new Date());
 }
 
+
 /**
  * Verifica si alguna variable tiene un valor no válido
  * @param {[]} array 
@@ -205,6 +228,24 @@ const isSomeInvalidValue = (array) => {
     return array.some(field =>
         (field === null || field === undefined)
         || (typeof field === "string" && (field.trim() === "" || field === "null")))
+}
+
+/**
+ * 
+ * @param {string} idButton id definido para el botón html
+ * @param {boolean} isLoading true coloca el botón bloqueado y activa animación del spinner
+ */
+const toggleButton = (idButton, isLoading) => {
+  const btn = document.getElementById(idButton);
+  const spinner = btn.querySelector('[role="status"]');
+  
+  if(isLoading){
+    btn.disabled = true;
+    spinner.classList.remove('d-none');
+  }else{
+    btn.disabled = false;
+    spinner.classList.add('d-none');
+  }
 }
 
 //CONSTANTES
