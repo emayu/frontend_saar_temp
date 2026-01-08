@@ -268,7 +268,6 @@ function actualizarDatos() {
       correo: correo,
       fecha_nacimiento: fechaNacimiento,
       version: versionInput.value,
-      usuario_ultima_modificacion: nov
     };
 
     $.ajax({

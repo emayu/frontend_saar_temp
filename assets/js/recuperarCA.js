@@ -133,7 +133,6 @@ function actualizarDatos() {
   const dataRaw = {
     contrasena: myCipher(password),
     version: version,
-    usuario_ultima_modificacion: novCarne
   };
   const data = JSON.stringify(dataRaw);
 

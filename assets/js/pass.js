@@ -97,7 +97,6 @@ function actualizarDatos() {
     const data = {
       contrasena: myCipher(password),
       version: versionInput.value,
-      usuario_ultima_modificacion: novCarne
     }
     $.ajax({
       type: 'PUT',
