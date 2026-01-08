@@ -85,12 +85,12 @@ function aspiranteNOV() {
 
       if (data.message === 'nov no existe') {
         alertify.set('notifier', 'position', 'bottom-center');
-        alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verificalo o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+        alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
       }
       else if (data.message === 'fecha de nacimiento incorrecta') {
         alertify.set('notifier', 'position', 'bottom-center');
-        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verificala o comunicate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
       }
       else if (data.OV_ASPIRANTE?.registrado === 1) {
