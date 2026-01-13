@@ -64,8 +64,9 @@ class AsignacionComponent {
             }
         } catch (err) {
             console.error('Error en carga inicial de datos', err);
+            if( err?.response && ( err.response.status == 403 || err.response.status == 401 )){ return; /*consume(estos errores ya fueron mostrados)*/}
             alertify.set('notifier', 'position', 'bottom-center');
-            alertify.error("No se pudieron cargar los datos necesarios. Verifica tu conexión e intenta nuevamente.");
+            alertify.error("No se pudieron cargar los datos necesarios. Verifica si tienes conexión e intenta nuevamente.");
         }
 
         this.$linkCerrarSesion.addEventListener('click', handlerLogout);
