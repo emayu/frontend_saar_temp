@@ -24,8 +24,10 @@ $(document).ready(function () {
     resultados(novCarne, 0);
 
   }
-  else if (novCarne == 'null') {
-    window.location.href = "index.html";
+  else if (isSomeInvalidValue([novCarne])) {
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error(`Ocurrió un error: intenta volver a iniciar sesión`);
+    redirectToLogin();
 
   }
   else if (novCarne.length >= 1 && novCarne.length <= 9) {

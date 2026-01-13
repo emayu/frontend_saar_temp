@@ -19,7 +19,9 @@ class AsignacionComponent {
     async init() {
         const cookieValuesRequired = [novCarne, fechaNacimiento];
         if (isSomeInvalidValue(cookieValuesRequired)) {
-            window.location.href = "index.html";
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.error(`Ocurrió un error: intenta volver a iniciar sesión`);
+            redirectToLogin();
             return;
         }
 
