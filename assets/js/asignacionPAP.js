@@ -119,7 +119,7 @@ function verificarAsignacion(){
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(100, 75, "CONSTANCIA DE INSCRIPCIÓN PAP DE CONOCIMIENTOS BÁSICOS");
-            pdf.text(240, 90, "2025 (Segundo Semestre)");
+            pdf.text(240, 90, "2026 (Primer Semestre)");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
             if(novCarne.length === 10){
@@ -141,9 +141,9 @@ function verificarAsignacion(){
             pdf.text(40,390,"IMPORTANTE:");
 
             pdf.setFontSize(15).setFont(undefined, 'normal');
-            pdf.text(40,410,"Para finalizar tu inscripción dirigete a las instalaciones de EFPEM \n" +
-               "Ciudad Universitaria zona 12, ingreso por Av. Petapa el dia de \n" + 
-               "inicio de clases según tu jornada.");
+            pdf.text(40,410,"Para finalizar tu inscripción dirígete a las instalaciones de EFPEM \n" +
+              "Ciudad Universitaria zona 12, ingreso por Av. Petapa el dia de \n" +
+              "inicio de clases según tu jornada.");
 
             //pdf.text(40,475,"llena tus datos y envia tu papelería. \n Se te solicitará: \n - Esta constancia de inscripción. \n - Fotografía de DPI (parte frontal) o partida de nacimiento. \n - Fotografía de tu tarjeta, resultado en pdf de orientación vocacional o \n carné universitario. \n - Fotografía tamaño cédula (Los archivos en formato pdf ó jpg deben tener \n un máximo de 1MB).");
 
@@ -156,7 +156,7 @@ function verificarAsignacion(){
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40,540,"Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,540,"\n Plan Diario 14/07/2025, Plan Sabatino 12/07/2025");
+            pdf.text(150,540, "\n Plan Diario 02/02/2026, Plan Sabatino 07/02/2026");
 
             pdf.text(40,600,"Dudas comunícate vía\n\n"+
                             "Correo electrónico:\n"+
