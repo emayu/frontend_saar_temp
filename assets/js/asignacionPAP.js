@@ -141,11 +141,14 @@ function verificarAsignacion(){
             pdf.text(40,390,"IMPORTANTE:");
 
             pdf.setFontSize(15).setFont(undefined, 'normal');
-            pdf.text(40,410,"Para finalizar tu inscripción dirígete a las instalaciones de EFPEM \n" +
-              "Ciudad Universitaria zona 12, ingreso por Av. Petapa el dia de \n" +
-              "inicio de clases según tu jornada.");
+            pdf.text(40,410,"A continuación debes ingresar al siguiente enlace para completar tu inscripción");
+            pdf.setFontSize(15).setFont(undefined, 'bold');
+            pdf.textWithLink('https://forms.gle/frvvP348yr5EBFRJ6', 40, 425, {url: 'https://forms.gle/frvvP348yr5EBFRJ6'});
 
-            //pdf.text(40,475,"llena tus datos y envia tu papelería. \n Se te solicitará: \n - Esta constancia de inscripción. \n - Fotografía de DPI (parte frontal) o partida de nacimiento. \n - Fotografía de tu tarjeta, resultado en pdf de orientación vocacional o \n carné universitario. \n - Fotografía tamaño cédula (Los archivos en formato pdf ó jpg deben tener \n un máximo de 1MB).");
+            pdf.setFontSize(15).setFont(undefined, 'normal');
+            pdf.text(40,460, "Los estudiantes que se hayan inscrito para jornada vespertina/nocturna\n" +
+              "(plan diario) y jornada sabatina deben ingresar a su correo registrado\n" +
+              "e ingresar a los enlaces respectivos para su clase virtual.");
 
             pdf.setFontSize(14).setFont(undefined, 'bold');
             //pdf.text(40,615,"- Es indispensable el envío de tus datos personales y papelería a través del \n formulario en caso no lo realices, tu inscripción quedará sin efecto.");
