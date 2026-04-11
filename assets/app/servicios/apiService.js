@@ -78,7 +78,7 @@ const ApiService = {
      * @returns {{ultimo_asingado:[]}}
      */
     getUltimoAsignado: (idDetalleSalon, fechaExamen) => {
-        return axiosInstance.get(dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen);
+        return axiosInstance.get("ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen);
     },
     /**
      * Guarda las asignaciones 
