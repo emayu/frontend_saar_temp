@@ -356,7 +356,7 @@ class AsignacionComponent {
 
             const { RESULTADO } = await ApiService.buscarResultadosAnteriores(
                 novCarne,
-                isNOVCarnet(novCarne) ? 0 : novEstudiante,
+                isNOVCarnet(novCarne) ? null : novEstudiante,
                 detalleSalon.id_materia,
                 ASIGNACION_RESULTADO.APROBADO);
             console.debug('resultado anterior', JSON.stringify(RESULTADO));
