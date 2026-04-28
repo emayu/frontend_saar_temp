@@ -98,10 +98,7 @@ function estudianteCarne() {
       }
 
     },
-    error: function (response) {
-      alertify.set('notifier', 'position', 'bottom-center');
-      alertify.error("Error de conexión");
-    }
+    error: errorRegisterHandler
   });
 }
 
