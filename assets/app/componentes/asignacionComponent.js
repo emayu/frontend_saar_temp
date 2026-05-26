@@ -263,6 +263,8 @@ class AsignacionComponent {
                         await this.guardarAsignacion(asignaciones);
                         this.desbloquearSalidaORecarga();
                         location.reload();
+                    }else{
+                        botonAsignar.disabled = false;
                     }
                 } catch(e){
                     console.error('error al procesar asignación:', e);
