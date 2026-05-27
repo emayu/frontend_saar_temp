@@ -71,18 +71,18 @@ $("#aceptar").on('click', function () {
     else {
       alertify.set('notifier', 'position', 'bottom-center');
       alertify.set('notifier', 'delay', 10);
-      alertify.warning("La Contraseña debe tener mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula, un número y/o un caracter especial.");
+      alertify.warning("La Contraseña debe tener mínimo ocho caracteres, al menos una letra mayúscula, una letra minúscula, un número y/o un carácter especial.");
     }
   }
 });
 
 const errorHandler = (xhr, status, errorThrow) => {
   errorRegisterHandler(xhr, status, errorThrow);
-  if (xhr?.responseJSON?.message === "TOKEN_EXPIRED") {
+  if (["TOKEN_EXPIRED", "NOT_AUTHENTICATED", 'TOKEN_INVALID'].includes(xhr?.responseJSON?.message)) {
     setTimeout(() => {
       window.location.href = `registro.html`;
       return;
-    }, 3500);
+    }, 4000);
   }
 };
 

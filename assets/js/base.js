@@ -147,7 +147,12 @@ const errorRegisterHandler = (xhr, status, errorThrow) => {
         } else if (xhr.responseJSON.message === "NOT_AUTHORIZED") {
             alertify.error(`Ocurrió un error: ${xhr.responseJSON.details ? xhr.responseJSON.details : "operación no permitida para este token, intenta volver a iniciar"}`);
         } else if (xhr.responseJSON.message === "TOKEN_EXPIRED") {
-            alertify.error(`Ocurrió un error: token expirado, debes volver a iniciar`);
+            alertify.error(`Ocurrió un error: excediste el tiempo de espera, debes volver a iniciar`);
+        }
+        else if (xhr.responseJSON.message === "TOKEN_INVALID") {
+            alertify.error(`Ocurrió un error: token inválido, intenta volver a iniciar`);
+        }else {
+            alertify.error(`Ocurrió un error: ${xhr.responseJSON.message}`);
         }
     } else {
         alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
