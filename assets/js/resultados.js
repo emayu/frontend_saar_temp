@@ -21,7 +21,7 @@ $(document).ready(function () {
 
     /////////////recibir los resultados
 
-    resultados(novCarne, null);
+    resultados(novCarne, 0);
 
   }
   else if (isSomeInvalidValue([novCarne])) {
