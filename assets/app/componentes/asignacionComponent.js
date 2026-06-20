@@ -135,12 +135,27 @@ class AsignacionComponent {
             console.error('error al colocar valores', err);
             return;
         }
-        const url = builder.build();
-        this.$divVisorPDF.innerHTML = `
-        <object data="${url}" type="application/pdf" width= "100%" height="100%">
-         <p> El navegador web de tu Teléfono Móvil no soporta visualizar el pdf de tu constancia de asignación,
-         pero la puedes <a href="${url}"> Descargar aquí</a></p> </object>
-        `;
+        const blobPdf = builder.build();
+        const nombreArchivo = `pcb-asignación-${novCarne}.pdf`;
+        const pdfFile = new File([blobPdf], nombreArchivo, {type: 'application/pdf'});
+        const urlBlob = window.URL.createObjectURL(pdfFile);
+        const urlParaVisor = `${urlBlob}#toolbar=0`; 
+
+this.$divVisorPDF.innerHTML = `
+    <div class="mb-1 d-flex justify-content-end">
+        <a class="btn btn-secondary"
+            href="${urlBlob}"
+            download="${nombreArchivo}" >
+            Descargar constancia en PDF
+        </a>
+    </div>
+
+    <object data="${urlParaVisor}" type="application/pdf" width="100%" height="100%">
+        <p style="text-align: right;">Tu navegador no soporta la visualización de tu constancia, 
+           utiliza el botón "Descargar constancia en PDF" de arriba ⬆ para ver tu asignación.
+        </p>
+    </object>
+`;
     }
 
     setLoadingOption(select, selectHtmlId){
