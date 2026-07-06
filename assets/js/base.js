@@ -1,6 +1,6 @@
 
 var dominio = 'https://sunenlineaapi.usac.edu.gt/';
-
+// dominio = 'http://localhost:4001/';
 const apiV1 = dominio+'v1/';
 
 var nombres = getCookie('api-nombre');
