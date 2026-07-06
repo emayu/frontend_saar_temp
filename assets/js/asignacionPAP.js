@@ -120,7 +120,7 @@ function verificarAsignacion() {
             pdf.addImage(imgRedes, 'jpeg', 65, 720, 0, 0);
             pdf.setFontSize(13).setFont(undefined, 'bold');
             pdf.text(100, 75, "CONSTANCIA DE INSCRIPCIÓN PAP DE CONOCIMIENTOS BÁSICOS");
-            pdf.text(240, 90, "2026 (Primer Semestre)");
+            pdf.text(240, 90, "2026 (Segundo Semestre)");
             pdf.setFontSize(12).setFont(undefined, 'normal');
 
             if (novCarne.length === 10) {
@@ -144,12 +144,12 @@ function verificarAsignacion() {
             pdf.setFontSize(15).setFont(undefined, 'normal');
             pdf.text(40,410,"A continuación debes ingresar al siguiente enlace para completar tu inscripción");
             pdf.setFontSize(15).setFont(undefined, 'bold');
-            pdf.textWithLink('https://forms.gle/frvvP348yr5EBFRJ6', 40, 425, {url: 'https://forms.gle/frvvP348yr5EBFRJ6'});
+            pdf.textWithLink('https://forms.gle/MHxGJUCUUzaTYrJ56', 40, 425, {url: 'https://forms.gle/MHxGJUCUUzaTYrJ56'});
 
             pdf.setFontSize(15).setFont(undefined, 'normal');
-            pdf.text(40,460, "Los estudiantes que se hayan inscrito para jornada vespertina/nocturna\n" +
-              "(plan diario) y jornada sabatina deben ingresar a su correo registrado\n" +
-              "e ingresar a los enlaces respectivos para su clase virtual.");
+            pdf.text(40,460, "Recibirás tu código de acceso al aula virutal en la cuenta\n" +
+              "de correo electrónico registrada anterior.\n" +
+              "");
 
             pdf.setFontSize(14).setFont(undefined, 'bold');
             //pdf.text(40,615,"- Es indispensable el envío de tus datos personales y papelería a través del \n formulario en caso no lo realices, tu inscripción quedará sin efecto.");
@@ -160,7 +160,7 @@ function verificarAsignacion() {
             pdf.setFontSize(14).setFont(undefined, 'bold');
             pdf.text(40, 540, "Inicio de clases: ");
             pdf.setFontSize(14).setFont(undefined, 'normal');
-            pdf.text(150,540, "\n Plan Diario 02/02/2026, Plan Sabatino 07/02/2026");
+            pdf.text(150,540, "\n Plan Diario 13/07/2026, Plan Sabatino 11/07/2026");
 
             pdf.text(40, 600, "Dudas comunícate vía\n\n" +
               "Correo electrónico:\n" +
