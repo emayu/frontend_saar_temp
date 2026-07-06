@@ -1,25 +1,17 @@
-/**
- * Enum for account type
- */
-const AccountType = Object.freeze({
-  ASPIRANTE: 1,
-  ESTUDIANTE: 2
-});
-
+let tipoCuenta = null;
+let novAspiranteInput = null;
+let fechaAspiranteInput = null;
+let carneEstudianteInput = null;
+let fechaEstudianteInput = null;
 $(document).ready(function () {
   var hoy = new Date();
   var year = hoy.getFullYear();
 
   document.getElementById("infoRegistro").innerHTML = '<label><p> <br> <strong>Nota: Si tu NOV es del año ' + year + ' y acabas de recibir tus resultados de la Prueba de Orientación Vocacional,'
-  +  'debes esperar al menos 3 días hábiles para poder crear tu cuenta. </strong> </p></label>';
+    + 'debes esperar al menos 3 días hábiles para poder crear tu cuenta. </strong> </p></label>';
 
-tipoCuenta = 0;
-$(".divAspirante").hide();
-$(".divEstudiante").hide();
-//////carne y nov
-$("#modalNov").hide();
-$("#modalCarne").hide();
-alertify.defaults.notifier.delay = 10;
+  tipoCuenta = 0;
+  alertify.defaults.notifier.delay = 10;
 });
 
 var modal = document.getElementById("myModal");
@@ -35,15 +27,15 @@ var cancela = document.getElementById("cancelar");
 
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+span.onclick = function () {
   modal.style.display = "none";
 }
-cancela.onclick = function() {
+cancela.onclick = function () {
   modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
@@ -52,248 +44,277 @@ window.onclick = function(event) {
 function registro(cuenta) {
 
 
-  if(cuenta== AccountType.ESTUDIANTE){
+  if (cuenta == AccountType.ESTUDIANTE) {
     carne = $("#carneEstudiante").val();
     fechaNE = $("#fechaNacimientoEstudiante").val();
 
-    //console.log(nov.length);
-
+    //console.log("fechaNE", fechaNE);
+    toggleButton('registroEstudiante', true);
     $.ajax({
-        type: 'GET',
-        url:  dominio + "buscarEstudiante/" + carne + '/' + fechaNE,
-        contentType: "application/json",
-        dataType: 'json',
-        async: false,
-        success: function (data) {
+      type: 'GET',
+      url: apiV1 + "buscarEstudiante/" + carne + '/' + fechaNE,
+      contentType: "application/json",
+      dataType: 'json',
+      success: function (data) {
 
-          if (data.message === 'carnet no existe') {
-            alertify.set('notifier','position', 'bottom-center');
-            alertify.warning("El Carné ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+        if (data.message === 'carnet no existe') {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.warning("El Carné ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
-          }
-          else if (data.message === 'fecha de nacimiento incorrecta') {
-            alertify.set('notifier','position', 'bottom-center');
-            alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
+        }
+        else if (data.message === 'fecha de nacimiento incorrecta') {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte");
 
+        }else if (data.message === 'Eror en la consulta externa') {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.warning("Ocurrió un error");
+
+        }
+        else {
+          //console.log(data.OV_ASPIRANTE.nombres);
+          if (data.USAC_ESTUDIANTE.registrado === 1) {
+            alertify.set('notifier', 'position', 'bottom-center');
+            alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
           }
           else {
-            //console.log(data.OV_ASPIRANTE.nombres);
-            if (data.USAC_ESTUDIANTE.registrado === 1) {
-                alertify.set('notifier','position', 'bottom-center');
-                alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
+            var nombres = data.USAC_ESTUDIANTE.nombre;
+            var apellidos = data.USAC_ESTUDIANTE.apellido;
+            var fechaNacimiento = data.USAC_ESTUDIANTE.fecha_nacimiento;
+            var correo = data.USAC_ESTUDIANTE.correo;
+            var carne = data.USAC_ESTUDIANTE.carnet;
+            var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
+            
+            //guardar nuevo token efímero
+            sessionStorage.setItem('actionToken', data.token);
+
+            $("#modalNov").hide();
+            $("#modalCarne").show();
+
+            document.getElementById('nombres').textContent = nombreCompletoRegistro;
+            document.getElementById("fechaNacimiento").value = fechaNacimiento;
+            document.getElementById("correo").value = correo;
+            document.getElementById('carne').textContent = carne;
+
+            modal.style.display = "block";
+
+            setCookie('api-nombre', nombres, 1);
+            setCookie('api-apellido', apellidos, 1);
+            setCookie('api-novCarne', carne, 1);
+            setCookie('api-nombreCompleto', nombreCompletoRegistro, 1);
+          }
+
+        }
+
+      },
+      error: errorRegisterHandler,
+      complete: function( jqXHR, textStatus){
+        toggleButton('registroEstudiante', false);
+      }
+    });
+  }
+  else if (cuenta == AccountType.ASPIRANTE) {
+    nov = $("#novAspirante").val();
+    fechaNA = $("#fechaNacimientoAspirante").val();
+
+    toggleButton('registroAspirante', true)
+
+    $.ajax({
+      type: 'GET',
+      url: apiV1 + 'checkNOV/' + nov,
+      contentType: "application/json",
+      dataType: 'json',
+      success: function (response) {
+
+        if (response.estado == 'estudiante') {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.error("Como estudiante no puedes crear perfil de aspirante, debes crear tu perfil de estudiante, si ya lo tienes creado debes iniciar sesión.");
+        } else if(response.estado == 'OK') {
+          $.ajax({
+            type: 'GET',
+            url: apiV1 + "buscarAspirante/" + nov + '/' + fechaNA,
+            contentType: "application/json",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+
+              if (data.message === 'nov no existe') {
+                alertify.set('notifier', 'position', 'bottom-center');
+                if (data.source === 'Local') {
+                  alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
+                } else if (data.source === 'External') {
+                  alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.");
+                }
+
               }
-              else{
-                var nombres = data.USAC_ESTUDIANTE.nombre;
-                var apellidos = data.USAC_ESTUDIANTE.apellido;
-                var fechaNacimiento = data.USAC_ESTUDIANTE.fecha_nacimiento;
-                var correo = data.USAC_ESTUDIANTE.correo;
-                var carne = data.USAC_ESTUDIANTE.carnet;
-                var nombreCompletoRegistro = data.USAC_ESTUDIANTE.nombre_completo;
+              else if (data.message === 'fecha de nacimiento incorrecta') {
+                alertify.set('notifier', 'position', 'bottom-center');
+                if (data.source === 'Local') {
+                  alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
+                } else if (data.source === 'External') {
+                  alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.");
+                }
 
-                $("#modalNov").hide();
-                $("#modalCarne").show();
+              } else if (data.message === 'nov no entregado') {
+                alertify.set('notifier', 'position', 'bottom-center');
+                alertify.error(`NOV en estado incorrecto. ${data.details}. Para actualizarlo comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.`);
+              } else {
+                //console.log(data.OV_ASPIRANTE.nombres);
+                if (data.OV_ASPIRANTE.registrado === 1) {
+                  alertify.set('notifier', 'position', 'bottom-center');
+                  alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
+                }
+                else {
+                  var nombres = data.OV_ASPIRANTE.nombres;
+                  var apellidos = data.OV_ASPIRANTE.apellidos;
+                  var fechaNacimiento = data.OV_ASPIRANTE.fecha_nacimiento;
+                  var correo = data.OV_ASPIRANTE.correo;
+                  var nov = data.OV_ASPIRANTE.nov;
 
-               document.getElementById('nombres').textContent = nombreCompletoRegistro;
-               document.getElementById("fechaNacimiento").value = fechaNacimiento;
-               document.getElementById("correo").value = correo;
-               document.getElementById('carne').textContent = carne;
+                  //guardar nuevo token efímero
+                  sessionStorage.setItem('actionToken', data.token);
+
+
+                  $("#modalNov").show();
+                  $("#modalCarne").hide();
+
+                  document.getElementById('nombres').textContent = nombres + " " + apellidos;
+                  document.getElementById("fechaNacimiento").value = fechaNacimiento;
+                  document.getElementById("correo").value = correo;
+                  document.getElementById('nov').textContent = nov;
+                  document.getElementById('version').value = data.OV_ASPIRANTE.version;
 
                   modal.style.display = "block";
 
                   setCookie('api-nombre', nombres, 1);
                   setCookie('api-apellido', apellidos, 1);
-                  setCookie('api-novCarne', carne, 1);
-                  setCookie('api-nombreCompleto', nombreCompletoRegistro, 1);
+                  setCookie('api-novCarne', nov, 1);
                 }
 
-          }
+              }
 
-      },
-      error: function (response) {
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.error("Error de conexión");
-          }
-    });
-}
-else if(cuenta== AccountType.ASPIRANTE){
-  nov = $("#novAspirante").val();
-  fechaNA = $("#fechaNacimientoAspirante").val();
-
-      $.ajax({
-          type: 'GET',
-          url: dominio + 'buscarEstudianteNOV/' + nov,
-          contentType: "application/json",
-          dataType: 'json',
-          crossDomain: true,
-          async: false,
-          success: function (response) {
-
-            if (response.USAC_ESTUDIANTE.length > 0) {
-              alertify.set('notifier','position', 'bottom-center');
-              alertify.error("Como estudiante no puedes crear perfil de aspirante, debes crear tu perfil de estudiante, si ya lo tienes creado debes iniciar sesión.");
-            } else {
-              $.ajax({
-                   type: 'GET',
-                   url:  dominio + "buscarAspirante/" + nov + '/' + fechaNA,
-                   contentType: "application/json",
-                   dataType: 'json',
-                   async: false,
-                   success: function (data) {
-
-                     if (data.message === 'nov no existe') {
-                       alertify.set('notifier','position', 'bottom-center');
-                       if(data.source === 'Local'){
-                        alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
-                       }else if(data.source === 'External'){
-                        alertify.warning("El NOV ingresado es incorrecto o no existe en el sistema. Verifícalo o comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.");
-                       }
-
-                     }
-                     else if (data.message === 'fecha de nacimiento incorrecta') {
-                       alertify.set('notifier','position', 'bottom-center');
-                       if(data.source === 'Local'){
-                        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: Sistema de Ubicación y Nivelación SUN, para poder ayudarte.");
-                       }else if(data.source === 'External'){
-                        alertify.warning("La fecha de nacimiento que ingresaste es incorrecta. Verifícala o comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.");
-                       }
-
-                     }else if (data.message === 'nov no entregado') {
-                      alertify.set('notifier','position', 'bottom-center');
-                      alertify.error(`NOV en estado incorrecto. ${data.details}. Para actualizarlo comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.`);
-                     }else {
-                       //console.log(data.OV_ASPIRANTE.nombres);
-                       if (data.OV_ASPIRANTE.registrado === 1) {
-                           alertify.set('notifier','position', 'bottom-center');
-                           alertify.error("Este usuario ya fue registrado anteriormente, debes iniciar sesión con los datos registrados.");
-                         }
-                         else{
-                           var nombres = data.OV_ASPIRANTE.nombres;
-                           var apellidos = data.OV_ASPIRANTE.apellidos;
-                           var fechaNacimiento = data.OV_ASPIRANTE.fecha_nacimiento;
-                           var correo = data.OV_ASPIRANTE.correo;
-                           var nov = data.OV_ASPIRANTE.nov;
-
-                           $("#modalNov").show();
-                           $("#modalCarne").hide();
-
-                          document.getElementById('nombres').textContent = nombres + " " + apellidos;
-                          document.getElementById("fechaNacimiento").value = fechaNacimiento;
-                          document.getElementById("correo").value = correo;
-                          document.getElementById('nov').textContent = nov;
-                          document.getElementById('version').value = data.OV_ASPIRANTE.version;
-
-                             modal.style.display = "block";
-
-                             setCookie('api-nombre', nombres, 1);
-                             setCookie('api-apellido', apellidos, 1);
-                             setCookie('api-novCarne', nov, 1);
-                           }
-
-                     }
-
-                 },
-                 error: function (xhr, status, errorThrow) {
-                    // console.log('on internal', status, errorThrow, xhr);
-                    // console.log('on responseJSON', xhr.responseJSON);
-                    alertify.set('notifier','position', 'bottom-center');
-                    if(xhr.status == 0){
-                      alertify.error("No hay conexión. Por favor verifica tu red.");
-                    }else if( xhr.status == 400 && xhr.responseJSON?.message ){
-                      alertify.error(xhr.responseJSON?.message);
-                    }else if(xhr.status == 500 && xhr.responseJSON?.message === 'Error en OV API'){
-                      alertify.error(`Ocurrió un error. ${xhr.responseJSON.details}`);
-                    }else if (xhr.status == 500 && xhr.responseJSON?.message === 'NOV incorrecto en servicio externo') {
-                      alertify.set('notifier','position', 'bottom-center');
-                      alertify.error(`La información del NOV es incorrecta en servicio de Orientación Vocacional. comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.`);
-                    }else{
-                      alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
-                    }
-                  }
-               });
+            },
+            error: function (xhr, status, errorThrow) {
+              // console.log('on internal', status, errorThrow, xhr);
+              // console.log('on responseJSON', xhr.responseJSON);
+              alertify.set('notifier', 'position', 'bottom-center');
+              if (xhr.status == 0) {
+                alertify.error("No hay conexión. Por favor verifica tu red.");
+              } else if (xhr.status == 400 && xhr.responseJSON?.message) {
+                alertify.error(xhr.responseJSON?.message);
+              } else if (xhr.status == 500 && xhr.responseJSON?.message === 'Error en OV API') {
+                alertify.error(`Ocurrió un error. ${xhr.responseJSON.details}`);
+              } else if (xhr.status == 500 && xhr.responseJSON?.message === 'NOV incorrecto en servicio externo') {
+                alertify.set('notifier', 'position', 'bottom-center');
+                alertify.error(`La información del NOV es incorrecta en servicio de Orientación Vocacional. comunícate al Facebook: <a href='https://www.facebook.com/vocacional.usac' target='_blank'>Sección de Orientación vocacional</a> en horarios de oficina 7:00 a 19:00 horas.`);
+              } else {
+                alertify.error(`Ocurrió un error. ${xhr.responseJSON?.message || ""}`);
+              }
             }
-          },
-          error: function (response, status) {
-            // console.log('on external', status, response)
-            alertify.set('notifier','position', 'bottom-center');
-            alertify.error("error en la conexión");
-          }
-      });
+          });
+        }else {
+          alertify.set('notifier', 'position', 'bottom-center');
+          alertify.error("Ocurrió un error desconocido");
+        }
+      },
+      error: errorRegisterHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('registroAspirante', false)
+      }
+    });
 
 
 
-}
+  }
 
 }
 ////////////actualizar datos
 function actualizarDatos() {
-  if(tipoCuenta== AccountType.ESTUDIANTE){
+  const token = sessionStorage.getItem('actionToken');
+  toggleButton('registrar', true);
+  if (tipoCuenta == AccountType.ESTUDIANTE) {
     carne = $("#carneEstudiante").val();
     correo = $("#correo").val();
+    data = '{"correo": "' + correo + '"}';
+    $.ajax({
+      type: 'PUT',
+      url: apiV1 + `actualizarEstudiante/` + carne,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      contentType: 'application/json',
+      dataType: 'json',
+      crossDomain: true,
+      data: data,
+      success: function (data) {
+        //console.log(data);
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.success("Se ha realizado el registro correctamente");
+        window.location.href = "pass.html";
+
+      },
+      error: errorRegisterHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('registrar', false);
+      }
+    })
+
+  } else if (tipoCuenta == AccountType.ASPIRANTE) {
+    nov = $("#novAspirante").val();
+    correo = $("#correo").val();
     fechaNacimiento = $("#fechaNacimiento").val();
-    data = '{"correo": "'+correo+'", "fecha_nacimiento" : "'+fechaNacimiento+'"}';
-
-      $.ajax({
-          type: 'PUT',
-          url: dominio + `actualizarEstudiante/` + carne,
-          contentType: 'application/json',
-          dataType: 'HTML',
-          crossDomain: true,
-          async: false,
-          data: data,
-          success: function (data) {
-              //console.log(data);
-              alertify.set('notifier','position', 'bottom-center');
-              alertify.success("Se ha realizado el registro correctamente");
-              window.location.href = "pass.html";
-
-          },
-          error: errorHandlerSetup(alertify)
-      })
-
-  } else if(tipoCuenta== AccountType.ASPIRANTE){
-  nov = $("#novAspirante").val();
-  correo = $("#correo").val();
-  fechaNacimiento = $("#fechaNacimiento").val();
-  const versionInput = document.getElementById('version');
-  const data = {
-    correo:correo,
-    fecha_nacimiento:fechaNacimiento,
-    version: versionInput.value,
-    usuario_ultima_modificacion: nov
-  };
+    const versionInput = document.getElementById('version');
+    const data = {
+      correo: correo,
+      fecha_nacimiento: fechaNacimiento,
+      version: versionInput.value,
+    };
 
     $.ajax({
-        type: 'PUT',
-        url: dominio + `actualizarAspirante/` + nov,
-        contentType: 'application/json',
-        dataType: 'json',
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(data),
-        success: function (data) {
-            //console.log(data);
-            alertify.set('notifier','position', 'bottom-center');
-            alertify.success("Se ha realizado el registro correctamente");
-            window.location.href = "pass.html";
+      type: 'PUT',
+      url: apiV1 + `actualizarAspirante/` + nov,
+      headers: {
+        'Authorization': 'Bearer ' + token
+      },
+      contentType: 'application/json',
+      dataType: 'json',
+      crossDomain: true,
+      async: false,
+      data: JSON.stringify(data),
+      success: function (data) {
+        //console.log(data);
+        alertify.set('notifier', 'position', 'bottom-center');
+        alertify.success("Se ha realizado el registro correctamente");
+        window.location.href = "pass.html";
 
-        },
-        error: errorHandlerSetup(alertify)
+      },
+      error: errorRegisterHandler,
+      complete: function(jqXHR, textStatus){
+        toggleButton('registrar', false);
+      }
     })
   }
 }
 
 $("#registrar").on('click', function () {
-  var m = document.getElementById("correo").value;
-  var expreg = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
+  const correoInput = document.getElementById("correo");
+  correoInput.classList.remove('is-invalid');
 
-  if($("#correo").val()===""){
-    alertify.set('notifier','position', 'bottom-center');
-    alertify.error("El campo Correo esta vacio");
-  } else if (expreg.test(m)){
+  var m = correoInput.value;
+  var expreg = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i;
+  
+  if ($("#correo").val() === "") {
+    correoInput.classList.add('is-invalid');
+    correoInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("El campo Correo esta vacío");
+  } else if (expreg.test(m)) {
     actualizarDatos();
   }
   else {
-    alertify.set('notifier','position', 'bottom-center');
+    correoInput.classList.add('is-invalid');
+    correoInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
     alertify.warning("El formato del correo es incorrecto, revisalo.");
   }
 
@@ -301,76 +322,108 @@ $("#registrar").on('click', function () {
 
 //botón aspirante
 $("#aspirante").on('click', function () {
-        this.style.background="#D3ECFB";
-        $("#estudiante").attr('style',  'background-color:#FFFFFF');
-        tipoCuenta = AccountType.ASPIRANTE;
-        $(".divAspirante").show();
-        $(".divEstudiante").hide();
-        scrollToElement('#botonesTipo');
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.notify('Este tipo de cuenta es para aspirantes de primer ingreso con número de orientación vocacional.', 'custom', 4, function(){});
-      //  alertify.notify("Este tipo de cuenta es para aspirantes de primer ingreso");
+  this.style.background = "#D3ECFB";
+  $("#estudiante").attr('style', 'background-color:#FFFFFF');
+  $(".divAspirante").show();
+  $(".divEstudiante").hide();
+  scrollToElement('#botonesTipo');
+  if(tipoCuenta !== AccountType.ASPIRANTE){
+    alertify.dismissAll();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.notify('Este tipo de cuenta es para aspirantes de <b>primer ingreso</b> con número de orientación vocacional.', 'custom', 4, function () { });
+  }
+  tipoCuenta = AccountType.ASPIRANTE;
+  //  alertify.notify("Este tipo de cuenta es para aspirantes de primer ingreso");
 });
 
 $("#registroAspirante").on('click', function () {
-
-   if($("#novAspirante").val()==="" && $("#fechaNacimientoAspirante").val()===""){
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Los dos campos estan vacios");
-    }
-    else if($("#novAspirante").val()===""){
-    alertify.set('notifier','position', 'bottom-center');
-    alertify.error("El campo Número de Orientación Vocacional esta vacio");
+  
+  const novAspiranteInput = document.getElementById('novAspirante');
+  novAspiranteInput.classList.remove('is-invalid');
+  
+  const fechaNacimientoAspiranteInput = document.getElementById('fechaNacimientoAspirante');
+  fechaNacimientoAspiranteInput.classList.remove('is-invalid');
+  
+  if (novAspiranteInput.value === "" && $("#fechaNacimientoAspirante").val() === "") {
+    fechaNacimientoAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("Los dos campos están vacíos");
   }
-  else if($("#fechaNacimientoAspirante").val()===""){
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("El campo Fecha de nacimiento esta vacio");
-    }
+  else if (!novAspiranteInput.checkValidity()) {
+    novAspiranteInput.classList.add('is-invalid');
+    novAspiranteInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("El campo Número de Orientación Vocacional esta vacío");
+  }
+  else if (!fechaNacimientoAspiranteInput.checkValidity()) {
+    fechaNacimientoAspiranteInput.classList.add('is-invalid');
+    fechaNacimientoAspiranteInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("El campo Fecha de nacimiento esta vacío");
+  }
   else {
-  registro(tipoCuenta);
+    registro(tipoCuenta);
   }
 });
 
 //bontón estudiante
 $("#estudiante").on('click', function () {
-        this.style.background="#D3ECFB";
-        $("#aspirante").attr('style',  'background-color:#FFFFFF');
-        tipoCuenta = AccountType.ESTUDIANTE;
-        $(".divEstudiante").show();
-        $(".divAspirante").hide();
-        scrollToElement('#botonesTipo');
-        alertify.set('notifier','position', 'bottom-center');
-        alertify.notify('Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.', 'custom', 8, function(){});
-        //alertify.notify("Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.");
+  this.style.background = "#D3ECFB";
+  $("#aspirante").attr('style', 'background-color:#FFFFFF');
+  $(".divEstudiante").show();
+  $(".divAspirante").hide();
+  scrollToElement('#botonesTipo');
+  if(tipoCuenta !== AccountType.ESTUDIANTE){
+    alertify.dismissAll();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.notify('Este tipo de cuenta es para <b>estudiantes universitarios</b>, en tramites de traslados y/o carreras simultaneas.', 'custom', 8, function () { });
+    //alertify.notify("Este tipo de cuenta es para estudiantes universitarios, en tramites de traslados y/o carreras simultaneas.");
+  }
+  tipoCuenta = AccountType.ESTUDIANTE;
 });
 
 
 $("#registroEstudiante").on('click', function () {
 
-   if($("#carneEstudiante").val()==="" && $("#fechaNacimientoEstudiante").val()===""){
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("Los dos campos estan vacios");
-    }
-    else if($("#carneEstudiante").val()===""){
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("El campo Carné Universitario esta vacio");
-    }
-  else if($("#fechaNacimientoEstudiante").val()===""){
-      alertify.set('notifier','position', 'bottom-center');
-      alertify.error("El campo Fecha de nacimiento esta vacio");
-    }
+  const carneEstudianteInput = document.getElementById('carneEstudiante');
+  carneEstudianteInput.classList.remove('is-invalid');
+  
+  const fechaNacimientoEstudianteInput = document.getElementById('fechaNacimientoEstudiante');
+  fechaNacimientoEstudianteInput.classList.remove('is-invalid');
+
+  if ($("#carneEstudiante").val() === "" && $("#fechaNacimientoEstudiante").val() === "") {
+    fechaNacimientoEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("Los dos campos están vacíos");
+  }
+  else if (!carneEstudianteInput.checkValidity()) {
+    carneEstudianteInput.classList.add('is-invalid');
+    carneEstudianteInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("El campo Carné Universitario esta vacío");
+  }
+  else if (!fechaNacimientoEstudianteInput.checkValidity()) {
+    fechaNacimientoEstudianteInput.classList.add('is-invalid');
+    fechaNacimientoEstudianteInput.reportValidity();
+    alertify.set('notifier', 'position', 'bottom-center');
+    alertify.error("El campo Fecha de nacimiento esta vacío");
+  }
 
   else {
-  registro(tipoCuenta);
+    registro(tipoCuenta);
   }
 });
 
-function scrollToElement(selector, callback){
-    var animation = {scrollTop: $(selector).offset().top};
-    $('html,body').animate(animation, 'slow', 'swing', function() {
-        if (typeof callback == 'function') {
-            callback();
-        }
-        callback = null;
-    });
+function scrollToElement(selector, callback) {
+  var animation = { scrollTop: $(selector).offset().top };
+  $('html,body').animate(animation, 'slow', 'swing', function () {
+    if (typeof callback == 'function') {
+      callback();
+    }
+    callback = null;
+  });
 }

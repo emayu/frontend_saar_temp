@@ -220,9 +220,8 @@ class jsPDFWrapper{
 
 
         }
-        const out = pdf.output();
-        const url = 'data:application/pdf;base64,' + btoa(out);
-        return url;
+        const out = pdf.output('blob');
+        return out;
     }
 
     parseAsignacionFecha(fecha){

@@ -1,17 +1,3 @@
-const axiosInstance = axios.create({
-    baseURL: dominio,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
-// Interceptor para simplificar respuesta y desempaquetar la Promesa<AxiosResponse>
-// esto hace transparente el uso de Axios 
-axiosInstance.interceptors.response.use(
-    res => res.data,
-    err => Promise.reject(err)
-);
-//console.debug('instancia de axios', axiosInstance);
-
 const ApiService = {
     /**
      * Regresa configuración de exámenes
@@ -59,7 +45,7 @@ const ApiService = {
      * Obtiene listado de materias configuradas para el centro y facultad determinado
      * @param {number} idCentro 
      * @param {number} idFacultad 
-     * @returns {{materias:[]}
+     * @returns {{materias:[]}}
      */
     getMateriasEnDetalleFacultad: (idCentro, idFacultad) => {
         return axiosInstance.get("facultadMaterias/" + idCentro + "/" + idFacultad);
@@ -92,7 +78,7 @@ const ApiService = {
      * @returns {{ultimo_asingado:[]}}
      */
     getUltimoAsignado: (idDetalleSalon, fechaExamen) => {
-        return axiosInstance.get(dominio + "ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen);
+        return axiosInstance.get("ultimoAsignadoPorSalon/" + idDetalleSalon + "/" + fechaExamen);
     },
     /**
      * Guarda las asignaciones 
@@ -100,9 +86,14 @@ const ApiService = {
      * @returns {{asignado:string}}
      */
     guardarAsignacion: (data) => {
-        console.debug('using axios got', data);
+        // console.debug('using axios got', data);
         return axiosInstance.post('insertarAsignacion', data);
-    }
+    },
+    /**
+     * Cierra la sesión actual
+     * @returns 
+     */
+    logout: () => axiosInstance.post('logout')
 
 
 }
