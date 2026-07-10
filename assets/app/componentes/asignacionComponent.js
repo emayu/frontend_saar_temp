@@ -143,10 +143,12 @@ class AsignacionComponent {
 
 this.$divVisorPDF.innerHTML = `
     <div class="mb-1 d-flex justify-content-end">
-        <a class="btn btn-secondary"
+        <a class="btn btn-secondary d-inline-flex align-items-center"
             href="${urlBlob}"
             download="${nombreArchivo}" >
-            Descargar constancia en PDF
+            <i class='bx bx-cloud-download mr-1 mr-sm-2' style='font-size: 1.25rem;'></i>
+            <span class="d-inline d-sm-none">Descargar PDF</span>
+            <span class="d-none d-sm-inline">Descargar constancia en PDF</span>
         </a>
     </div>
 
