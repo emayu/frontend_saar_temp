@@ -215,16 +215,31 @@ function verificarAsignacion() {
         /////////////////////////////////////////////////
 
         //pdf.save(novCarne + '.pdf');
-        var out = pdf.output();
+        const blobPdf = pdf.output('blob');
         //  console.log(out);
-        var url = 'data:application/pdf;base64,' + btoa(out);
+        const nombreArchivo = `pap-asignación-${novCarne}.pdf`;
+        const pdfFile = new File([blobPdf], nombreArchivo, {type: 'application/pdf'});
+        const urlBlob = window.URL.createObjectURL(pdfFile);
+        const urlParaVisor = `${urlBlob}#toolbar=0`;;
 
-        PDFObject.embed('data:application/pdf;base64,' + btoa(out), '#visorPDF');
+        
+        document.getElementById("visorPDF").innerHTML = `
+    <div class="mb-1 d-flex justify-content-end">
+        <a class="btn btn-secondary d-inline-flex align-items-center"
+            href="${urlBlob}"
+            download="${nombreArchivo}" >
+            <i class='bx bx-cloud-download mr-1 mr-sm-2' style='font-size: 1.25rem;'></i>
+            <span class="d-inline d-sm-none">Descargar PDF</span>
+            <span class="d-none d-sm-inline">Descargar constancia en PDF</span>
+        </a>
+    </div>
 
-        //console.log(datosAsignacion);
-        //  $('#pPDf').attr('src', url)
-        // document.getElementById("visorPDF").innerHTML ='<iframe src="' +url+ ' #view=fitH" width= "70%" height="100%"></iframe>';
-        document.getElementById("visorPDF").innerHTML = '<object data="' + url + '" type="application/pdf" width= "100%" height="100%"> <p> El navegador web de tu Teléfono Móvil no soporta visualizar el pdf de tu constancia de asignación, pero la puedes <a href="' + url + '"> Descargar aquí</a></p> </object>';
+    <object data="${urlParaVisor}" type="application/pdf" width="100%" height="100%">
+        <p style="text-align: right;">Tu navegador no soporta la visualización de tu constancia, 
+           utiliza el botón "Descargar constancia en PDF" de arriba ⬆ para ver tu asignación.
+        </p>
+    </object>
+`;
 
 
       }
