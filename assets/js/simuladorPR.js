@@ -112,14 +112,8 @@ function buscarResultado() {
         document.getElementById("notas").innerHTML = html;
 
         $("#preguntasRespuetas").hide();
-        if (idTemario == 2 || idTemario == 3 || idTemario == 4) {
-          //console.log("entre if matriculado");
-          matricularCurso();
-        }
-        else {
-          //no se matricula
-          document.getElementById("cargandoWS").innerHTML = '';
-        }
+        //20260824 ahora todos los cursos se matriculan
+        matricularCurso();
       }
       else {
         // //console.log("else datos");
